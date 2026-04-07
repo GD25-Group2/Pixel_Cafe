@@ -5,7 +5,10 @@ function PlayState:init()
 end
 
 function PlayState:update(dt)
-
+    if love.keyboard.wasPressed('p') then
+        gStateStack:pop()
+        gStateStack:push(PauseMenu())
+    end
 end
 
 function PlayState:render()

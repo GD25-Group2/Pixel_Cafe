@@ -6,3 +6,6 @@
 
 ### v0.1.0 - 2026-04-05
 - Rough outline of the project is created.
+
+### v0.2.0 - 2026-04-07
+- Pause Menu State is added by KyawSisThway.
