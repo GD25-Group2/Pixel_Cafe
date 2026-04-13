@@ -1,14 +1,20 @@
 PlayState = class {__includes = BaseState}
 
-function PlayState:init(timeOfDay)
-    -- If timeOfDay is provided, use it (in hours), else use default morning time (8:00 AM)
-    local startHour = timeOfDay or 8
-    self.dayTime = startHour * 60
+function PlayState:init()
+    -- Default to start hour 8 (8:00 AM)
+    self.dayTime = 8 * 60
     
     -- 1 real second = 15 game minutes
     self.timeScale = 15
     
     self.customerState = CustomerState()
+end
+
+function PlayState:enterParams(params)
+    -- If timeOfDay is provided in params, update dayTime
+    if params and params.timeOfDay then
+        self.dayTime = params.timeOfDay * 60
+    end
 end
 
 function PlayState:update(dt)
