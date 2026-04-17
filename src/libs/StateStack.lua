@@ -10,12 +10,25 @@ StateStack = class{}
 
 function StateStack:init()
     self.states = {}
+    self.paused = false
+    self.pausedTable = {}
 end
 
 function StateStack:update(dt)
-    -- Guard against empty stack to avoid nil state access when no states remain.
-    if #self.states > 0 then
-        self.states[#self.states]:update(dt)
+    if self.paused then
+            for i = #self.pausedTable, 1, -1 do
+            local state = self.pausedTable[i]
+            if state then
+                state:update(dt)
+            end
+        end
+    else
+        for i = #self.states, 1, -1 do
+            local state = self.states[i]
+            if state then
+                state:update(dt)
+            end
+        end
     end
 end
 
@@ -30,21 +43,57 @@ function StateStack:render()
     for i, state in ipairs(self.states) do
         state:render()
     end
+
+    if self.paused then
+        love.graphics.setColor(0, 0, 0, 0.5)
+        love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
+        love.graphics.setColor(1, 1, 1, 1)
+        
+        for i, state in ipairs(self.pausedTable) do
+            state:render()
+        end
+    end
 end
 
 function StateStack:clear()
-    self.states = {}
+    if self.paused then
+        self.pausedTable = {}
+    else
+        self.states = {}
+    end
 end
 
 function StateStack:push(state)
-    table.insert(self.states, state)
+    if self.paused then
+        table.insert(self.pausedTable, state)
+    else
+        table.insert(self.states, state)
+    end
     state:enter()
 end
 
-function StateStack:pop()
+function StateStack:pop(state)
     -- Safely remove the current state if the stack is not empty.
     if #self.states > 0 then
-        self.states[#self.states]:exit()
-        table.remove(self.states)
+        if state then
+            for i = #self.states, 1, -1 do
+                if self.states[i] == state then
+                    self.states[i]:exit()
+                    table.remove(self.states, i)
+                    break -- Stop once we find and remove it
+                end
+            end
+        else
+            self.states[#self.states]:exit()
+            table.remove(self.states)
+        end
     end
+end
+
+function StateStack:pause()
+    self.paused = true
+end
+
+function StateStack:resume()
+    self.paused = false
 end

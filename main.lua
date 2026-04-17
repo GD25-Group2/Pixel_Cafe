@@ -19,18 +19,19 @@ function love.load()
     --gStateStack = StateStack()
     --gStateStack:push(PlayState())
     love.keyboard.keysPressed = {}
-
--- added a font for temporary (https://www.fontspace.com/category/pixel)
-    PixelFont = love.graphics.newFont('assets/FortAvenue-nAWrg.ttf', 16)
+    love.mouse.keysPressed = {}
+    love.mouse.keysReleased = {}
 end
 
 function love.update(dt)
-    local mx, my = push:toGame(love.mouse.getX(), love.mouse.getY())
-    if mx and my then
-        suit.updateMouse(mx, my, love.mouse.isDown(1))
+    _G.mouseX, _G.mouseY = push:toGame(love.mouse.getX(), love.mouse.getY())
+    if mouseX and mouseY then
+        suit.updateMouse(mouseX, mouseY, love.mouse.isDown(1))
     end
     gStateStack:update(dt)
     love.keyboard.keysPressed = {}
+    love.mouse.keysPressed = {}
+    love.mouse.keysReleased = {}
 end
 
 function love.draw()
@@ -53,4 +54,20 @@ end
 
 function love.textedited(text, start, length)
     suit.textedited(text, start, length)
+end
+
+function love.mousepressed(x, y, button)
+    love.mouse.keysPressed[button] = true
+end
+
+function love.mousereleased(x, y, button)
+    love.mouse.keysReleased[button] = true
+end
+
+function love.mouse.wasPressed(button)
+    return love.mouse.keysPressed[button]
+end
+
+function love.mouse.wasReleased(button)
+    return love.mouse.keysReleased[button]
 end

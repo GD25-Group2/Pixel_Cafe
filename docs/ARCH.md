@@ -23,11 +23,12 @@ src/states
 - BaseState.lua
 src/states/game
 - PlayState.lua 
-src/states/game
 - DayEndState.lua
-src/states/game
 - StartMenu.lua
 src/states/entity
+- CoffeeMachine.lua
+- Cursor.lua
+- CustomerState.lua
 
 ## Core Systems
 
