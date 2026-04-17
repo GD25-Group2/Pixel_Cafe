@@ -25,12 +25,11 @@ function PlayState:init()
 end
 
 function PlayState:update(dt)
-    --[[if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+    if love.keyboard.wasPressed('p') then
         -- End PlayState and enters DayEndState
-        gStateStack:pop()
-        gStateStack:push(DayEndState())
-        return
-    end]]
+        gStateStack:pause()
+        gStateStack:push(PauseMenu())
+    end
     
     -- Update timer
     self.dayTime = self.dayTime + self.timeScale * dt

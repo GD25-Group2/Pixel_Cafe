@@ -19,3 +19,4 @@
 - Data related to entities are written in constants file.
 - Move the require of constants below gFonts and gFrames in Dependencies.
 - In main file, functions for mouse operations are added. And mx and my are changed from local to global with mouseX and mouseY.
+- Added PauseMenu. click p to enter pausemenu and then enter to exit pausemenu. For future use, the state stack is modified to house both play state and pause menu simutaneously.

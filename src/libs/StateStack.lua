@@ -10,14 +10,24 @@ StateStack = class{}
 
 function StateStack:init()
     self.states = {}
+    self.paused = false
+    self.pausedTable = {}
 end
 
 function StateStack:update(dt)
-    -- Guard against empty stack to avoid nil state access when no states remain.
-    for i = #self.states, 1, -1 do
-        local state = self.states[i]
-        if state then
-            state:update(dt)
+    if self.paused then
+            for i = #self.pausedTable, 1, -1 do
+            local state = self.pausedTable[i]
+            if state then
+                state:update(dt)
+            end
+        end
+    else
+        for i = #self.states, 1, -1 do
+            local state = self.states[i]
+            if state then
+                state:update(dt)
+            end
         end
     end
 end
@@ -33,14 +43,32 @@ function StateStack:render()
     for i, state in ipairs(self.states) do
         state:render()
     end
+
+    if self.paused then
+        love.graphics.setColor(0, 0, 0, 0.5)
+        love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
+        love.graphics.setColor(1, 1, 1, 1)
+        
+        for i, state in ipairs(self.pausedTable) do
+            state:render()
+        end
+    end
 end
 
 function StateStack:clear()
-    self.states = {}
+    if self.paused then
+        self.pausedTable = {}
+    else
+        self.states = {}
+    end
 end
 
 function StateStack:push(state)
-    table.insert(self.states, state)
+    if self.paused then
+        table.insert(self.pausedTable, state)
+    else
+        table.insert(self.states, state)
+    end
     state:enter()
 end
 
@@ -60,4 +88,12 @@ function StateStack:pop(state)
             table.remove(self.states)
         end
     end
+end
+
+function StateStack:pause()
+    self.paused = true
+end
+
+function StateStack:resume()
+    self.paused = false
 end
