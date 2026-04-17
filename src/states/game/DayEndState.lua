@@ -15,6 +15,6 @@ end
 
 function DayEndState:render()
     --Font and text 
-    love.graphics.setFont(gFonts['pixel'])
+    love.graphics.setFont(gFonts['large'])
     love.graphics.printf('DayEndState', 0, VIRTUAL_HEIGHT / 2 - 6, VIRTUAL_WIDTH, 'center')
 end

@@ -14,8 +14,11 @@ end
 
 function StateStack:update(dt)
     -- Guard against empty stack to avoid nil state access when no states remain.
-    if #self.states > 0 then
-        self.states[#self.states]:update(dt)
+    for i = #self.states, 1, -1 do
+        local state = self.states[i]
+        if state then
+            state:update(dt)
+        end
     end
 end
 
@@ -41,10 +44,20 @@ function StateStack:push(state)
     state:enter()
 end
 
-function StateStack:pop()
+function StateStack:pop(state)
     -- Safely remove the current state if the stack is not empty.
     if #self.states > 0 then
-        self.states[#self.states]:exit()
-        table.remove(self.states)
+        if state then
+            for i = #self.states, 1, -1 do
+                if self.states[i] == state then
+                    self.states[i]:exit()
+                    table.remove(self.states, i)
+                    break -- Stop once we find and remove it
+                end
+            end
+        else
+            self.states[#self.states]:exit()
+            table.remove(self.states)
+        end
     end
 end

@@ -15,6 +15,6 @@ end
 
 function StartMenu:render()
     --Font and text 
-    love.graphics.setFont(gFonts['pixel'])
+    love.graphics.setFont(gFonts['large'])
     love.graphics.printf('Start Menu', 0, VIRTUAL_HEIGHT / 2 - 6, VIRTUAL_WIDTH, 'center')
 end

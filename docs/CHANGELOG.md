@@ -6,3 +6,16 @@
 
 ### v0.1.0 - 2026-04-05
 - Rough outline of the project is created.
+
+### v0.2.0 - 2026-04-17
+- Pixel is font is changed into gFonts table with a variety of font size to accomoadate different writing purpose.
+- Changed StateStack's pop and update function so that specific states are exited and also update all the states not just the top one.
+- Cursor entity is added with a isDragging property to handle displaying something being dragged. Currently, due to limited assets, only a white cirlce is being dragged.
+- Customer State entity now is a functional entity with the capability of redering, receiving order and exiting upon receiving order.
+- When entering DayEndState, instead of poping the top of the stack, changed to clearing everything in the stack that includes all the entities and the playstate.
+- In playstate, instead of making independent variable like the previous update, make them all global states.
+- Change the font of time display.
+- In playstate, added dragging logic. Delete the rectangle representing the customer and make it so that there are three customers.
+- Data related to entities are written in constants file.
+- Move the require of constants below gFonts and gFrames in Dependencies.
+- In main file, functions for mouse operations are added. And mx and my are changed from local to global with mouseX and mouseY.
