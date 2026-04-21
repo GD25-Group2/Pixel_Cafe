@@ -20,3 +20,12 @@
 - Move the require of constants below gFonts and gFrames in Dependencies.
 - In main file, functions for mouse operations are added. And mx and my are changed from local to global with mouseX and mouseY.
 - Added PauseMenu. click p to enter pausemenu and then enter to exit pausemenu. For future use, the state stack is modified to house both play state and pause menu simutaneously.
+
+### v0.3.0 - 2026-04-21
+- In playstate, previous mouse check mechanic is now replaced with a universal one which doesn't need adding more lines. By using interactables table and getInteractableAt function, just adding other interactable entities at the table is all it takes now.
+- Separate the condition checking for click and drag so that condition checkings can be reduced further down the line.
+- Now all the entities include property type.
+- Add a new file to handle basic functions of entities which include initiating a parameter, rendering, mouse check and mouse response.
+- Unlike the issue requirement, the circle doesn't disappear with time but drawn. Color is set to a desired color and then reset to white to avoid impacting other entities.
+- gColors is built with nine colors to faciliate the use of colors in the future.
+- A decision is registered.
