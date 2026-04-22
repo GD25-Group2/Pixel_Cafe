@@ -26,11 +26,16 @@ src/states/game
 - DayEndState.lua
 - PauseMenu.lua
 - StartMenu.lua
+- PauseMenu.lua
 src/states/entity
 - BaseEntity.lua
 - CoffeeMachine.lua
 - Cursor.lua
 - CustomerState.lua
+- CustomerManager.lua
+- OrderBox.lua
+- FloatingMoney.lua
+- TimeManager.lua
 
 ## Core Systems
 
