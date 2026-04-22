@@ -21,7 +21,6 @@ gFrames = {
 
 require('src.constants')
 
-
 require('src.states.BaseState')
 require('src.states.game.PlayState')
 require('src.states.game.StartMenu')
@@ -32,3 +31,4 @@ require('src.states.entity.BaseEntity')
 require('src.states.entity.CoffeeMachine')
 require('src.states.entity.CustomerState')
 require('src.states.entity.Cursor')
+require('src.states.entity.TimeManager')
