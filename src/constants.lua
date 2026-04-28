@@ -70,7 +70,7 @@ BUTTON_PARAMS = {
     ['Pause'] = {
         text = '=',
         x = 5,
-        y = 5,
+        y = 2,
         desired_width = 16,
         desired_height = 16,
         action = function()
@@ -82,7 +82,7 @@ BUTTON_PARAMS = {
     ['Resume'] = {
         text = '>',
         x = 5,
-        y = 5,
+        y = 2,
         desired_width = 16,
         desired_height = 16,
         action = function()

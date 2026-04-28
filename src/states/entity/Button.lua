@@ -25,7 +25,7 @@ function Button:render()
     love.graphics.rectangle('fill', self.x, self.y, self.desired_width, self.desired_height)
     love.graphics.setColor(gColors['black'])
     love.graphics.setFont(gFonts['small'])
-    local buffer = math.abs(self.desired_height - self.y) * 0.05
+    local buffer = math.max(0, math.abs(self.desired_height - self.y) * 0.05)
     love.graphics.printf(self.text, self.x, self.y + buffer, self.desired_width, 'center')
     love.graphics.setColor(gColors['black'])
     love.graphics.rectangle('line', self.x, self.y, self.desired_width, self.desired_height)
