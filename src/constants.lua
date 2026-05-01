@@ -28,7 +28,7 @@ CUSTOMER_CONFIG = {
     moveSpeed         = 100,  -- pixels per second
     spawnInterval     = 4,    -- seconds between arrivals
     patienceMax       = 100,  -- full patience value
-    patienceDecayRate = 5,    -- patience lost per second while waiting
+    patienceDecayRate = 2,    -- patience lost per second while waiting
     baseTip           = 0.2,  -- 20% base tip
     patienceBonus     = 0.3,  -- up to 30% extra tip based on patience
 }
@@ -36,7 +36,7 @@ CUSTOMER_CONFIG = {
 MONEY_CONFIG = {
     startingMoney   = 50,
     minUnit         = 5,
-    countUpSpeed    = 120,
+    countUpSpeed    = 5, -- lowering countup speed is not looking good ( 120 is already fine ig)
 }
 
 UI_CARD = {
@@ -107,14 +107,34 @@ BUTTON_PARAMS = {
         clickable = true,
     },
     ['NextDay'] = {
-        text = 'Next Day',
-        x = VIRTUAL_WIDTH / 2 - 24,
-        y = VIRTUAL_HEIGHT / 2 + 30,
-        desired_width = 48,
-        desired_height = 16,
+        text = 'NEXT DAY',
+        x = UI_CARD.x + UI_CARD.width / 2 - 50,
+        y = UI_CARD.y + 92,
+        desired_width = 100,
+        desired_height = 18,
         action = function()
             gStateStack:clear()
+            gTodayMoney = 0
+            
+            -- Calculate the new balance for the next day
+            gStartingBalance = (gStartingBalance or (gMoney or 0)) + (gDailySales or 0) + (gDailyTips or 0)
+            
+            gDailySales = 0
+            gDailyTips = 0
+            gCurrentDay = (gCurrentDay or 1) + 1
+            
             gStateStack:push(PlayState())
+        end,
+        clickable = true,
+    },
+    ['Quit'] = {
+        text = 'QUIT',
+        x = UI_CARD.x + UI_CARD.width / 2 - 40,
+        y = UI_CARD.y + 115,
+        desired_width = 80,
+        desired_height = 18,
+        action = function()
+            love.event.quit()
         end,
         clickable = true,
     }

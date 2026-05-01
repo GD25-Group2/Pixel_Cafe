@@ -43,9 +43,9 @@ end
 function PlayState:deliverItem(customer)
     local success = customer:receiveItem(self.cursor.heldItem)
     if success then
-        local amount = self.moneyManager:calculatePayment(customer)
+        local amount, base, tip = self.moneyManager:calculatePayment(customer)
         customer.totalPayment = amount
-        self.moneyManager:addPayment(amount)
+        self.moneyManager:addPayment(amount, base, tip)
         self.moneyManager:spawnFloatingMoney(
             customer.x + customer.desired_width / 2,
             customer.y,

@@ -1,38 +1,31 @@
 DayEndState = class{__includes = BaseState}
 
 function DayEndState:init()
-    self.totalMoney = gMoney or 0
-    self.todayMoney = gTodayMoney or 0
+    self._dailySalesAmount = gDailySales or 0
+    self._dailyTipsAmount = gDailyTips or 0
+    self._startingBalance = gStartingBalance or (gMoney or 0)
+    
+    self._earnedToday = self._dailySalesAmount + self._dailyTipsAmount
+    self._finalTotal = self._startingBalance + self._earnedToday
+
+    gCurrentDay = gCurrentDay or 1
 
     local card = UI_CARD
-    local btnW = 100
-    local btnH = 16
-    local btnX = card.x + card.width / 2 - btnW / 2
+    -- Ensure card stays fixed size (restoring original height)
+    card.height = 140 
 
-    self.nextDayButton = Button({
-        text = 'Next Day',
-        x = btnX,
-        y = card.y + card.height - 30,
-        desired_width = btnW,
-        desired_height = btnH,
-        action = function()
-            gStateStack:clear()
-            gTodayMoney = 0
-            gStateStack:push(PlayState())
-        end,
-        clickable = true,
-    })
+    self.nextDayButton = Button(BUTTON_PARAMS['NextDay'])
+    self.quitButton = Button(BUTTON_PARAMS['Quit'])
 
-    self.buttons = {
+    self.interactables = {
         self.nextDayButton,
+        self.quitButton
     }
-
-    self.interactables = self.buttons
 end
 
 function DayEndState:update(dt)
-    for _, btn in ipairs(self.buttons) do
-        btn:update(dt)
+    for _, item in ipairs(self.interactables) do
+        item:update(dt)
     end
 
     self:mouseResponse()
@@ -45,29 +38,37 @@ function DayEndState:render()
     love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
 
     love.graphics.setColor(card.color)
-    love.graphics.rectangle('fill', card.x, card.y, card.width, card.height, 6, 6)
+    love.graphics.rectangle('fill', card.x, card.y, card.width, card.height, 8, 8)
 
     love.graphics.setColor(card.border)
     love.graphics.setLineWidth(1)
-    love.graphics.rectangle('line', card.x, card.y, card.width, card.height, 6, 6)
+    love.graphics.rectangle('line', card.x, card.y, card.width, card.height, 8, 8)
 
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setFont(gFonts['large'])
-    love.graphics.printf('DAY END', card.x, card.y + 8, card.width, 'center')
+    love.graphics.printf('DAY END', card.x, card.y + 12, card.width, 'center')
 
     love.graphics.setFont(gFonts['medium'])
+    
+    local line1Y = card.y + 45
+    local line2Y = card.y + 65
+    local labelOffset = 20
+
+    -- Line 1: EARNED
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.print('EARNED:', card.x + labelOffset, line1Y)
     love.graphics.setColor(0.2, 0.8, 0.2, 1)
-    love.graphics.printf(
-        string.format("Earned:  $%d", self.todayMoney),
-        card.x, card.y + 50, card.width, 'center'
-    )
-    love.graphics.printf(
-        string.format('Total:  $%d', self.totalMoney),
-        card.x, card.y + 72, card.width, 'center'
-    )
+    love.graphics.printf(string.format('$%.2f', self._earnedToday), card.x, line1Y, card.width - labelOffset, 'right')
+    
+    -- Line 2: TOTAL
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.print('TOTAL:', card.x + labelOffset, line2Y)
+    love.graphics.setColor(0.2, 0.8, 0.2, 1)
+    love.graphics.printf(string.format('$%.2f', self._finalTotal), card.x, line2Y, card.width - labelOffset, 'right')
+
     love.graphics.setColor(1, 1, 1, 1)
 
-    for _, btn in ipairs(self.buttons) do
-        btn:render()
+    for _, item in ipairs(self.interactables) do
+        item:render()
     end
 end

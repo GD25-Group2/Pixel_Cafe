@@ -112,7 +112,8 @@ end
 
 function CustomerState:receiveItem(itemType)
     if self.state ~= 'waiting' then return false end
-    if itemType ~= self.orderBox.orderType then return false end
+
+    self.isOrderCorrect = (itemType == self.orderBox.orderType)
 
     if self.orderBox then
         self.patienceAtPayment = self.orderBox.patience
