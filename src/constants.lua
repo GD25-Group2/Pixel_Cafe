@@ -48,6 +48,14 @@ UI_CARD = {
     border = {0.6, 0.6, 0.7, 0.8},
 }
 
+PAUSE_MENU_CONFIG = {
+    btnW = 100,
+    btnH = 16,
+    btnX = UI_CARD.x + UI_CARD.width / 2 - 50, -- 50 is btnW /2
+    btnStartY = UI_CARD.y + 55,
+    spacing = 22
+}
+
 AVAILABLE_ITEMS = {
     'Coffee',
 }
@@ -67,6 +75,7 @@ gColors = {
     ['purple'] = {0.5, 0.2, 0.5, 1},
     ['orange'] = {1, 0.5, 0, 1},
     ['gray'] = {0.5, 0.5, 0.5, 1},
+    ['scarlet'] = {0.8, 0.25, 0.25, 1},
 }
 
 BUTTON_PARAMS = {
@@ -80,7 +89,9 @@ BUTTON_PARAMS = {
             gStateStack:clear()
             gStateStack:push(PlayState())
         end,
-        clickable = true
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
     },
     ['Pause'] = {
         text = '=',
@@ -92,19 +103,59 @@ BUTTON_PARAMS = {
             gStateStack:pause()
             gStateStack:push(PauseMenu())
         end,
-        clickable = true
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
     },
     ['Resume'] = {
-        text = '>',
-        x = 5,
-        y = 2,
-        desired_width = 16,
-        desired_height = 16,
+        text = 'Resume',
+        x = PAUSE_MENU_CONFIG.btnX,
+        y = PAUSE_MENU_CONFIG.btnStartY,
+        desired_width = PAUSE_MENU_CONFIG.btnW,
+        desired_height = PAUSE_MENU_CONFIG.btnH,
         action = function()
             gStateStack:clear()
             gStateStack:resume()
         end,
         clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['Restart'] = {
+        text = 'Restart',
+        x = PAUSE_MENU_CONFIG.btnX,
+        y = PAUSE_MENU_CONFIG.btnStartY + PAUSE_MENU_CONFIG.spacing,
+        desired_width = PAUSE_MENU_CONFIG.btnW,
+        desired_height = PAUSE_MENU_CONFIG.btnH,
+        action = function()
+            gStateStack:clear()
+            gStateStack:resume()
+            gStateStack:clear()
+            gTodayMoney = 0
+            gStateStack:push(PlayState())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['PauseQuit'] = {
+        text = 'Quit',
+        x = PAUSE_MENU_CONFIG.btnX,
+        y = PAUSE_MENU_CONFIG.btnStartY + PAUSE_MENU_CONFIG.spacing * 2,
+        desired_width = PAUSE_MENU_CONFIG.btnW,
+        desired_height = PAUSE_MENU_CONFIG.btnH,
+        action = function()
+            gStateStack:clear()
+            gStateStack:resume()
+            gStateStack:clear()
+            gMoney = nil
+            gTodayMoney = nil
+            gStateStack:push(StartMenu())
+        end,
+        clickable = true,
+        isQuit = true,
+        defaultColor = gColors['red'],
+        hoverColor = gColors['scarlet'],
     },
     ['NextDay'] = {
         text = 'NEXT DAY',
@@ -126,6 +177,8 @@ BUTTON_PARAMS = {
             gStateStack:push(PlayState())
         end,
         clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
     },
     ['Quit'] = {
         text = 'QUIT',
@@ -137,5 +190,7 @@ BUTTON_PARAMS = {
             love.event.quit()
         end,
         clickable = true,
+        defaultColor = gColors['red'],
+        hoverColor = gColors['scarlet'],
     }
 }

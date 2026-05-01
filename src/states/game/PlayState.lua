@@ -34,7 +34,7 @@ function PlayState:update(dt)
 end
 
 function PlayState:render()
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setColor(gColors['white'])
     love.graphics.rectangle('line', 0, 0, VIRTUAL_WIDTH, 20)
     love.graphics.rectangle('line', 0, 0.40 * VIRTUAL_HEIGHT + 20,
                             VIRTUAL_WIDTH, 0.75 * VIRTUAL_HEIGHT)

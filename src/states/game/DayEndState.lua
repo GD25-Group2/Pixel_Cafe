@@ -21,20 +21,22 @@ function DayEndState:init()
         self.nextDayButton,
         self.quitButton
     }
+
+    self.card = DayEndStateCard({earnedToday = self._earnedToday, finalTotal = self._finalTotal})
+    gStateStack:push(self.card)
+    for _, btn in ipairs(self.interactables) do
+        gStateStack:push(btn)
+    end
 end
 
 function DayEndState:update(dt)
-    for _, item in ipairs(self.interactables) do
-        item:update(dt)
-    end
-
     self:mouseResponse()
 end
 
 function DayEndState:render()
     local card = UI_CARD
 
-    love.graphics.setColor(0, 0, 0, 150 / 255)
+    --[[love.graphics.setColor(0, 0, 0, 150 / 255)
     love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
 
     love.graphics.setColor(card.color)
@@ -66,9 +68,5 @@ function DayEndState:render()
     love.graphics.setColor(0.2, 0.8, 0.2, 1)
     love.graphics.printf(string.format('$%.2f', self._finalTotal), card.x, line2Y, card.width - labelOffset, 'right')
 
-    love.graphics.setColor(1, 1, 1, 1)
-
-    for _, item in ipairs(self.interactables) do
-        item:render()
-    end
+    love.graphics.setColor(1, 1, 1, 1)]]
 end

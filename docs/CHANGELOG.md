@@ -60,3 +60,4 @@
 - **PlayState.lua**: Refactored to delegate all financial tracking and HUD rendering to `MoneyManager`. Integrated keyboard-based pausing.
 - **CustomerState.lua**: Simplified order fulfillment logic by offloading payment math to the Money entity.
 - **Dependencies.lua**: Added registration for the `MoneyManager` class.
+- Add DayEndStateCard and PauseMenuCard entities to handle the problem that arises when the buttons are pushed to gStateStack.

@@ -1,67 +1,22 @@
 PauseMenu = class {__includes = BaseState}
 
 function PauseMenu:init()
-    local card = UI_CARD
-    local btnW = 100
-    local btnH = 16
-    local btnX = card.x + card.width / 2 - btnW / 2
-    local btnStartY = card.y + 55
-    local spacing = 22
+    self.resumeButton = Button(BUTTON_PARAMS['Resume'])
 
-    self.resumeButton = Button({
-        text = 'Resume',
-        x = btnX,
-        y = btnStartY,
-        desired_width = btnW,
-        desired_height = btnH,
-        action = function()
-            gStateStack:clear()
-            gStateStack:resume()
-        end,
-        clickable = true,
-    })
+    self.restartButton = Button(BUTTON_PARAMS['Restart'])
 
-    self.restartButton = Button({
-        text = 'Restart',
-        x = btnX,
-        y = btnStartY + spacing,
-        desired_width = btnW,
-        desired_height = btnH,
-        action = function()
-            gStateStack:clear()
-            gStateStack:resume()
-            gStateStack:clear()
-            gTodayMoney = 0
-            gStateStack:push(PlayState())
-        end,
-        clickable = true,
-    })
+    self.quitButton = Button(BUTTON_PARAMS['PauseQuit'])
 
-    self.quitButton = Button({
-        text = 'Quit',
-        x = btnX,
-        y = btnStartY + spacing * 2,
-        desired_width = btnW,
-        desired_height = btnH,
-        action = function()
-            gStateStack:clear()
-            gStateStack:resume()
-            gStateStack:clear()
-            gMoney = nil
-            gTodayMoney = nil
-            gStateStack:push(StartMenu())
-        end,
-        clickable = true,
-        isQuit = true,
-    })
-
-    self.buttons = {
+    self.interactables = {
         self.resumeButton,
         self.restartButton,
         self.quitButton,
     }
 
-    self.interactables = self.buttons
+    gStateStack:push(PauseMenuCard())
+    for _, btn in ipairs(self.interactables) do
+        gStateStack:push(btn)
+    end
 end
 
 function PauseMenu:update(dt)
@@ -71,15 +26,11 @@ function PauseMenu:update(dt)
         return
     end
 
-    for _, btn in ipairs(self.buttons) do
-        btn:update(dt)
-    end
-
     self:mouseResponse()
 end
 
 function PauseMenu:render()
-    local card = UI_CARD
+    --[[local card = UI_CARD
 
     love.graphics.setColor(card.color)
     love.graphics.rectangle('fill', card.x, card.y, card.width, card.height, 6, 6)
@@ -88,11 +39,12 @@ function PauseMenu:render()
     love.graphics.setLineWidth(1)
     love.graphics.rectangle('line', card.x, card.y, card.width, card.height, 6, 6)
 
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setColor(gColors['white'])
     love.graphics.setFont(gFonts['large'])
     love.graphics.printf('PAUSED', card.x, card.y + 6, card.width, 'center')
+    love.graphics.setColor(gColors['white'])
 
-    for _, btn in ipairs(self.buttons) do
+    --[[for _, btn in ipairs(self.interactables) do
         if btn.isQuit then
             local origRender = nil
             love.graphics.setColor(0.8, 0.25, 0.25, 1)
@@ -106,5 +58,5 @@ function PauseMenu:render()
         else
             btn:render()
         end
-    end
+    end]]
 end
