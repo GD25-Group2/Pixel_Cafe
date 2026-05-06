@@ -3,7 +3,7 @@
 ## Tech Stack
 - Language: Lua
 - Engine: LÖVE2D
-- Libraries: SUIT, Class, Push, StateMachine, StateStack
+- Libraries: SUIT, Class, Push, StateMachine, StateStack, dkjson
 
 ## Project Structure
 - main.lua

@@ -69,6 +69,7 @@
 - In PlayState, deliverItem function's parameter name is changed from customer to target since it now accomodate the logic including other entities not customer.
 - BaseState now directly handle which entity get which function activated imported from onPressed function's modified version.
 - Five assets including loafOfBread, panOfLoavesOfBread, panOfSlicesOfBread, sandwichPlate and sliceOfBread.
+
 ### v0.8.1 - 2026-05-03
 - Bug ID: #01 - Click VS Drag Conflict (fixed)
 - no. of slice is now decrease when giving to the customer 
