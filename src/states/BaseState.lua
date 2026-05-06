@@ -79,9 +79,13 @@ function BaseState:mouseResponse()
             if target then
                 if target.type == 'CustomerState' and target.orderBox then
                     self:deliverItem(target)
-                    self.coffeeMachine:taken()
-                elseif target.type == 'BreadPlate' and (target.productionStage == 'Void' or target.loafRemaining == 0) then
-                   
+                    -- Decrement the source that produced the held item
+                    if self.cursor and self.cursor.heldItem == 'Coffee' and self.coffeeMachine then
+                        self.coffeeMachine:taken()
+                    elseif self.cursor and self.cursor.heldItem == 'SliceOfBread' and self.breadPlate then
+                        self.breadPlate:taken()
+                    end
+                elseif target.type == 'BreadPlate' and (target.productionStage == 'Void' or (target.loafRemaining == 0 and target.slices == 0)) then
                     self:deliverItem(target)
                 elseif target.type == 'SandwichPlate' and target.productionStage == 'Void' then
                     self:deliverItem(target)
