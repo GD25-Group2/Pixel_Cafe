@@ -94,6 +94,20 @@ BUTTON_PARAMS = {
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
+    ['Load'] = {
+        text = 'Load',
+        x = VIRTUAL_WIDTH / 2 - 16,
+        y = VIRTUAL_HEIGHT / 2 + 4,
+        desired_width = 32,
+        desired_height = 16,
+        action = function()
+            gStateStack:clear()
+            gStateStack:push(DayEndState())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
     ['Pause'] = {
         text = '=',
         x = 5,

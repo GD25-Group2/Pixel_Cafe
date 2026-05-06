@@ -5,6 +5,7 @@ _G.push  = require('src.libs.push')
 require('src.libs.StateMachine')
 require('src.libs.StateStack')
 _G.suit  = require('src.libs.SUIT')
+_G.json = require('src.libs.dkjson')
 
 gFonts = {
     ['large']  = love.graphics.newFont('assets/FortAvenue-nAWrg.ttf', 32),
@@ -26,6 +27,7 @@ gFrames = {
 }
 
 require('src.constants')
+require('src.DataManager')
 
 require('src.states.BaseState')
 require('src.states.game.PlayState')

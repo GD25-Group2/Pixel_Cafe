@@ -9,6 +9,15 @@ function BreadBasket:init(def)
     self.productionStage = 'Ready'
 end
 
+function BreadBasket:canDragToPlate(plate)
+    if not plate then return false end
+    -- Only allow dragging a loaf to the plate if the plate is completely empty
+    if plate.slices == 0 and plate.loafRemaining == 0 then
+        return true
+    end
+    return false
+end
+
 function BreadBasket:render()
     BaseEntity.render(self)
 
