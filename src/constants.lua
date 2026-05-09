@@ -3,6 +3,8 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
+SAVE_FILE = 'data.json'
+
 COFFEE_MACHINE_ENTITY = {
     frame = gFrames['CoffeeMachine'],
     x = 10,
@@ -91,22 +93,24 @@ BUTTON_PARAMS = {
         desired_width = 32,
         desired_height = 16,
         action = function()
+            DataManager:load()
             gStateStack:clear()
             gStateStack:push(PlayState())
         end,
-        clickable = true,
+        clickable = false,
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
-    ['Load'] = {
-        text = 'Load',
+    ['New'] = {
+        text = 'New',
         x = VIRTUAL_WIDTH / 2 - 16,
-        y = VIRTUAL_HEIGHT / 2 + 4,
+        y = VIRTUAL_HEIGHT / 2 - 35,
         desired_width = 32,
         desired_height = 16,
         action = function()
+            DataManager:getDefaultData()
             gStateStack:clear()
-            gStateStack:push(DayEndState())
+            gStateStack:push(PlayState())
         end,
         clickable = true,
         defaultColor = gColors['white'],
@@ -183,11 +187,13 @@ BUTTON_PARAMS = {
         desired_width = 100,
         desired_height = 18,
         action = function()
+            DataManager:modify('todayMoney', 0)
+            DataManager:autoUnlockMachine()
             gStateStack:clear()
             gTodayMoney = 0
             
             -- Calculate the new balance for the next day
-            gStartingBalance = (gStartingBalance or (gMoney or 0)) + (gDailySales or 0) + (gDailyTips or 0)
+            gStartingBalance = (gStartingBalance or (gMoney or 0)) + (gDailySales or 0) + (gDailyTips or 0)  --I think I mess up this line in MoneyManager
             
             gDailySales = 0
             gDailyTips = 0
@@ -199,7 +205,7 @@ BUTTON_PARAMS = {
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
-    ['Quit'] = {
+    ['DayEndQuit'] = {
         text = 'QUIT',
         x = UI_CARD.x + UI_CARD.width / 2 - 40,
         y = UI_CARD.y + 115,
@@ -237,3 +243,5 @@ SANDWICH_PLATE_CONFIG = {
     desired_width = 32,
     desired_height = 32,
 }
+
+--money-related global variables are all in MoneyManager line #54

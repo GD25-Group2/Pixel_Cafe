@@ -75,6 +75,24 @@
 - no. of slice is now decrease when giving to the customer 
 - no. of slice is now limit (maximum 3)
 
+### v0.9.0 - 2026-05-08
+- `Button.lua` has gained enable and disable function. Now clicked function can only be activated if the button is enabled.
+- `DayEndStateCard.lua` gets one more parameter when initialized. Display for currentDate to be shown is added.
+- `MoneyManager.lua` has only initializing parameters changed.
+- `StartMenuBackground.lua`. Noticed that the buttons disappear behind texture of StartMenu if pushed into gStateStack. Added a new file to handle the GUI.
+- `TimeManager.lua` also has its parameter changed or added. Added a function for developer to skip to next day easily. After each day reaches its end, the currentDate is saved.
+- At `DayEndState.lua`, money data is saved. Immediately after, a new json file is created with the data.
+- In `PlayState.lua`, every machine must now be unlocked to be pushed to gStateStack and get played. Add a local find function to reduce repititive codes.
+- `StartMenu.lua` gets a new button and has its own background stripped with the background becoming an independent entity.
+- `DataManager.lua` is a self-built library and its usage is explained in that file.
+- Developer can now skip to a next day using 'd' key in PlayState.
+
+### v0.9.1 - 2026-05-09
+- Radius in `DayEndStateCard.lua` is increased by 5 and the width for text is now radius * 2 instead of radius / 2.
+- Move the global money-related variables assignment to update function to fix a bug in `MoneyManager.lua`.
+- Date is now directly saved in `DayEndState.lua` not through the button action.
+- `PlayState.lua` has its unnecessary function newGame removed.
+- `DataManager.lua` gets a new function modify to directly change the value of an attribute with the parameters being string type variable and value which doesn't have a specific type.
 ### v0.82 - 2026-05-09
 - Bug ID: #02 - Order Logic Valadiation (fidxed)
 - slice of bread and sandwich are added as an item for temporary

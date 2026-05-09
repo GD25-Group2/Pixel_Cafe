@@ -1,11 +1,11 @@
 MoneyManager = class{__includes = BaseEntity}
 
-function MoneyManager:init()
-    self.totalMoney = gMoney or MONEY_CONFIG.startingMoney
-    self.todayMoney = 0
+function MoneyManager:init(totalMoney, todayMoney)
+    self.totalMoney = totalMoney
+    self.todayMoney = todayMoney
     self.floatingMoney = {}
 
-    self._startingBalance = self.totalMoney
+    self._startingBalance = gStartingBalance
     self._dailySalesAmount = 0
     self._dailyTipsAmount = 0
 
@@ -50,13 +50,6 @@ function MoneyManager:addPayment(amount, base, tip)
 
     self._dailySalesAmount = self._dailySalesAmount + (base or amount)
     self._dailyTipsAmount = self._dailyTipsAmount + (tip or 0)
-
-    gMoney      = self.totalMoney
-    gTodayMoney = self.todayMoney
-    
-    gDailySales = self._dailySalesAmount
-    gDailyTips = self._dailyTipsAmount
-    gStartingBalance = self._startingBalance
 end
 
 function MoneyManager:spawnFloatingMoney(x, y, amount)
@@ -83,6 +76,14 @@ function MoneyManager:update(dt)
             table.remove(self.floatingMoney, i)
         end
     end
+    
+    --I have to duplicate it here if not the global variables behave weirdly. I don't know how to fix it.
+    gMoney      = self.totalMoney
+    gTodayMoney = self.todayMoney
+    
+    gDailySales = self._dailySalesAmount
+    gDailyTips = self._dailyTipsAmount
+    gStartingBalance = self._startingBalance
 end
 
 function MoneyManager:render()
