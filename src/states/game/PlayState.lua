@@ -13,6 +13,8 @@ function PlayState:init()
     self.type = 'PlayState'
 
     self.data = DataManager:getData()
+    print('Current Date: ' .. tostring(self.data['currentDate']))
+    print('PlayState - Today Money: ' .. tostring(self.data['todayMoney']) .. ' Total Money: ' .. tostring(self.data['totalMoney']))
 
     self.moneyManager    = MoneyManager(self.data['totalMoney'], self.data['todayMoney'])
     gStateStack:push(self.moneyManager)
@@ -93,8 +95,4 @@ function PlayState:deliverItem(target)
             )
         end
     end
-end
-
-function PlayState:newGame()
-    self.isNew = true
 end

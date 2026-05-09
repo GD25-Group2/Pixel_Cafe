@@ -183,13 +183,13 @@ BUTTON_PARAMS = {
         desired_width = 100,
         desired_height = 18,
         action = function()
-            DataManager:dateDataSave(DataManager:getData('currentDate') + 1)
+            DataManager:modify('todayMoney', 0)
             DataManager:autoUnlockMachine()
             gStateStack:clear()
             gTodayMoney = 0
             
             -- Calculate the new balance for the next day
-            gStartingBalance = (gStartingBalance or (gMoney or 0)) + (gDailySales or 0) + (gDailyTips or 0)
+            gStartingBalance = (gStartingBalance or (gMoney or 0)) + (gDailySales or 0) + (gDailyTips or 0)  --I think I mess up this line in MoneyManager
             
             gDailySales = 0
             gDailyTips = 0
@@ -201,7 +201,7 @@ BUTTON_PARAMS = {
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
-    ['Quit'] = {
+    ['DayEndQuit'] = {
         text = 'QUIT',
         x = UI_CARD.x + UI_CARD.width / 2 - 40,
         y = UI_CARD.y + 115,

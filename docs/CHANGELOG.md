@@ -86,3 +86,10 @@
 - `StartMenu.lua` gets a new button and has its own background stripped with the background becoming an independent entity.
 - `DataManager.lua` is a self-built library and its usage is explained in that file.
 - Developer can now skip to a next day using 'd' key in PlayState.
+
+### v0.9.1 - 2026-05-09
+- Radius in `DayEndStateCard.lua` is increased by 5 and the width for text is now radius * 2 instead of radius / 2.
+- Move the global money-related variables assignment to update function to fix a bug in `MoneyManager.lua`.
+- Date is now directly saved in `DayEndState.lua` not through the button action.
+- `PlayState.lua` has its unnecessary function newGame removed.
+- `DataManager.lua` gets a new function modify to directly change the value of an attribute with the parameters being string type variable and value which doesn't have a specific type.

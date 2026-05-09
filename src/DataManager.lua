@@ -42,6 +42,7 @@ end
 function DataManager:moneyDataSave(totalMoney, todayMoney)
     self.data['totalMoney'] = totalMoney
     self.data['todayMoney'] = todayMoney
+    print('DataManager - Today Money: ' .. tostring(self.data['todayMoney']) .. ' Total Money: ' .. tostring(self.data['totalMoney']))
 end
 
 function DataManager:dateDataSave(currentDate)
@@ -81,6 +82,12 @@ function DataManager:autoUnlockMachine()
     print('Unlocked Machine:' .. tostring(machine))
     if machine then
         table.insert(self.data['unlockedMachine'], machine)
+    end
+end
+
+function DataManager:modify(variable, value)
+    if self.data[variable] ~= nil then
+        self.data['variable'] = value
     end
 end
 

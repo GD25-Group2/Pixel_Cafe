@@ -8,22 +8,25 @@ function DayEndState:init()
     self._earnedToday = self._dailySalesAmount + self._dailyTipsAmount --this variable will be saved
     self._finalTotal = self._startingBalance + self._earnedToday
 
-    DataManager:moneyDataSave(self._finalTotal, self._earnedToday)
-    DataManager:create() --immediately store the variables to be used
-
     --[[local card = UI_CARD
     -- Ensure card stays fixed size (restoring original height)
     card.height = 140 ]] --comment out this block assuming to be of no use
 
     self.nextDayButton = Button(BUTTON_PARAMS['NextDay'])
-    self.quitButton = Button(BUTTON_PARAMS['Quit'])
+    self.quitButton = Button(BUTTON_PARAMS['DayEndQuit'])
 
     self.interactables = {
         self.nextDayButton,
         self.quitButton
     }
 
-    self.card = DayEndStateCard({earnedToday = self._earnedToday, finalTotal = self._finalTotal, currentDate = DataManager:getData('currentDate')})
+    print('DayEndState - Today Money: ' .. tostring(self._earnedToday) .. ' Total Money: ' .. tostring(self._finalTotal))
+    DataManager:moneyDataSave(self._finalTotal, self._earnedToday)
+    local currentDate = DataManager:getData('currentDate')
+    DataManager:dateDataSave(currentDate + 1)
+    DataManager:create()
+
+    self.card = DayEndStateCard({earnedToday = self._earnedToday, finalTotal = self._finalTotal, currentDate = currentDate})
     gStateStack:push(self.card)
     for _, btn in ipairs(self.interactables) do
         gStateStack:push(btn)
