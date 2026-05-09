@@ -58,11 +58,15 @@ PAUSE_MENU_CONFIG = {
 
 AVAILABLE_ITEMS = {
     'Coffee',
+    'SliceOfBread',
+    'Sandwich',
 }
 
 -- Order types: name -> {price, name}
 ORDER_TYPES = {
-    ['Coffee'] = {price = 5, name = 'Coffee'},
+    ['Coffee']       = {price = 5, name = 'Coffee'},
+    ['SliceOfBread'] = {price = 3, name = 'SliceOfBread'},
+    ['Sandwich']     = {price = 7, name = 'Sandwich'},
 }
 
 gColors = {

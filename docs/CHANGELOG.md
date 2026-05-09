@@ -74,3 +74,10 @@
 - Bug ID: #01 - Click VS Drag Conflict (fixed)
 - no. of slice is now decrease when giving to the customer 
 - no. of slice is now limit (maximum 3)
+
+### v0.82 - 2026-05-09
+- Bug ID: #02 - Order Logic Valadiation (fidxed)
+- slice of bread and sandwich are added as an item for temporary
+  to test we can change that in ( game/constant.lua)
+- OrderBox changes Note
+  Giving name: sliceofbread as an bread (we can change that later) in OrderBox.lua 
