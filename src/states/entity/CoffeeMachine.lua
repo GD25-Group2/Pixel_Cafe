@@ -5,27 +5,24 @@ function CoffeeMachine:init(params)
 
     self.counter = 0
     self.duration = 5
-
     self.productionStage = 'Void'
-
-    self.angle1 = - math.pi / 2
-    self.angle2 = self.angle1
-
     self.isMachine = true
     self.type = 'CoffeeMachine'
+
+    self.animation = Animation(self.animation)
+    self.frame = self.animation:getFrame() or self.frame
 end
 
 function CoffeeMachine:update(dt)
     if self.productionStage == 'Producing' then
         self.counter = self.counter + dt
-        local division = self.counter / self.duration
-        self.angle2 = self.angle1 + division * (2 * math.pi)
-
         if self.counter >= self.duration then
             self.productionStage = 'Ready'
             self.counter = 0
         end
     end
+
+    BaseEntity.update(self, dt)
 end
 
 function CoffeeMachine:render()
@@ -33,7 +30,7 @@ function CoffeeMachine:render()
 
     if self.productionStage == 'Producing' then
         love.graphics.setColor(gColors['green'])
-        love.graphics.arc('line', 'open', self.x + self.desired_width / 2, self.y + self.desired_height / 2, self.desired_width / 2, self.angle1, self.angle2)
+        love.graphics.arc('line', 'open', self.x + self.desired_width / 2, self.y + self.desired_height / 2, self.desired_width / 2, -math.pi / 2, -math.pi / 2 + (self.counter / self.duration) * (2 * math.pi))
         love.graphics.setColor(gColors['white'])
     elseif self.productionStage == 'Ready' then
         love.graphics.setColor(gColors['yellow'])
@@ -44,8 +41,12 @@ end
 
 function CoffeeMachine:produce()
     self.productionStage = 'Producing'
+    self.counter = 0
+    self.animation:play()
 end
 
 function CoffeeMachine:taken()
     self.productionStage = 'Void'
+    self.counter = 0
+    self.animation:stop()
 end
