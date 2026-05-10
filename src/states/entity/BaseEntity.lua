@@ -6,6 +6,16 @@ function BaseEntity:init(params)
     end
 end
 
+function BaseEntity:update(dt)
+    if self.animation then
+        self.animation:update(dt, self)
+        local frame = self.animation:getFrame()
+        if frame then
+            self.frame = frame
+        end
+    end
+end
+
 function BaseEntity:render()
     if self.type == 'Cursor' then
         self.x = mouseX

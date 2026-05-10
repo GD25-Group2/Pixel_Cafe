@@ -7,6 +7,8 @@ require('src.libs.StateStack')
 _G.suit  = require('src.libs.SUIT')
 _G.json = require('src.libs.dkjson')
 
+require('src.Animation')
+
 gFonts = {
     ['large']  = love.graphics.newFont('assets/FortAvenue-nAWrg.ttf', 32),
     ['medium'] = love.graphics.newFont('assets/FortAvenue-nAWrg.ttf', 16),
@@ -26,6 +28,7 @@ gFrames = {
     ['SandwichPlate'] = love.graphics.newImage('assets/sandwichPlate.png'),
 }
 
+-- Coffee Machine Animation Frames
 gFrames['CoffeeMachineAnimation'] = {}
 for i = 1, 10 do
     gFrames['CoffeeMachineAnimation'][i] = love.graphics.newImage('assets/CoffeeMachineAnimation/CoffeeMachine' .. i .. '.png')

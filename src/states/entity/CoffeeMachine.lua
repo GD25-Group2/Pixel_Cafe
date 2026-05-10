@@ -5,33 +5,24 @@ function CoffeeMachine:init(params)
 
     self.counter = 0
     self.duration = 5
-    self.animationFrames = gFrames['CoffeeMachineAnimation'] 
-    self.currentFrame = 1
-    self.frame = self.animationFrames[self.currentFrame]
-
     self.productionStage = 'Void'
-
     self.isMachine = true
     self.type = 'CoffeeMachine'
+
+    self.animation = Animation(self.animation)
+    self.frame = self.animation:getFrame() or self.frame
 end
 
 function CoffeeMachine:update(dt)
     if self.productionStage == 'Producing' then
         self.counter = self.counter + dt
-        local progress = math.min(self.counter / self.duration, 1)
-        local frameIndex = math.floor(progress * #self.animationFrames) + 1
-        if frameIndex > #self.animationFrames then
-            frameIndex = #self.animationFrames
-        end
-
-        self.currentFrame = frameIndex
-        self.frame = self.animationFrames[self.currentFrame]
-
         if self.counter >= self.duration then
             self.productionStage = 'Ready'
             self.counter = 0
         end
     end
+
+    BaseEntity.update(self, dt)
 end
 
 function CoffeeMachine:render()
@@ -51,13 +42,11 @@ end
 function CoffeeMachine:produce()
     self.productionStage = 'Producing'
     self.counter = 0
-    self.currentFrame = 1
-    self.frame = self.animationFrames[self.currentFrame]
+    self.animation:play()
 end
 
 function CoffeeMachine:taken()
     self.productionStage = 'Void'
     self.counter = 0
-    self.currentFrame = 1
-    self.frame = self.animationFrames[self.currentFrame]
+    self.animation:stop()
 end

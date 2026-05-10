@@ -103,3 +103,18 @@
 
 ### v0.9.2 - 2026-05-09
 - The green square around the Sandwich Plate doesn't disappear so added one more line to taken function.
+
+### v0.9.3 - 2026-05-10
+Added 10-picture animation for the coffee machine that shows it working:
+- Pictures are loaded from the `assets/CoffeeMachineAnimation/` folder (named CoffeeMachine1.png to CoffeeMachine10.png)
+- The animation plays for 5 seconds while the machine is making coffee
+- After you take the coffee, it goes back to the first picture
+- To change how fast it animates or add more pictures, edit `CoffeeMachine.lua`
+- To start on a different picture, change the number in `constants.lua` (like [1] for the first one)
+
+Also set up a reusable animation system for future features:
+- Load pictures into a global table (like `gFrames['YourAnimation']`) in `Dependencies.lua`
+- In your entity, add `self.animationFrames`, `self.currentFrame`, `self.counter`, and `self.duration`
+- Update the frame each second based on time progress (from 1 to total pictures)
+- Start animation by resetting to frame 1, stop and reset after duration or when done
+- Copy this pattern to animate other things like machines or characters
