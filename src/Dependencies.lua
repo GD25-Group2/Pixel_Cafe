@@ -26,6 +26,11 @@ gFrames = {
     ['SandwichPlate'] = love.graphics.newImage('assets/sandwichPlate.png'),
 }
 
+gFrames['CoffeeMachineAnimation'] = {}
+for i = 1, 10 do
+    gFrames['CoffeeMachineAnimation'][i] = love.graphics.newImage('assets/CoffeeMachineAnimation/CoffeeMachine' .. i .. '.png')
+end
+
 DataManager = require('src.DataManager')
 require('src.constants')
 

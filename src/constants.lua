@@ -6,7 +6,7 @@ VIRTUAL_HEIGHT = 243
 SAVE_FILE = 'data.json'
 
 COFFEE_MACHINE_ENTITY = {
-    frame = gFrames['CoffeeMachine'],
+    frame = gFrames['CoffeeMachineAnimation'][0], -- default frame when idle
     x = 10,
     y = 130,
     desired_width = 32,
