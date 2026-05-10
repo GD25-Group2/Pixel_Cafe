@@ -104,7 +104,7 @@
 ### v0.9.2 - 2026-05-09
 - The green square around the Sandwich Plate doesn't disappear so added one more line to taken function.
 
-### v0.9.3 - 2026-05-10
+### v0.10.0 - 2026-05-10
 Added 10-picture animation for the coffee machine that shows it working:
 - Pictures are loaded from the `assets/CoffeeMachineAnimation/` folder (named CoffeeMachine1.png to CoffeeMachine10.png)
 - The animation plays for 5 seconds while the machine is making coffee
