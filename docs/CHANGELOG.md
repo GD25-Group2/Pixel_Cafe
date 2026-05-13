@@ -129,7 +129,9 @@ Also set up a reusable animation system for future features:
 - Bug ID: #03 - Ordering Process Logic Errors (fixed)
 - When the player gives the wrong order, they will now receive 
   a penalty.  
-
+  
+### v0.11.0 - 2026-05-13
+- Music and SFX setting are added but UI are not pollish yet 
 
 ### v0.12.0 - 2026-05-13
 - `PopupWindow.lua` is created. It can handle three type of popup for now.

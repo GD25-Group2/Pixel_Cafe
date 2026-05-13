@@ -5,6 +5,7 @@ function StartMenu:init()
 
     self.playButton = Button(BUTTON_PARAMS['Play'])
     self.newButton = Button(BUTTON_PARAMS['New'])
+    self.settingsButton = Button(BUTTON_PARAMS['StartSettings'])
     self.background = StartMenuBackground()
     self.popup = PopupWindow(POPUP_WINDOW_CONFIG)
 
@@ -15,12 +16,20 @@ function StartMenu:init()
     self.interactables = {
         self.playButton,
         self.newButton,
+        self.settingsButton,
     }
 
     gStateStack:push(self.background)
     gStateStack:push(self.playButton)
     gStateStack:push(self.newButton)
     gStateStack:push(self.popup)
+    gStateStack:push(self.settingsButton)
+
+    -- Start music when the window opens
+    if gMusic and not gMusic:isPlaying() then
+        gMusic:setVolume(gSettings.musicVolume)
+        gMusic:play()
+    end
 end
 
 function StartMenu:update(dt)
