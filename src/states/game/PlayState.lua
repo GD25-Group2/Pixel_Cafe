@@ -31,6 +31,15 @@ function PlayState:init()
         table.insert(AVAILABLE_ITEMS, 'Sandwich')
     end
 
+    self.cityBackground = CityBackground()
+    gStateStack:push(self.cityBackground)
+
+    self.customerManager = CustomerManager()
+    gStateStack:push(self.customerManager)
+
+    self.counterBackground = CounterBackground() -- 16 116
+    gStateStack:push(self.counterBackground)
+
     self.moneyManager    = MoneyManager(self.data['totalMoney'], self.data['todayMoney'])
     gStateStack:push(self.moneyManager)
 
@@ -39,9 +48,6 @@ function PlayState:init()
 
     self.pauseButton     = Button(BUTTON_PARAMS['Pause'])
     gStateStack:push(self.pauseButton)
-
-    self.customerManager = CustomerManager()
-    gStateStack:push(self.customerManager)
 
     if find(self.data['unlockedMachine'], 'CoffeeMachine') then
         self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)
@@ -102,10 +108,10 @@ function PlayState:update(dt)
 end
 
 function PlayState:render()
-    love.graphics.setColor(gColors['white'])
+    --[[love.graphics.setColor(gColors['white'])
     love.graphics.rectangle('line', 0, 0, VIRTUAL_WIDTH, 20)
     love.graphics.rectangle('line', 0, 0.40 * VIRTUAL_HEIGHT + 20,
-                            VIRTUAL_WIDTH, 0.75 * VIRTUAL_HEIGHT)
+                            VIRTUAL_WIDTH, 0.75 * VIRTUAL_HEIGHT)]]
 end
 
 function PlayState:deliverItem(target)

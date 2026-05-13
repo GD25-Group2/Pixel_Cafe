@@ -85,3 +85,17 @@ Expected Result: The result should directly interact with the game and influence
                 navigating the game.
 Actual Result:  Random things keep on popping while using developer mode. Determined that it is of low priority and
                 leave the bug.
+
+Bug ID: #06 - Machine Unlock
+Status: Open
+Reporter: Kyaw Sis Thway
+Debugger:
+Description: It seems that after quiting at DayEndState, the next saved play will 
+            have difficulty in accessing what is available and not.
+Steps to Reproduce:
+     Start the game.
+     Start a new game.
+     Quit at DayEndState.
+     Restart the game and press play.
+Expected Result: Day 2. So, loaf should be unlocked.
+Actual Result:  Missing.

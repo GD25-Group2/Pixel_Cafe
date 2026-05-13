@@ -138,3 +138,8 @@ Also set up a reusable animation system for future features:
 - Move all the GUI states from entity to GUI folder.
 - `constants.lua` get one more three more button form which one isn't used.
 - `InputBox.lua` is a new file that handle text input through SUIT library.
+
+### v0.13.0 - 2026-05-13
+- CityBackground asset is taken from `https://free-game-assets.itch.io/free-pixel-art-street-backgrounds/download/eyJpZCI6MzQ2NjkxLCJleHBpcmVzIjoxNzc4NjcxOTQ0fQ%3d%3d%2e%2bCG3Z1ok6utuOLq7oZYJmqmOC3E%3d`
+- CounterBackground is self-drawn.
+- CustomerManager is push to gStateStack between City and Counter backgrounds.
