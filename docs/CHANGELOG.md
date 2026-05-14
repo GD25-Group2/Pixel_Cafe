@@ -148,3 +148,6 @@ Also set up a reusable animation system for future features:
 - Bug ID: #05 - Developer Command (fixed)
 - Developer can now skip to a next day using '\dev skip <number>' command in PlayState.
 - Developer can now add money using '\dev money <number>' command in PlayState.
+  
+### v0.13.2 - 2026-05-14
+- Bug ID: #04 - Plate State Conflict (Loaf vs. Slice) (fixed)  
