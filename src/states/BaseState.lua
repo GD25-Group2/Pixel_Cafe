@@ -60,10 +60,23 @@ function BaseState:mouseResponse()
                     if not target:canDragToPlate(self.breadPlate) then --if the plate is unable to accept the dragged entity
                         allowDrag = false
                     end
+                elseif target.type == 'CoffeeCupStack' and self.coffeeTray then
+                    if self.coffeeTray.filledCups > 0 or self.coffeeTray.emptyCups == 4 then
+                        allowDrag = false
+                    end
+                elseif target.type == 'CoffeeMachine' and self.coffeeTray then
+                    if self.coffeeTray.emptyCups < 4 then
+                        allowDrag = false
+                    end
+                elseif target.type == 'CoffeeTray' then
+                    if target.filledCups == 0 then
+                        allowDrag = false
+                    end
                 end
                 if allowDrag then
                     self.cursor:isDragged(target)
-                   
+                    self.cursor.dragSource = target
+                    if target.drag then target:drag() end
                     self._mouseDown = nil
                 end
             end
@@ -74,25 +87,32 @@ function BaseState:mouseResponse()
        
         if (self.cursor and self.cursor.isDragging) then
             local target = self:getInteractAt() -- the entity the current cursor point at
+            local delivered = false
 
             if target then
                 if target.type == 'CustomerState' and target.orderBox then
-                    self:deliverItem(target)
-                    -- Decrement the source that produced the held item
-                    if self.cursor and self.cursor.heldItem == 'Coffee' and self.coffeeMachine then
-                        self.coffeeMachine:taken()
-                    elseif self.cursor and self.cursor.heldItem == 'SliceOfBread' and self.breadPlate then
-                        self.breadPlate:taken()
-                    elseif self.cursor and self.cursor.heldItem == 'Sandwich' and self.sandwichPlate then
-                        self.sandwichPlate:taken()
-                    end
+                    delivered = self:deliverItem(target)
                 elseif target.type == 'BreadPlate' and target.loafRemaining == 0 then
-                    self:deliverItem(target)
+                    delivered = self:deliverItem(target)
                 elseif target.type == 'SandwichPlate' and target.productionStage == 'Void' then
-                    self:deliverItem(target)
-                    self.breadPlate:taken()
+                    delivered = self:deliverItem(target)
+                    if delivered then self.breadPlate:taken() end
+                elseif target.type == 'CoffeeTray' then
+                    delivered = self:deliverItem(target)
                 end
             end
+
+            local source = self.cursor.dragSource
+            if delivered then
+                if source and source.taken then
+                    source:taken()
+                end
+            else
+                if source and source.undrag then
+                    source:undrag()
+                end
+            end
+
             self.cursor:isReleased()
             self._mouseDown = nil
         else --cursor isn't dragging something

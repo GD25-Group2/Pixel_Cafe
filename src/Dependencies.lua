@@ -15,22 +15,36 @@ gFonts = {
 
 gFrames = {
     ['StartMenuBackground'] = love.graphics.newImage('assets/MainScreen.png'),
-    ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.jpg'),
+    ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.png'),
     customers = {
         love.graphics.newImage('assets/Customer1.png'), -- Grumpy Old Man
     },
+    ['Coffee'] = love.graphics.newImage('assets/CoffeeSprite.png'),
     ['LoafOfBread'] = love.graphics.newImage('assets/loafOfBread.png'),
     ['BreadBasket'] = love.graphics.newImage('assets/panOfLoavesOfBread.png'),
     ['SliceOfBread'] = love.graphics.newImage('assets/sliceOfBread.png'),
     ['BreadPlate'] = love.graphics.newImage('assets/panOfSlicesOfBread.png'),
     ['SandwichPlate'] = love.graphics.newImage('assets/sandwichPlate.png'),
+    ['EmptyTray'] = love.graphics.newImage('assets/Cups and stack/EmptyTray.png'),
+    ['CoffeeCupStack'] = love.graphics.newImage('assets/Cups and stack/coffeecupstack.png'),
+    ['DisposableCoffeeCup'] = love.graphics.newImage('assets/Cups and stack/DisposableCoffeeCup.png'),
+    ['DisposableCoffeeCupFilled'] = love.graphics.newImage('assets/Cups and stack/DisposableCoffeeCupFilled.png'),
+    ['TrayWithEmptyCups1'] = love.graphics.newImage('assets/Cups and stack/TrayWithEmptyCups1.png'),
+    ['TrayWithEmptyCups2'] = love.graphics.newImage('assets/Cups and stack/TrayWithEmptyCups2.png'),
+    ['TrayWithEmptyCups3'] = love.graphics.newImage('assets/Cups and stack/TrayWithEmptyCups3.png'),
+    ['TrayWithEmptyCups4'] = love.graphics.newImage('assets/Cups and stack/TrayWithEmptyCups4.png'),
+    ['TrayWithCupsFilled1'] = love.graphics.newImage('assets/Cups and stack/TrayWithCupsFilled1.png'),
+    ['TrayWithCupsFilled2'] = love.graphics.newImage('assets/Cups and stack/TrayWithCupsFilled2.png'),
+    ['TrayWithCupsFilled3'] = love.graphics.newImage('assets/Cups and stack/TrayWithCupsFilled3.png'),
+    ['TrayWithCupsFilled4'] = love.graphics.newImage('assets/Cups and stack/TrayWithCupsFilled4.png'),
 }
 
 -- Coffee Machine Animation Frames
 gFrames['CoffeeMachineAnimation'] = {}
-for i = 1, 10 do
+for i = 1, 11 do
     gFrames['CoffeeMachineAnimation'][i] = love.graphics.newImage('assets/CoffeeMachineAnimation/CoffeeMachine' .. i .. '.png')
 end
+gFrames['CoffeeMachineHold'] = love.graphics.newImage('assets/CoffeeMachineAnimation/CoffeeMachineHold.png')
 
 require('src.Animation')
 DataManager = require('src.DataManager')
@@ -66,6 +80,8 @@ require('src.states.entity.Button')
 require('src.states.entity.BreadBasket')
 require('src.states.entity.BreadPlate')
 require('src.states.entity.SandwichPlate')
+require('src.states.entity.CoffeeCupStack')
+require('src.states.entity.CoffeeTray')
 
 require('src.states.GUI.DayEndStateCard')
 require('src.states.GUI.PauseMenuCard')

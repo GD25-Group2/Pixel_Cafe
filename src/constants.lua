@@ -43,6 +43,22 @@ COFFEE_MACHINE_ENTITY = {
     animation = ANIMATION_DEFS.CoffeeMachine,
     x = 10,
     y = 130,
+    desired_width = 80,
+    desired_height = 80,
+}
+
+COFFEE_CUP_STACK_CONFIG = {
+    frame = gFrames['CoffeeCupStack'],
+    x = 70,
+    y = 168,
+    desired_width = 32,
+    desired_height = 32,
+}
+
+COFFEE_TRAY_CONFIG = {
+    frame = gFrames['EmptyTray'],
+    x = 96,
+    y = 182,
     desired_width = 32,
     desired_height = 32,
 }

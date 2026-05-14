@@ -46,6 +46,12 @@ function PlayState:init()
     if find(self.data['unlockedMachine'], 'CoffeeMachine') then
         self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)
         gStateStack:push(self.coffeeMachine)
+        
+        self.coffeeCupStack  = CoffeeCupStack(COFFEE_CUP_STACK_CONFIG)
+        gStateStack:push(self.coffeeCupStack)
+        
+        self.coffeeTray      = CoffeeTray(COFFEE_TRAY_CONFIG)
+        gStateStack:push(self.coffeeTray)
     end
 
     if find(self.data['unlockedMachine'], 'BreadBasket') then
@@ -68,6 +74,8 @@ function PlayState:init()
 
     self.interactables = {
         self.coffeeMachine,
+        self.coffeeCupStack,
+        self.coffeeTray,
         self.pauseButton,
         self.breadBasket,
         self.breadPlate,
@@ -123,4 +131,5 @@ function PlayState:deliverItem(target)
             )
         end
     end
+    return success
 end
