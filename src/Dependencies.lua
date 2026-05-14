@@ -44,6 +44,8 @@ gFrames = {
     ['ThreeCupsFillStage1by3'] = love.graphics.newImage('assets/Cups and stack/CupFillStage3/ThreeCupsFillStage1by3.png'),
     ['ThreeCupsFillStage2by3'] = love.graphics.newImage('assets/Cups and stack/CupFillStage3/ThreeCupsFillStage2by3.png'),
     ['TwoCupsFillStage1by2'] = love.graphics.newImage('assets/Cups and stack/CupFillStage2/2CupsFillStage1by2.png'),
+    ['CounterBackground'] = love.graphics.newImage('assets/pixelCafeCounterBackground.png'),
+    ['CityBackground'] = love.graphics.newImage('assets/City3.png')
 }
 
 -- Coffee Machine Animation Frames
@@ -110,3 +112,5 @@ require('src.states.GUI.DayEndStateCard')
 require('src.states.GUI.PauseMenuCard')
 require('src.states.GUI.StartMenuBackground')
 require('src.states.GUI.PopupWindowCard')
+require('src.states.GUI.CounterBackground')
+require('src.states.GUI.CityBackground')

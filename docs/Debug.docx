@@ -74,9 +74,9 @@ Actual Result:  The Loaf cannot be dragged/placed, effectively "locking" the pla
 Actual Result:  The customer accepted all items as "Correct," leading to a logic error where any product could be sold to satisfy any order.            
 
 Bug ID: #05 - Developer Command
-Status: Open
+Status: Resolved
 Reporter: Kyaw Sis Thway
-Debugger:
+Debugger: Luaegyigyi
 Description: Although the PopupWindow is added, the developer function is so buggy it isn't recommended for use yet.
 Steps to Reproduce:
      Start the game and press k at any game state.
@@ -85,3 +85,17 @@ Expected Result: The result should directly interact with the game and influence
                 navigating the game.
 Actual Result:  Random things keep on popping while using developer mode. Determined that it is of low priority and
                 leave the bug.
+
+Bug ID: #06 - Machine Unlock
+Status: Open
+Reporter: Kyaw Sis Thway
+Debugger:
+Description: It seems that after quiting at DayEndState, the next saved play will 
+            have difficulty in accessing what is available and not.
+Steps to Reproduce:
+     Start the game.
+     Start a new game.
+     Quit at DayEndState.
+     Restart the game and press play.
+Expected Result: Day 2. So, loaf should be unlocked.
+Actual Result:  Missing.
