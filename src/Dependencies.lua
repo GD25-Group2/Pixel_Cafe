@@ -25,7 +25,8 @@ gFrames = {
     ['BreadPlate'] = love.graphics.newImage('assets/panOfSlicesOfBread.png'),
     ['SandwichPlate'] = love.graphics.newImage('assets/sandwichPlate.png'),
     ['CounterBackground'] = love.graphics.newImage('assets/pixelCafeCounterBackground.png'),
-    ['CityBackground'] = love.graphics.newImage('assets/City3.png')
+    ['CityBackground'] = love.graphics.newImage('assets/City3.png'),
+    ['ShopIcon'] = love.graphics.newImage('assets/ShopIcon.png'),
 }
 
 -- Coffee Machine Animation Frames
@@ -54,6 +55,7 @@ require('src.states.game.DayEndState')
 require('src.states.game.PauseMenu')
 require('src.states.game.PopupWindow')
 require('src.states.game.SettingsState')
+require('src.states.game.ShopMenu')
 
 require('src.states.entity.BaseEntity')
 require('src.states.entity.CoffeeMachine')
@@ -75,3 +77,4 @@ require('src.states.GUI.StartMenuBackground')
 require('src.states.GUI.PopupWindowCard')
 require('src.states.GUI.CounterBackground')
 require('src.states.GUI.CityBackground')
+require('src.states.GUI.ShopBackground')

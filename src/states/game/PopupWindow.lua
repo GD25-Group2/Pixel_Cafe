@@ -48,6 +48,8 @@ function PopupWindow:update(dt)
             if string.lower(tostring(tokens[2])) == 'skip' and tokens[3] then
                 DataManager:modify('currentDate', tonumber(tokens[3]))
                 gStateStack:clear()
+                gStateStack:popupDelete()
+                gStateStack:clear()
                 gStateStack:push(DayEndState())
             elseif string.lower(tostring(tokens[2])) == 'money' and tokens[3] then
                 gMoney = tonumber(tokens[3])

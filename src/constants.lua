@@ -17,6 +17,7 @@ gColors = {
     ['gray'] = {0.5, 0.5, 0.5, 1},
     ['scarlet'] = {0.8, 0.25, 0.25, 1},
     ['transparent'] = {1, 1, 1, 0},
+    ['curtain'] = {0, 0, 0, 0.5},
 }
 
 gTexts = {
@@ -163,7 +164,25 @@ BUTTON_PARAMS = {
         desired_height = 16,
         action = function()
             gStateStack:pause()
+            gStateStack:clear()
             gStateStack:push(PauseMenu())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['ToShop'] = {
+        text = nil,
+        frame = gFrames['ShopIcon'],
+        x = 5 + 16 + 4,
+        y = 2,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            print('To Shop is clicked')
+            gStateStack:pause()
+            gStateStack:clear()
+            gStateStack:push(ShopMenu())
         end,
         clickable = true,
         defaultColor = gColors['white'],

@@ -49,6 +49,9 @@ function PlayState:init()
     self.pauseButton     = Button(BUTTON_PARAMS['Pause'])
     gStateStack:push(self.pauseButton)
 
+    self.shopButton      = Button(BUTTON_PARAMS['ToShop'])
+    gStateStack:push(self.shopButton)
+
     if find(self.data['unlockedMachine'], 'CoffeeMachine') then
         self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)
         gStateStack:push(self.coffeeMachine)
@@ -73,11 +76,8 @@ function PlayState:init()
     gStateStack:push(self.cursor)
 
     self.interactables = {
-        self.coffeeMachine,
         self.pauseButton,
-        self.breadBasket,
-        self.breadPlate,
-        self.sandwichPlate,
+        self.shopButton,
     }
 end
 
