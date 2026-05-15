@@ -30,6 +30,8 @@ src/states/game
 - DayEndState.lua
 - PauseMenu.lua
 - PopupWindow.lua
+- SettingState.lua
+- ShopMenu.lua
 - StartMenu.lua
 src/states/entity
 - BaseEntity.lua
@@ -43,6 +45,8 @@ src/states/entity
 - OrderBox.lua
 - FloatingMoney.lua
 - SandwichPlate.lua
+- Scrollbar.lua
+- ShopItem.lua
 - TimeManager.lua
 src/states/GUI
 - StartMenuBackground.lua
@@ -51,10 +55,22 @@ src/states/GUI
 - PopupWindowCard.lua
 - CityBackground.lua
 - CounterBackground.lua
+- ShopBackground.lua
+- ShopTopBox.lua
 
 ## Core Systems
 
 ### Input System
+- The game utilizes a hybrid input model handled primarily through main.lua and BaseState.lua:
+- Mouse (Primary):
+    - X/Y Tracking: Global mouseX and mouseY variables updated every frame via push:toReal.
+    - Interaction Logic: getInteractableAt(x, y) checks the self.interactables table of the current state to trigger onPressed or onReleased events.
+    - Wheel Scroll: gWheelY tracks vertical scroll offset, specifically utilized by the Scrollbar and ShopMenu for list navigation.
+
+- Keyboard (Secondary/Utility):
+    - State Toggles: p or ESC triggers the PauseMenu via the StateStack.
+    - Developer Terminal: k opens the InputBox (via SUIT) for string-based command parsing (e.g., \dev skip).
+    - Shortcuts: d allows for instant day skipping during the prototype phase
 
 ### Camera System
 - stationary camera with the frame focused on the counter, status bar and customer window.

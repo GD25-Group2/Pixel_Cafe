@@ -11,6 +11,7 @@ end
 
 function PlayState:init()
     self.type = 'PlayState'
+    self.interactables = {}
 
     self.data = DataManager:getData()
     print('Current Date: ' .. tostring(self.data['currentDate']))
@@ -48,37 +49,38 @@ function PlayState:init()
 
     self.pauseButton     = Button(BUTTON_PARAMS['Pause'])
     gStateStack:push(self.pauseButton)
+    table.insert(self.interactables, self.pauseButton)
+
+    self.shopButton      = Button(BUTTON_PARAMS['ToShop'])
+    gStateStack:push(self.shopButton)
+    table.insert(self.interactables, self.shopButton)
 
     if find(self.data['unlockedMachine'], 'CoffeeMachine') then
         self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)
         gStateStack:push(self.coffeeMachine)
+        table.insert(self.interactables, self.coffeeMachine)
     end
 
     if find(self.data['unlockedMachine'], 'BreadBasket') then
         self.breadBasket = BreadBasket(BREAD_BASKET_CONFIG)
         gStateStack:push(self.breadBasket)
+        table.insert(self.interactables, self.breadBasket)
     end
 
     if find(self.data['unlockedMachine'], 'BreadPlate') then
         self.breadPlate = BreadPlate(BREAD_PLATE_CONFIG)
         gStateStack:push(self.breadPlate)
+        table.insert(self.interactables, self.breadPlate)
     end
 
     if find(self.data['unlockedMachine'], 'SandwichPlate') then
         self.sandwichPlate = SandwichPlate(SANDWICH_PLATE_CONFIG)
         gStateStack:push(self.sandwichPlate)
+        table.insert(self.interactables, self.sandwichPlate)
     end
 
     self.cursor          = Cursor()
     gStateStack:push(self.cursor)
-
-    self.interactables = {
-        self.coffeeMachine,
-        self.pauseButton,
-        self.breadBasket,
-        self.breadPlate,
-        self.sandwichPlate,
-    }
 end
 
 function PlayState:enter()

@@ -104,14 +104,17 @@ end
 
 function StateStack:pause()
     self.paused = true
+    print('Pause Stack')
 end
 
 function StateStack:resume()
     self.paused = false
+    print('Normal Stack')
 end
 
 function StateStack:popupCreate()
     self.isPopup = true
+    print('Popup Stack')
 end
 
 function StateStack:popupDelete()
