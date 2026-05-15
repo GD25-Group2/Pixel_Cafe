@@ -139,4 +139,9 @@ function BaseState:mouseResponse()
             end
         end
     end
+
+    if self.type == 'ShopMenu' and gWheelY then
+        print('BaseState - has gWheelY ' .. tostring(gWheelY))
+        self.scrollbar:wheelScroll(gWheelY)
+    end
 end

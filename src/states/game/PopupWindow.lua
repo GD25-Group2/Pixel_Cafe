@@ -57,6 +57,11 @@ function PopupWindow:update(dt)
                     gStateStack:clear()
                     gStateStack:push(DayEndState())
                 end
+                DataManager:modify('currentDate', tonumber(tokens[3]))
+                gStateStack:clear()
+                gStateStack:popupDelete()
+                gStateStack:clear()
+                gStateStack:push(DayEndState())
             elseif string.lower(tostring(tokens[2])) == 'money' and tokens[3] then
                 local amount = tonumber(tokens[3]) or 0
                 gMoney = (gMoney or 0) + amount

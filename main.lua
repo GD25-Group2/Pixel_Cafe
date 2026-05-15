@@ -89,3 +89,7 @@ function love.textinput(t)
     end
     InputBox.textinput(t) 
 end
+
+function love.wheelmoved(x, y)
+    gWheelY = y
+end

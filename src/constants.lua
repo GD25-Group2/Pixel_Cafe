@@ -17,6 +17,7 @@ gColors = {
     ['gray'] = {0.5, 0.5, 0.5, 1},
     ['scarlet'] = {0.8, 0.25, 0.25, 1},
     ['transparent'] = {1, 1, 1, 0},
+    ['curtain'] = {0, 0, 0, 0.5},
 }
 
 gTexts = {
@@ -182,7 +183,40 @@ BUTTON_PARAMS = {
         desired_height = 16,
         action = function()
             gStateStack:pause()
+            gStateStack:clear()
             gStateStack:push(PauseMenu())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['ToShop'] = {
+        text = nil,
+        frame = gFrames['ShopIcon'],
+        x = 5 + 16 + 4,
+        y = 2,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            print('To Shop is clicked')
+            gStateStack:pause()
+            gStateStack:clear()
+            gStateStack:push(ShopMenu())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['FromShop'] = {
+        text = nil,
+        frame = gFrames['ShopIcon'],
+        x = 5 + 16 + 4,
+        y = 2,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            gStateStack:clear()
+            gStateStack:resume()
         end,
         clickable = true,
         defaultColor = gColors['white'],
@@ -386,6 +420,26 @@ SANDWICH_PLATE_CONFIG = {
     y = 180,
     desired_width = 32,
     desired_height = 32,
+}
+
+SCROLLBAR_CONFIG = {
+    x = VIRTUAL_WIDTH - 10,
+    y = 30,
+    desired_width = 10,
+    desired_height = 150,
+    maxHeight = 0,
+}
+
+ITEM_LOG_CONFIG = {
+    x = 10,
+    desired_width = VIRTUAL_WIDTH - 30,
+    desired_height = 50,
+    frameX = 15, -- 5 buffer
+    frameWidth = 40,
+    frameHeight = 40,
+    infoX = 55 + 5,
+    infoWidth = 100,
+    buttonX = 10 + (VIRTUAL_WIDTH - 30) - 48 - 5, -- x + width - button width - buffer
 }
 
 --money-related global variables are all in MoneyManager line #54
