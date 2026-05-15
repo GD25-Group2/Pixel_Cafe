@@ -70,6 +70,8 @@ require('src.states.entity.Button')
 require('src.states.entity.BreadBasket')
 require('src.states.entity.BreadPlate')
 require('src.states.entity.SandwichPlate')
+require('src.states.entity.ScrollBar')
+require('src.states.entity.ShopItem')
 
 require('src.states.GUI.DayEndStateCard')
 require('src.states.GUI.PauseMenuCard')

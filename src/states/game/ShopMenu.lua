@@ -1,16 +1,77 @@
 ShopMenu = class {__includes = BaseState}
 
+local items = {
+    ['PaperCup'] = {
+        frame = nil,
+        id = 1,
+        name = 'Paper Cup',
+        price = 3,
+        stock = 10,
+        purchasable = true,
+    },
+    ['CoffeeSeed'] = {
+        frame = nil,
+        id = 2,
+        name = 'Coffee Seed',
+        price = 2,
+        stock = 20,
+        purchasable = true,
+    },
+}
+
+local buffer = 5
+
 function ShopMenu:init()
+    self.type = 'ShopMenu'
+
     self.background = ShopBackground()
     gStateStack:push(self.background)
-    self.currentY = 0
-    self.scrollState = {value = self.currentY, min = 0, max = 500}
+
+    self.exitButton = Button(BUTTON_PARAMS['FromShop'])
+    gStateStack:push(self.exitButton)
+
+    self.scrollbar = Scrollbar(SCROLLBAR_CONFIG)
+    gStateStack:push(self.scrollbar)
+
+    self.indexY = 0
+    self.items = {}
+    self.buttons = {}
+    self.interactables = { self.exitButton, self.scrollbar }
+
+    local i = 1
+    for name, data in pairs(items) do
+        local item = ShopItem(data)
+        table.insert(self.items, item)
+        gStateStack:push(item)
+        self.scrollbar:addHeight(item:getHeight() + buffer)
+        self.buttons[i] = item:getButton()
+        gStateStack:push(self.buttons[i])
+        table.insert(self.interactables, self.buttons[i])
+        i = i + 1
+    end
 end
 
 function ShopMenu:update(dt)
-    suit.Slider(self.scrollState, {vertical = true, x = 400, y = 50, w = 20, h = 150})
-    self.currentY = 50 - self.scrollState.value
+    self:mouseResponse()
+    self.indexY = self.scrollbar:getY()
+
+    local topLimit = 20
+
+    for i = 1, #self.items do
+        local item = self.items[i]
+        item:updateY(self.indexY)
+
+        if item:getBottom() < topLimit and item.isVisible then
+            item.isVisible = false
+        elseif item:getBottom() >= topLimit and not item.isVisible then
+            item.isVisible = true
+        end
+    end
+    gWheelY = 0
 end
 
 function ShopMenu:render()
+    love.graphics.setColor(gColors['red'])
+    love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, 20)
+    love.graphics.setColor(gColors['white'])
 end
