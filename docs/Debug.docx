@@ -87,9 +87,9 @@ Actual Result:  Random things keep on popping while using developer mode. Determ
                 leave the bug.
 
 Bug ID: #06 - Machine Unlock
-Status: Open
+Status: Resolved
 Reporter: Kyaw Sis Thway
-Debugger:
+Debugger:Luaegyigyi
 Description: It seems that after quiting at DayEndState, the next saved play will 
             have difficulty in accessing what is available and not.
 Steps to Reproduce:
