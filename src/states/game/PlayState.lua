@@ -59,6 +59,14 @@ function PlayState:init()
         self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)
         gStateStack:push(self.coffeeMachine)
         table.insert(self.interactables, self.coffeeMachine)
+        
+        self.coffeeCupStack  = CoffeeCupStack(COFFEE_CUP_STACK_CONFIG)
+        gStateStack:push(self.coffeeCupStack)
+        table.insert(self.interactables, self.coffeeCupStack)
+        
+        self.coffeeTray      = CoffeeTray(COFFEE_TRAY_CONFIG)
+        gStateStack:push(self.coffeeTray)
+        table.insert(self.interactables, self.coffeeTray)
     end
 
     if find(self.data['unlockedMachine'], 'BreadBasket') then
@@ -117,7 +125,7 @@ function PlayState:render()
 end
 
 function PlayState:deliverItem(target)
-    local success = target:receiveItem(self.cursor.heldItem)
+    local success = target:receiveItem(self.cursor.heldItem, self.cursor.dragSource)
     if success then
         -- Only customers generate payments; other entities simply accept the item
         if target.type == 'CustomerState' and target.orderBox then
@@ -131,4 +139,5 @@ function PlayState:deliverItem(target)
             )
         end
     end
+    return success
 end

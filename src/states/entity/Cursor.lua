@@ -33,7 +33,25 @@ end
 function Cursor:isDragged(item)
     self.isDragging = true
     if item.type == 'CoffeeMachine' then
+        self.heldItem = 'CoffeeMachine'
+        if item.volume == 4 then
+            self.frame = gFrames['CoffeeJarVolume4by4']
+        elseif item.volume == 3 then
+            self.frame = gFrames['CoffeeJarVolume3by4']
+        elseif item.volume == 2 then
+            self.frame = gFrames['CoffeeJarVolume2by4']
+        elseif item.volume == 1 then
+            self.frame = gFrames['CoffeeJarVolume1by4']
+        else
+            self.frame = gFrames['CoffeeJarVolume0by4']
+        end
+        return
+    elseif item.type == 'CoffeeCupStack' then
+        self.heldItem = 'DisposableCoffeeCup'
+    elseif item.type == 'CoffeeTray' then
         self.heldItem = 'Coffee'
+        self.frame = gFrames['DisposableCoffeeCupFilled']
+        return
     elseif item.type == 'BreadBasket' then
         self.heldItem = 'LoafOfBread'
     elseif item.type == 'BreadPlate' then

@@ -30,20 +30,39 @@ ANIMATION_DEFS = {
     CoffeeMachine = {
         frames = gFrames['CoffeeMachineAnimation'],
         speed = 0.5,
-        loop = true,
+        loop = false,   -- must NOT loop: prevents frame-1 flash when starting mid-animation
         activate = function(owner)
-            return owner.productionStage == 'Producing'
+            -- also check finished so the animation never restarts itself after
+            -- naturally reaching the last frame while the brew timer is still running
+            return owner.productionStage == 'Producing' and not owner.animation.finished
         end,
         defaultFrame = gFrames['CoffeeMachineAnimation'][1],
         holdFrameWhenInactive = true,
     },
 }
 
+
 COFFEE_MACHINE_ENTITY = {
     frame = gFrames['CoffeeMachineAnimation'][1], -- default frame when idle
     animation = ANIMATION_DEFS.CoffeeMachine,
     x = 10,
     y = 130,
+    desired_width = 80,
+    desired_height = 80,
+}
+
+COFFEE_CUP_STACK_CONFIG = {
+    frame = gFrames['CoffeeCupStack'],
+    x = 70,
+    y = 168,
+    desired_width = 32,
+    desired_height = 32,
+}
+
+COFFEE_TRAY_CONFIG = {
+    frame = gFrames['EmptyTray'],
+    x = 96,
+    y = 182,
     desired_width = 32,
     desired_height = 32,
 }
