@@ -49,6 +49,8 @@ src/states/GUI
 - PauseMenuCard.lua
 - DayEndStateCard.lua
 - PopupWindowCard.lua
+- CityBackground.lua
+- CounterBackground.lua
 
 ## Core Systems
 
