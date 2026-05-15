@@ -138,6 +138,11 @@ function CustomerState:leaveImpatient()
     self:setState('leaving')
 end
 
+function CustomerState:leave()
+    if self.orderBox then self.orderBox:deactivate() end
+    self:setState('leaving')
+end
+
 function CustomerState:getPaymentAmount()  return self.totalPayment end
 function CustomerState:getTipAmount()      return self.totalPayment - self.orderBox.order.price end
 function CustomerState:didLeaveImpatient() return self.leftImpatient end
