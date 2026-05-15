@@ -14,6 +14,10 @@ function Button:update(dt)
             self.isHovering = false
         end
     end
+
+    if self.coordinateChange then
+        self.y = (self.id * (self.item_height + self.buffer)) + 20 - self.changeY + (self.buffer * 2)
+    end
 end
 
 function Button:render()
@@ -56,4 +60,11 @@ end
 
 function Button:disable()
     self.clickable = false
+end
+
+function Button:updateY(y, id, itemHeight, buffer)
+    self.changeY = y
+    self.id = id
+    self.item_height = itemHeight
+    self.buffer = buffer
 end

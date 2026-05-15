@@ -60,6 +60,7 @@ function ShopMenu:update(dt)
     for i = 1, #self.items do
         local item = self.items[i]
         item:updateY(self.indexY)
+        item:getButton():updateY(self.indexY, item.id, item:getHeight(), buffer)
 
         if item:getBottom() < topLimit and item.isVisible then
             item.isVisible = false

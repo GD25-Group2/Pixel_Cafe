@@ -29,8 +29,9 @@ function ShopItem:init(data)
             return
         end,
         clickable = self.purchasable,
-        defaultColor = gColors['red'],
-        hoverColor = gColors['scarlet'],
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+        coordinateChange = true,
     })
 end
 
