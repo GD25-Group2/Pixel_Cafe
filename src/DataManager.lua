@@ -29,7 +29,9 @@ end
 function DataManager:load()
     if love.filesystem.getInfo(SAVE_FILE) then
         local contents, message = love.filesystem.read(SAVE_FILE)
-        if contents then self.data = json.decode(contents)
+        if contents then 
+            self.data = json.decode(contents)
+            self:ensureUnlocks(self.data['currentDate'])
         else print(message) end
     end
 end

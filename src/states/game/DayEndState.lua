@@ -24,6 +24,7 @@ function DayEndState:init()
     DataManager:moneyDataSave(self._finalTotal, self._earnedToday)
     local currentDate = DataManager:getData('currentDate')
     DataManager:dateDataSave(currentDate + 1)
+    DataManager:autoUnlockMachine() 
     DataManager:create()
 
     self.card = DayEndStateCard({earnedToday = self._earnedToday, finalTotal = self._finalTotal, currentDate = currentDate})

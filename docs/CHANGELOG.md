@@ -152,6 +152,9 @@ Also set up a reusable animation system for future features:
 - Developer can now skip to a next day using '\dev skip <number>' command in PlayState.
 - Developer can now add money using '\dev money <number>' command in PlayState.
 
+### v0.13.3 - 2026-05-15
+- Bug ID: #06 - Machine Unlock (fixed)
+  
 ### v0.14.0 - 2026-05-15
 - `Button.lua` gets a coordinateChange boolean attribute solely aimed for shop items' buttons.
 - `Scrollbar.lua` and `ShopItem.lua` are created. They have tons of functions to properly communicate with its parent, `ShopMenu.lua`. Later, we can add StockManager file to communicate with ShopMenu and DataManager. Currently, you can test the scrollbar by adding more items with different id.
