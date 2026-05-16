@@ -5,6 +5,9 @@ function ClosingState:init(customerManager)
 end
 
 function ClosingState:enter()
+    if self.customerManager then
+        self.customerManager:forceExitAll()
+    end
 end
 
 function ClosingState:update(dt)
@@ -37,11 +40,11 @@ function ClosingState:render()
     
     love.graphics.setFont(gFonts['medium'])
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.printf("LAST CALL", bannerX, bannerY + 4, bannerW, 'center')
+    love.graphics.printf("STORE CLOSED", bannerX, bannerY + 4, bannerW, 'center')
     
     love.graphics.setFont(gFonts['small'])
     love.graphics.setColor(0.8, 0.8, 0.8, 0.8 + 0.2 * pulse)
-    love.graphics.printf("Serve remaining customers", bannerX, bannerY + 16, bannerW, 'center')
+    love.graphics.printf("All customers are leaving...", bannerX, bannerY + 16, bannerW, 'center')
     
     love.graphics.setColor(1, 1, 1, 1)
 end
