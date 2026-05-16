@@ -169,5 +169,7 @@ so to cover the item logs.
 
 ### v0.14.2 - 2026-05-15
 - DayEndstate transition is changed from 'resume' to 'clear and push'
-- Last call transition is changed from 'force exit all' to 'stop spawning'
+- Now all customer will leave when the day ends or the shop closes.
 
+### v0.15.0 - 2026-05-17
+- when item is ready the bubby is now appear above the machine/plate
