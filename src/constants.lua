@@ -39,6 +39,18 @@ ANIMATION_DEFS = {
         defaultFrame = gFrames['CoffeeMachineAnimation'][1],
         holdFrameWhenInactive = true,
     },
+    Customers = {
+        ['LegLady'] = {
+            frames = gFrames.customers['LegLady'].walk,
+            speed = 0.5,
+            loop = true,
+            activate = function(owner)
+
+            end,
+            defaultFrame = gFrames.customers['LegLady'].idle,
+            holdFrameWhenInactive = true,
+        }
+    }
 }
 
 
@@ -106,8 +118,8 @@ UI_CARD = {
 }
 
 gSettings = {
-    musicVolume = 1.0,
-    sfxVolume = 1.0
+    musicVolume = 0.5,
+    sfxVolume = 0.5,
 }
 
 PAUSE_MENU_CONFIG = {

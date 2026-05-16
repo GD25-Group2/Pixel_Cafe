@@ -17,7 +17,19 @@ gFrames = {
     ['StartMenuBackground'] = love.graphics.newImage('assets/MainScreen.png'),
     ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.png'),
     customers = {
-        love.graphics.newImage('assets/Customer1.png'), -- Grumpy Old Man
+        ['GrumpyOldMan'] = love.graphics.newImage('assets/Customer1.png'), -- Grumpy Old Man
+        ['LegLady'] = {
+            walk = {love.graphics.newImage('assets/CustomerLegLady/LegLady1.png'), -- Leg Lady
+            love.graphics.newImage('assets/CustomerLegLady/LegLady2.png'),},
+            idle = {love.graphics.newImage('assets/CustomerLegLady/LegLady3.png'),
+            love.graphics.newImage('assets/CustomerLegLady/LegLady4.png'),},
+        },
+        ['ArmEater'] = {
+            love.graphics.newImage('assets/CustomerArmEater/ArmEater1.png'), -- Arm Eater
+            love.graphics.newImage('assets/CustomerArmEater/ArmEater2.png'),
+            love.graphics.newImage('assets/CustomerArmEater/ArmEater3.png'),
+            love.graphics.newImage('assets/CustomerArmEater/ArmEater4.png'),
+        },
     },
     ['Coffee'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume4by4.png'),
     ['LoafOfBread'] = love.graphics.newImage('assets/loafOfBread.png'),
