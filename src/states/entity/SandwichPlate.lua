@@ -12,10 +12,6 @@ end
 
 function SandwichPlate:render()
     BaseEntity.render(self)
-
-    love.graphics.setColor(self.color)
-    love.graphics.rectangle('line', self.x, self.y, self.desired_width, self.desired_height)
-    love.graphics.setColor(gColors['white'])
 end
 
 function SandwichPlate:action()
@@ -25,12 +21,14 @@ end
 function SandwichPlate:taken()
     self.productionStage = 'Void'
     self.color = gColors['transparent']
+    self:hideBubble()
 end
 
 function SandwichPlate:receiveItem(item)
     if item == 'SliceOfBread' and self.productionStage == 'Void' then
         self.productionStage = 'Ready'
         self.color = gColors['green']
+        self:showBubble(gColors['green'])
     end
 
     return false

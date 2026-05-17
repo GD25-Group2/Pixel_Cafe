@@ -16,6 +16,7 @@ function BreadPlate:update(dt)
     if self.productionStage == 'Producing' then
         if self.slices > 0 then
             self.productionStage = 'Ready'
+            self:showBubble(gColors['yellow'])
         end
     elseif self.productionStage == 'Ready' then
         if self.slices == 0 then
@@ -25,6 +26,7 @@ function BreadPlate:update(dt)
             else
                 self.productionStage = 'Void'
             end
+            self:hideBubble()
         end
     end
 
@@ -47,9 +49,7 @@ end
 function BreadPlate:render()
     BaseEntity.render(self)
 
-    love.graphics.setColor(self.color)
-    love.graphics.rectangle('line', self.x, self.y, self.desired_width, self.desired_height)
-    love.graphics.setColor(gColors['white'])
+
     love.graphics.setFont(gFonts['small'])
     local label = 'Slices: ' .. self.slices
     local font = gFonts['small']
@@ -64,7 +64,10 @@ function BreadPlate:action()
     if self.loafRemaining > 0 then
         self.slices = self.slices + 1
         self.loafRemaining = self.loafRemaining - 1
-        self.productionStage = 'Ready'
+        if self.productionStage ~= 'Ready' then
+            self.productionStage = 'Ready'
+            self:showBubble(gColors['yellow'])
+        end
     end
 end
 
@@ -78,6 +81,9 @@ function BreadPlate:taken()
         else
             self.productionStage = 'Void'
         end
+        self:hideBubble()
+    else
+        self:showBubble(gColors['yellow'])
     end
 end
 
@@ -87,6 +93,7 @@ function BreadPlate:receiveItem(item)
         if self.loafRemaining == 0 then
             self.productionStage = 'Producing'
             self.loafRemaining = 3
+            self:hideBubble() -- ensure hidden when starting new loaf
             return true
         else
             return false
