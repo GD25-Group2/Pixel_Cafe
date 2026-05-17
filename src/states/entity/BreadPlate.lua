@@ -82,6 +82,8 @@ function BreadPlate:taken()
             self.productionStage = 'Void'
         end
         self:hideBubble()
+    else
+        self:showBubble(gColors['yellow'])
     end
 end
 

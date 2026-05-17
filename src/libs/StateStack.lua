@@ -43,6 +43,14 @@ local function renderTable(givenTable)
         love.graphics.setColor(gColors['white'])
         state:render()
     end
+
+    -- Overlay Layer for bubbles 
+    for i, state in ipairs(givenTable) do
+        if state.renderBubble then
+            love.graphics.setColor(gColors['white'])
+            state:renderBubble()
+        end
+    end
 end
 
 function StateStack:render()
