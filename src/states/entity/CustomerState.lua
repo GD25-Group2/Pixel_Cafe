@@ -131,10 +131,6 @@ end
 function CustomerState:render()
     BaseEntity.render(self)
 
-     -- Optional: render order box (only while waiting)
-     if self.state == 'waiting' and self.orderBox and self.orderBox.isActive then
-        self.orderBox:render()
-    end
     -- Render order box while waiting (box manages its own isActive flag)
     if self.orderBox and self.orderBox.isActive then
         self.orderBox:render()
@@ -172,6 +168,11 @@ end
 -- Called by OrderBox when patience hits 0.
 function CustomerState:leaveImpatient()
     self.leftImpatient = true
+    if self.orderBox then self.orderBox:deactivate() end
+    self:setState('leaving')
+end
+
+function CustomerState:leave()
     if self.orderBox then self.orderBox:deactivate() end
     self:setState('leaving')
 end

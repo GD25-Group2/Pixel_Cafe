@@ -12,6 +12,10 @@ function CoffeeMachine:init(params)
 
     self.animation = Animation(self.animation)
     self:updateFrame()
+
+    if self.productionStage == 'Ready' and self.volume > 0 then
+        self:showBubble(gColors['brown'])
+    end
 end
 
 function CoffeeMachine:updateFrame()
@@ -81,11 +85,6 @@ function CoffeeMachine:render()
         love.graphics.setColor(gColors['green'])
         love.graphics.arc('line', 'open', self.x + self.desired_width / 2, self.y + self.desired_height / 2, self.desired_width / 2, -math.pi / 2, -math.pi / 2 + (self.counter / self.duration) * (2 * math.pi))
         love.graphics.setColor(gColors['white'])
-    elseif self.productionStage == 'Ready' then
-        love.graphics.setColor(gColors['yellow'])
-        local hx, hy, hw, hh = self:getHitbox()
-        love.graphics.rectangle('line', hx, hy, hw, hh)
-        love.graphics.setColor(gColors['white'])
     end
 end
 
@@ -114,14 +113,23 @@ end
 function CoffeeMachine:drag()
     self.productionStage = 'Holding'
     self:updateFrame()
+    self:hideBubble()
 end
 
 function CoffeeMachine:taken()
     self.productionStage = 'Ready'
     self:updateFrame()
+    if self.volume > 0 then
+        self:showBubble(gColors['brown'])
+    else
+        self:hideBubble()
+    end
 end
 
 function CoffeeMachine:undrag()
     self.productionStage = 'Ready'
     self:updateFrame()
+    if self.volume > 0 then
+        self:showBubble(gColors['brown'])
+    end
 end
