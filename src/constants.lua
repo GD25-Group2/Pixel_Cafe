@@ -29,28 +29,32 @@ gTexts = {
 ANIMATION_DEFS = {
     CoffeeMachine = {
         frames = gFrames['CoffeeMachineAnimation'],
-        speed = 0.5,
-        loop = false,   -- must NOT loop: prevents frame-1 flash when starting mid-animation
-        activate = function(owner)
-            -- also check finished so the animation never restarts itself after
-            -- naturally reaching the last frame while the brew timer is still running
-            return owner.productionStage == 'Producing' and not owner.animation.finished
-        end,
-        defaultFrame = gFrames['CoffeeMachineAnimation'][1],
-        holdFrameWhenInactive = true,
+        interval = 1,
+        looping = false,
     },
-    Customers = {
-        ['LegLady'] = {
-            frames = gFrames.customers['LegLady'].walk,
-            speed = 0.5,
-            loop = true,
-            activate = function(owner)
+    getCustomerAnimationDef = function(customerType, state)
+        local target = gFrames.customers[customerType]
+        local frames = nil
+        local texture = nil
 
-            end,
-            defaultFrame = gFrames.customers['LegLady'].idle,
-            holdFrameWhenInactive = true,
+        if type(target) == 'table' then
+            if target[state] then
+                frames = target[state]
+                texture = target.texture -- Tracks sheet atlas reference if present
+            else
+                frames = target
+            end
+        elseif target then
+            frames = {target}
+        end
+
+        return {
+            frames = frames or {},
+            interval = 0.8,
+            looping = true,
+            texture = texture
         }
-    }
+    end,
 }
 
 
