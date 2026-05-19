@@ -4,32 +4,28 @@ local function drawPixelSlider(fraction, opt, x, y, w, h)
     local trackH = 4
     local trackY = y + math.floor((h - trackH) / 2)
 
-    -- Recessed track base (dark slot)
     love.graphics.setColor(0.08, 0.08, 0.12, 1)
     love.graphics.rectangle('fill', x, trackY, w, trackH)
-    -- 1px inner-shadow highlight below
+
     love.graphics.setColor(0.22, 0.22, 0.3, 1)
     love.graphics.rectangle('fill', x, trackY + trackH, w, 1)
 
-    -- Filled portion (accent bar)
     local fillW = math.floor(w * fraction)
     if fillW > 0 then
         love.graphics.setColor(0.4, 0.6, 1.0, 1)
         love.graphics.rectangle('fill', x, trackY, fillW, trackH)
     end
 
-    -- Square knob
     local knobSize = 8
     local knobX = x + fillW - math.floor(knobSize / 2)
     local knobY = y + math.floor((h - knobSize) / 2)
-
-    -- Knob fill
+  
     love.graphics.setColor(0.85, 0.85, 0.95, 1)
     love.graphics.rectangle('fill', knobX, knobY, knobSize, knobSize)
-    -- Knob dark outline
+
     love.graphics.setColor(0.15, 0.15, 0.2, 1)
     love.graphics.rectangle('line', knobX, knobY, knobSize, knobSize)
-    -- Top-left bevel highlight
+
     love.graphics.setColor(1, 1, 1, 0.5)
     love.graphics.line(knobX + 1, knobY + 1, knobX + knobSize - 2, knobY + 1)
     love.graphics.line(knobX + 1, knobY + 1, knobX + 1, knobY + knobSize - 2)
