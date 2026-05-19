@@ -176,3 +176,7 @@ so to cover the item logs.
 
 ### v0.15.1 - 2026-05-20
 - Time, Money, and Date display are now on the top of the screen.
+
+
+### v0.15.2 - 2026-05-19
+- Small UI adjustments on setting slider
