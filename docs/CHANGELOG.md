@@ -173,3 +173,10 @@ so to cover the item logs.
 
 ### v0.15.0 - 2026-05-17
 - when item is ready the bubby is now appear above the machine/plate
+
+### v0.16.0 - 2026-05-18
+- Add 2 library files and replace the current Animation file.
+- Make them usable for both looping logic of the current project and horizontal strips.
+- Modify CoffeeMachine's animation.
+- Add 3 more customers and remove the previous one. Make the customer randomly chose.
+- In constants' animation config table, add a function that can handle the random nature of customer type.
