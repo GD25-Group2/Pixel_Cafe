@@ -174,6 +174,14 @@ so to cover the item logs.
 ### v0.15.0 - 2026-05-17
 - when item is ready the bubby is now appear above the machine/plate
 
+### v0.15.1 - 2026-05-20
+- Time, Money, and Date display are now on the top of the screen.
+
+
+### v0.15.2 - 2026-05-19
+- Small UI adjustments on setting slider
+
+
 ### v0.16.0 - 2026-05-18
 - Add 2 library files and replace the current Animation file.
 - Make them usable for both looping logic of the current project and horizontal strips.
