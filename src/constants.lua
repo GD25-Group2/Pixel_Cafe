@@ -171,6 +171,7 @@ BUTTON_PARAMS = {
         desired_height = 16,
         action = function()
             DataManager:load()
+            StockManager:load()
             gStateStack:clear()
             gStateStack:push(PlayState())
         end,

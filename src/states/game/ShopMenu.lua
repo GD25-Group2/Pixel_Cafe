@@ -2,20 +2,41 @@ ShopMenu = class {__includes = BaseState}
 
 local items = {
     ['PaperCup'] = {
+        type = 'PaperCup',
         frame = nil,
         id = 1,
         name = 'Paper Cup',
-        price = 3,
-        stock = 10,
-        purchasable = true,
+        price = 2,
+        stock = 0,
+        purchasable = true, --if not purchasable, it is upragable
     },
     ['CoffeeSeed'] = {
+        type = 'CoffeeSeed',
         frame = nil,
         id = 2,
-        name = 'Coffee Seed',
-        price = 2,
-        stock = 20,
+        name = 'Rotten Tooth',
+        price = 10,
+        stock = 0,
         purchasable = true,
+    },
+    ['Bread'] = {
+        type = 'Bread',
+        frame = nil,
+        id = 3,
+        name = 'Revolting Loaf',
+        price = 5,
+        stock = 0,
+        purchasable = true,
+    },
+    ['CoffeeMachine'] = {
+        type = 'CoffeeMachine',
+        frame = nil,
+        id = 4,
+        name = 'Coffee Machine',
+        price = 50,
+        stock = 0,
+        purchasable = false,
+        level = 1,
     },
 }
 
@@ -37,6 +58,8 @@ function ShopMenu:init()
 
     local i = 1
     for name, data in pairs(items) do
+        data.stock = StockManager:getStockTotal()[name] or 0
+        if data.level then data.level = StockManager:getLevel(name) end
         local item = ShopItem(data)
         table.insert(self.items, item)
         gStateStack:push(item)

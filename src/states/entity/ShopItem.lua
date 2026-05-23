@@ -6,12 +6,18 @@ function ShopItem:init(data)
     BaseEntity.init(self, ITEM_LOG_CONFIG)
 
     if data then
+        self.type = data.type
         self.frame = data.frame
         self.id = data.id
         self.name = data.name
-        self.price = data.price
         self.stock = data.stock
         self.purchasable = data.purchasable
+        if data.level then
+            self.level = data.level
+            self.price = data.price * (2 ^ (self.level - 1))
+        else
+            self.price = data.price
+        end
     end
 
     self.changeY = 0
@@ -19,16 +25,24 @@ function ShopItem:init(data)
 
     self.y = (self.id * (self.desired_height + buffer)) + 20 + buffer
 
+    local bText = self.purchasable and 'Purchase' or 'Upgrade'
+
     self.button = Button({
-        text = 'Purchase',
+        text = bText,
         x = self.buttonX,
         y = self.y + buffer * 2,
         desired_width = 48,
         desired_height = 16,
         action = function()
-            return
+            if self.purchasable and DataManager:getData('totalMoney') >= self.price then
+                self.stock = StockManager:purchase(self.type, self.price)
+            elseif not self.purchasable and self.level < 3 then
+                StockManager:upgrade(self.type, self.price)
+                self.level = self.level + 1
+                self.price = self.price * 2
+            end
         end,
-        clickable = self.purchasable,
+        clickable = self.purchasable or self.level < 3,
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
         coordinateChange = true,
@@ -44,7 +58,7 @@ function ShopItem:updateY(y)
 end
 
 function ShopItem:render()
-    love.graphics.setColor(gColors['scarlet'])
+    love.graphics.setColor(self.purchasable and gColors['scarlet'] or gColors['blue'])
     love.graphics.rectangle('fill', self.x, self.y, self.desired_width, self.desired_height)
     love.graphics.setColor(gColors['black'])
     love.graphics.rectangle('line', self.x, self.y, self.desired_width, self.desired_height)
@@ -60,8 +74,13 @@ function ShopItem:render()
     end
 
     love.graphics.setColor(gColors['black'])
-    love.graphics.printf('Name: ' .. self.name .. '\nPrice: ' .. tostring(self.price) 
-        .. '\nStock: ' .. tostring(self.stock), self.infoX, self.y + buffer, self.infoWidth, 'left')
+    if self.purchasable then
+        love.graphics.printf('Name: ' .. self.name .. '\nPrice: ' .. tostring(self.price) 
+            .. '\nStock: ' .. tostring(self.stock), self.infoX, self.y + buffer, self.infoWidth, 'left')
+    else
+        love.graphics.printf('Name: ' .. self.name .. '\nPrice: ' .. tostring(self.price) 
+            .. '\nLevel: ' .. tostring(self.level), self.infoX, self.y + buffer, self.infoWidth, 'left')
+    end
 end
 
 function ShopItem:getButton()

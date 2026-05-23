@@ -112,3 +112,14 @@ Steps to Reproduce:
      Look at the red box at the top.
 Expected Result: There should be From Shop button to exit.
 Actual Result:  You can still click it. But visually, it is missing.
+
+Bug ID: #08 - Coffee Machine Bubble
+Status: Open
+Reporter: Kyaw Sis Thway
+Debugger:
+Description: A bubble is there when it is not supposed to be.
+Steps to Reproduce:
+     Start the game.
+     Enter PlayState.
+Expected Result: There should not be a bubble above Coffee Machine since it is still not ready and brew.
+Actual Result:  Visible. Suspect to be from BaseEntity's update function.

@@ -8,6 +8,7 @@ function SandwichPlate:init(params)
 
     self.productionStage = 'Void'
     self.color = gColors['transparent']
+    self._bubbleColor = gColors['green']
 end
 
 function SandwichPlate:render()
@@ -28,7 +29,7 @@ function SandwichPlate:receiveItem(item)
     if item == 'SliceOfBread' and self.productionStage == 'Void' then
         self.productionStage = 'Ready'
         self.color = gColors['green']
-        self:showBubble(gColors['green'])
+        self:showBubble(self._bubbleColor)
     end
 
     return false

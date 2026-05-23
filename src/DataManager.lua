@@ -23,6 +23,12 @@ function DataManager:getDefaultData()
             'CoffeeMachine',
         },
         ['name'] = 'None',
+        ['levelMachine'] = 11, --[Coffee Machine, Bread Plate] from right to left
+        ['stock'] = {
+            ['CoffeeSeed'] = 0,
+            ['Bread'] = 1,
+            ['PaperCup'] = 10,
+        },
     }
 end
 
@@ -114,6 +120,10 @@ function DataManager:modify(variable, value)
     if self.data[variable] ~= nil then
         self.data[variable] = value
     end
+end
+
+function DataManager:saveOldData(data)
+    self.oldData = data
 end
 
 return DataManager

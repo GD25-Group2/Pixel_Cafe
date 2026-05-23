@@ -16,6 +16,7 @@
 - DataManager.lua
 - Dependencies.lua
 - InputBox.lua
+- StockManager.lua
 ### src/libs
 - Animation.lua
 - SUIT

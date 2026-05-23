@@ -1,20 +1,36 @@
 CoffeeMachine = class {__includes = BaseEntity}
 
+local levelPerformance = {
+    {
+        duration = 5,
+    },
+    {
+        duration = 4,
+    },
+    {
+        duration = 3,
+    },
+}
+
 function CoffeeMachine:init(params)
     BaseEntity.init(self, params)
 
     self.counter = 0
-    self.duration = 5
     self.productionStage = 'Ready'
     self.volume = 0
     self.isMachine = true
     self.type = 'CoffeeMachine'
+    self.level = StockManager:getLevel(self.type)
+    self.duration = levelPerformance[self.level].duration
+    self.stockType = 'CoffeeSeed'
+    self.stock = StockManager:getStockTotal()[self.stockType]
+    self._bubbleColor = gColors['brown']
 
     self.animation = Animation(self.animation)
     self:updateFrame()
 
     if self.productionStage == 'Ready' and self.volume > 0 then
-        self:showBubble(gColors['brown'])
+        self:showBubble(self._bubbleColor)
     end
 end
 
@@ -74,6 +90,8 @@ function CoffeeMachine:update(dt)
         end
     end
 
+    self.level = StockManager:getLevel(self.type)
+
     BaseEntity.update(self, dt)
     self:updateFrame()
 end
@@ -81,19 +99,23 @@ end
 function CoffeeMachine:render()
     BaseEntity.render(self)
 
-    if self.productionStage == 'Producing' then
+    --[[if self.productionStage == 'Producing' then
         love.graphics.setColor(gColors['green'])
         love.graphics.arc('line', 'open', self.x + self.desired_width / 2, self.y + self.desired_height / 2, self.desired_width / 2, -math.pi / 2, -math.pi / 2 + (self.counter / self.duration) * (2 * math.pi))
         love.graphics.setColor(gColors['white'])
-    end
+    end]]
+
+    if self.level then love.graphics.printf(tostring(self.level), self.x, self.y, self.desired_width, 'left') end
 end
 
 function CoffeeMachine:produce()
-    if self.volume < 4 and self.productionStage ~= 'Producing' then
+    if self.volume < 4 and self.productionStage ~= 'Producing' and self.stock > 0 then --add another condition for stock
         -- 1.25 seconds per missing 1/4 unit of coffee
         self.duration = (4 - self.volume) * 1.25
         self.productionStage = 'Producing'
         self.counter = 0
+
+        self.stock = StockManager:consume(self.stockType)
         
         -- FIXED: Use refresh() instead of play() to reset the GD50 animation
         if self.animation then
@@ -120,7 +142,7 @@ function CoffeeMachine:taken()
     self.productionStage = 'Ready'
     self:updateFrame()
     if self.volume > 0 then
-        self:showBubble(gColors['brown'])
+        self:showBubble(self._bubbleColor)
     else
         self:hideBubble()
     end
@@ -130,6 +152,6 @@ function CoffeeMachine:undrag()
     self.productionStage = 'Ready'
     self:updateFrame()
     if self.volume > 0 then
-        self:showBubble(gColors['brown'])
+        self:showBubble(self._bubbleColor)
     end
 end

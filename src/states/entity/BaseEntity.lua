@@ -22,6 +22,16 @@ function BaseEntity:update(dt)
             self.frame = frame
         end
     end
+
+    if self.stock and self.stockType then
+        self.stock = StockManager:getStockTotal()[self.stockType]
+
+        if self.stock <= 0 then
+            self:hideBubble()
+        elseif self.productionStage == 'Ready' then
+            self:showBubble(self._bubbleColor)
+        end
+    end
 end
 
 function BaseEntity:showBubble(color)
