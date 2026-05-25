@@ -19,6 +19,7 @@ gColors = {
     ['brown'] = {0.4, 0.25, 0.15, 1},
     ['transparent'] = {1, 1, 1, 0},
     ['curtain'] = {0, 0, 0, 0.5},
+    ['cyan'] = {0.2, 1, 1, 1},
 }
 
 gTexts = {

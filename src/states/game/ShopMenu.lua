@@ -1,6 +1,15 @@
 ShopMenu = class {__includes = BaseState}
 
 local items = {
+    ['ItemLabel'] = {
+        type = 'Label',
+        frame = nil,
+        id = 0,
+        name = 'Consumable Items List',
+        price = 0,
+        stock = 0,
+        purchasable = false,
+    },
     ['PaperCup'] = {
         type = 'PaperCup',
         frame = nil,
@@ -28,10 +37,19 @@ local items = {
         stock = 0,
         purchasable = true,
     },
+    ['UpgradeLabel'] = {
+        type = 'Label',
+        frame = nil,
+        id = 4,
+        name = 'Upgradable Items List',
+        price = 0,
+        stock = 0,
+        purchasable = false,
+    },
     ['CoffeeMachine'] = {
         type = 'CoffeeMachine',
         frame = nil,
-        id = 4,
+        id = 5,
         name = 'Coffee Machine',
         price = 50,
         stock = 0,
@@ -63,10 +81,12 @@ function ShopMenu:init()
         local item = ShopItem(data)
         table.insert(self.items, item)
         gStateStack:push(item)
-        self.scrollbar:addHeight(item:getHeight() + buffer)
-        self.buttons[i] = item:getButton()
-        gStateStack:push(self.buttons[i])
-        table.insert(self.interactables, self.buttons[i])
+        if item.type ~= 'Label' then
+            self.scrollbar:addHeight(item:getHeight() + buffer)
+            self.buttons[i] = item:getButton()
+            gStateStack:push(self.buttons[i])
+            table.insert(self.interactables, self.buttons[i])
+        end
         i = i + 1
     end
 
@@ -87,7 +107,9 @@ function ShopMenu:update(dt)
     for i = 1, #self.items do
         local item = self.items[i]
         item:updateY(self.indexY)
-        item:getButton():updateY(self.indexY, item.id, item:getHeight(), buffer)
+        if item.type ~= 'Label' then
+            item:getButton():updateY(self.indexY, item.id, item:getHeight(), buffer)
+        end
 
         if item:getBottom() < topLimit and item.isVisible then
             item.isVisible = false
