@@ -180,3 +180,21 @@ so to cover the item logs.
 
 ### v0.15.2 - 2026-05-19
 - Small UI adjustments on setting slider
+
+
+### v0.16.0 - 2026-05-18
+- Add 2 library files and replace the current Animation file.
+- Make them usable for both looping logic of the current project and horizontal strips.
+- Modify CoffeeMachine's animation.
+- Add 3 more customers and remove the previous one. Make the customer randomly chose.
+- In constants' animation config table, add a function that can handle the random nature of customer type.
+
+### v0.17.0 - 2026-05-23
+- Add `StockManager.lua`. There might be a lot of bug. I think I occasionally see one but when I try to confirm it
+nothing solid came and there might be more I missed.
+- If you see bugs while reviewing, edit the `Debug.docx` directly and commit it. Publish an issue about it in issue tab.
+- More files than authorized is touched due to data exchange problem between states.
+
+### v0.17.1 - 2026-05-25
+- Tweak the button render logic so that the position of the button didn't make the text inside move around.
+- Add label items to separate consumable and upgradable items.

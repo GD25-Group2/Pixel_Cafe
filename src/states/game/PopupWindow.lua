@@ -37,6 +37,7 @@ function PopupWindow:update(dt)
         if name then
             DataManager:getDefaultData()
             DataManager:nameDataSave(name)
+            StockManager:load()
             print(DataManager:getData('name'))
             gStateStack:clear()
             gStateStack:popupDelete()

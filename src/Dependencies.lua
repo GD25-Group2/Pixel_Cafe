@@ -101,6 +101,7 @@ gFrames['CoffeeJarVolume4by4'] = love.graphics.newImage('assets/JarVolumeStages/
 
 --require('src.Animation')
 DataManager = require('src.DataManager')
+StockManager = require('src.StockManager')
 require('src.constants')
 InputBox = require('src.InputBox')
 

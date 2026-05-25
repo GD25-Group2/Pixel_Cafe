@@ -14,6 +14,7 @@ function PlayState:init()
     self.interactables = {}
 
     self.data = DataManager:getData()
+    DataManager:saveOldData(self.data)
     self.currentDate = self.data['currentDate'] or 1
     print('Current Date: ' .. tostring(self.data['currentDate']))
     print('PlayState - Today Money: ' .. tostring(self.data['todayMoney']) .. ' Total Money: ' .. tostring(self.data['totalMoney']))
@@ -109,11 +110,12 @@ function PlayState:update(dt)
     if love.keyboard.wasPressed('escape') or love.keyboard.wasPressed('p') then
         gStateStack:pause()
         gStateStack:push(PauseMenu())
-        return
-    elseif love.keyboard.wasPressed('d') then
+    --[[elseif love.keyboard.wasPressed('d') then
         print('Developer Mode')
-        self.timeManager:devTimeSkip()
+        self.timeManager:devTimeSkip()]]
     end
+
+    self.moneyManager:updateMoney()
 
     self:mouseResponse()
 end

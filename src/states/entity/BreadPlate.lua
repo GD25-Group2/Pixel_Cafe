@@ -10,13 +10,14 @@ function BreadPlate:init(params)
     self.slices = 0
     self.loafRemaining = 0
     self.color = gColors['transparent']
+    self._bubbleColor = gColors['yellow']
 end
 
 function BreadPlate:update(dt)
     if self.productionStage == 'Producing' then
         if self.slices > 0 then
             self.productionStage = 'Ready'
-            self:showBubble(gColors['yellow'])
+            self:showBubble(self._bubbleColor)
         end
     elseif self.productionStage == 'Ready' then
         if self.slices == 0 then
@@ -44,6 +45,7 @@ function BreadPlate:update(dt)
         end
     end
 
+    BaseEntity.update(self, dt)
 end
 
 function BreadPlate:render()
@@ -66,7 +68,7 @@ function BreadPlate:action()
         self.loafRemaining = self.loafRemaining - 1
         if self.productionStage ~= 'Ready' then
             self.productionStage = 'Ready'
-            self:showBubble(gColors['yellow'])
+            self:showBubble(self._bubbleColor)
         end
     end
 end
@@ -83,7 +85,7 @@ function BreadPlate:taken()
         end
         self:hideBubble()
     else
-        self:showBubble(gColors['yellow'])
+        self:showBubble(self._bubbleColor)
     end
 end
 

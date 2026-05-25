@@ -113,3 +113,5 @@ end
 
 function MoneyManager:getTotalMoney() return self.totalMoney end
 function MoneyManager:getTodayMoney() return self.todayMoney end
+
+function MoneyManager:updateMoney() self.totalMoney = DataManager:getData('totalMoney') end

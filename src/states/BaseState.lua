@@ -56,13 +56,13 @@ function BaseState:mouseResponse()
             local target = self._mouseDown.target
             if target and target.productionStage == 'Ready' then --if it is a machine ready for drag
                 local allowDrag = true
-                if target.type == 'BreadBasket' and self.breadPlate then --if the dragged entity is from BreadBasket and BreadPlate exists
-                    if not target:canDragToPlate(self.breadPlate) then --if the plate is unable to accept the dragged entity
+                if target.type == 'BreadBasket' then --if the dragged entity is from BreadBasket and BreadPlate exists
+                    if (self.breadPlate and not target:canDragToPlate(self.breadPlate)) or (target.stock <= 0) then --if the plate is unable to accept the dragged entity
                         allowDrag = false
                     end
                 elseif target.type == 'CoffeeCupStack' and self.coffeeTray then
                     local total = self.coffeeTray.emptyCups + self.coffeeTray.filledCups
-                    if total >= 4 then
+                    if total >= 4 or target.stock <= 0 then
                         allowDrag = false
                     end
                 -- CoffeeMachine: always allow drag when Ready (pouring nothing is fine)
@@ -141,7 +141,6 @@ function BaseState:mouseResponse()
     end
 
     if self.type == 'ShopMenu' and gWheelY then
-        print('BaseState - has gWheelY ' .. tostring(gWheelY))
         self.scrollbar:wheelScroll(gWheelY)
     end
 end
