@@ -198,3 +198,6 @@ nothing solid came and there might be more I missed.
 ### v0.17.1 - 2026-05-25
 - Tweak the button render logic so that the position of the button didn't make the text inside move around.
 - Add label items to separate consumable and upgradable items.
+
+### v0.18.0 - 2026-05-26
+- Before the game start, there is now a preparation state. You can use money and stock management here.
