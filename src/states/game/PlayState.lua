@@ -98,6 +98,9 @@ function PlayState:enter()
         gMusic:setVolume(gSettings.musicVolume)
         gMusic:play()
     end
+    
+    gStateStack:pause()
+    gStateStack:push(GameStartShopState())
 end
 
 function PlayState:exit()

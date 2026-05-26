@@ -121,6 +121,7 @@ require('src.states.game.PauseMenu')
 require('src.states.game.PopupWindow')
 require('src.states.game.SettingsState')
 require('src.states.game.ShopMenu')
+require('src.states.game.GameStartShopState')
 require('src.states.game.ClosingState')
 
 require('src.states.entity.BaseEntity')
