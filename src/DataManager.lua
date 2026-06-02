@@ -29,6 +29,7 @@ function DataManager:getDefaultData()
             ['Bread'] = 1,
             ['PaperCup'] = 10,
         },
+        ['reputation'] = 50, --out of 100
     }
 end
 
@@ -48,7 +49,7 @@ function DataManager:create()
     if success then print(message) end
 end
 
-function DataManager:moneyDataSave(totalMoney, todayMoney)
+--[[function DataManager:moneyDataSave(totalMoney, todayMoney)
     self.data['totalMoney'] = totalMoney
     self.data['todayMoney'] = todayMoney
     print('DataManager - Today Money: ' .. tostring(self.data['todayMoney']) .. ' Total Money: ' .. tostring(self.data['totalMoney']))
@@ -60,6 +61,18 @@ end
 
 function DataManager:nameDataSave(name)
     self.data['name'] = name
+end]]
+
+function DataManager:set(key, value)
+    if self.data[key] ~= nil or type(key) == "string" then
+        self.data[key] = value
+    end
+end
+
+function DataManager:setAll(dataDict)
+    for k, v in pairs(dataDict) do
+        self.data[k] = v
+    end
 end
 
 function DataManager:getData(requestedData)

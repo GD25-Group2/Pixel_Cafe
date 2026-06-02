@@ -21,10 +21,13 @@ function DayEndState:init()
     }
 
     print('DayEndState - Today Money: ' .. tostring(self._earnedToday) .. ' Total Money: ' .. tostring(self._finalTotal))
-    DataManager:moneyDataSave(self._finalTotal, self._earnedToday)
     local currentDate = DataManager:getData('currentDate')
-    DataManager:dateDataSave(currentDate + 1)
-    DataManager:autoUnlockMachine() 
+    DataManager:setAll({
+        ['totalMoney'] = self._finalTotal,
+        ['todayMoney'] = self._earnedToday,
+        ['currentDate'] = currentDate - 1,
+    })
+    DataManager:autoUnlockMachine()
     DataManager:create()
 
     self.card = DayEndStateCard({earnedToday = self._earnedToday, finalTotal = self._finalTotal, currentDate = currentDate})
