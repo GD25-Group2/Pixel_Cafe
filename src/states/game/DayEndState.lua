@@ -25,7 +25,7 @@ function DayEndState:init()
     DataManager:setAll({
         ['totalMoney'] = self._finalTotal,
         ['todayMoney'] = self._earnedToday,
-        ['currentDate'] = currentDate - 1,
+        ['currentDate'] = currentDate + 1,
     })
     DataManager:autoUnlockMachine()
     DataManager:create()
