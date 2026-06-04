@@ -25,8 +25,8 @@ function DataManager:getDefaultData()
         ['name'] = 'None',
         ['levelMachine'] = 11, --[Coffee Machine, Bread Plate] from right to left
         ['stock'] = {
-            ['CoffeeSeed'] = 0,
-            ['Bread'] = 1,
+            ['CoffeeSeed'] = 2,
+            --['Bread'] = 1,
             ['PaperCup'] = 10,
         },
         ['reputation'] = 50, --out of 100
