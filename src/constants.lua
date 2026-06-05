@@ -88,9 +88,9 @@ COFFEE_TRAY_CONFIG = {
 -- Customer waiting positions at the counter (slots).
 -- y=55: sprite is 64px tall, bottom edge = y=119, clears counter at y=130.
 WAITING_SLOTS = {
-    {x = 60,  y = 55, id = 'left'},
-    {x = 160, y = 55, id = 'center'},
     {x = 260, y = 55, id = 'right'},
+    {x = 160, y = 55, id = 'center'},
+    {x = 60,  y = 55, id = 'left'},
 }
 
 -- Entrance (right, off-screen) and exit (left, off-screen)
@@ -106,6 +106,8 @@ CUSTOMER_CONFIG = {
     baseTip           = 0.2,  -- 20% base tip
     patienceBonus     = 0.3,  -- up to 30% extra tip based on patience
     wrongOrderPatiencePenalty = 10, -- we can adjust penalty here
+    minSpawnInterval = 1,
+    maxSpawnInterval = 6,
 }
 
 MONEY_CONFIG = {
@@ -414,7 +416,35 @@ BUTTON_PARAMS = {
         clickable = true,
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
-    }
+    },
+    ['QueueExpand'] = {
+        text = nil,
+        frame = gFrames['QueueExpandIcon'],
+        x = VIRTUAL_WIDTH - 20, --with width or height and buffer
+        y = VIRTUAL_HEIGHT / 2 - 20,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            Signal:emit('queue-button-expand')
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['QueueContract'] = {
+        text = nil,
+        frame = gFrames['QueueContractIcon'],
+        x = VIRTUAL_WIDTH - 20,
+        y = VIRTUAL_HEIGHT / 2 - 20,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            Signal:emit('queue-button-contract')
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
 }
 
 BREAD_BASKET_CONFIG = {

@@ -201,3 +201,12 @@ nothing solid came and there might be more I missed.
 
 ### v0.18.0 - 2026-05-26
 - Before the game start, there is now a preparation state. You can use money and stock management here.
+
+### v0.19.0 - 2026-06-02
+- `Signal.lua`: Created a brand new lightweight custom event/signal event framework to handle decoupled communications across various states and entities without hardcoding tight references.
+- `QueueShowcase.lua`: Implemented a new UI drawer system for visualizing the customer queue. Added two new arrow assets (expandToLeft.png and expandToRight.png) to gracefully handle horizontal expansion toggles.
+- `ReputationBar.lua`: Created a new standalone store ranking and performance tracking entity to render and handle visual feedback for shop metrics.
+- `StateStack.lua`: Optimized the engine stack layout structure to support multi-table rendering layers (states, pausedTable, and popupTable), ensuring background gameplay elements stop updating but continue drawing when overlay UI triggers.
+- `CustomerState.lua` & `CustomerManager.lua`: Extensively refactored customer lifecycle flows and layout handling to seamlessly hook into the new signal-driven event loop and state tracking features.
+- `PlayState.lua`: Fully integrated the QueueShowcase, ReputationBar, and updated core systems directly into the gameplay rendering pipeline layers.
+- `DataManager.lua`: Expanded core loading/saving attributes to handle persistent data exchanges required by new shop and state modifications.

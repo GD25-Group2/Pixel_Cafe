@@ -88,19 +88,24 @@ function StateStack:push(state)
     state:enter()
 end
 
-function StateStack:pop(state)
+function StateStack:pop(target)
     local popTable
     if self.isPopup then popTable = self.popupTable
     elseif self.paused then popTable = self.pausedTable
     else popTable = self.states end
 
     if #popTable > 0 then
-        if state then
+        if target then
             for i = #popTable, 1, -1 do
-                if popTable[i] == state then
-                    popTable[i]:exit()
+                local current = popTable[i]
+                
+                if current == target or 
+                   getmetatable(current) == target or 
+                   current.type == target then
+                   
+                    current:exit()
                     table.remove(popTable, i)
-                    break -- Stop once we find and remove it
+                    break
                 end
             end
         else

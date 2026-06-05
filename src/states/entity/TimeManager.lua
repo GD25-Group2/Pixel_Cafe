@@ -20,7 +20,7 @@ function TimeManager:update(dt)
     
     -- Night time transition (8:00 PM / 20 hours)
     if currentHour >= 20 and not self.isFrozen then
-        DataManager:dateDataSave(self.currentDate)
+        DataManager:set('currentDate', self.currentDate)
         self.dayTime = 20 * 60
         self.isFrozen = true
         

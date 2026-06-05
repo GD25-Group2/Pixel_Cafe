@@ -123,3 +123,26 @@ Steps to Reproduce:
      Enter PlayState.
 Expected Result: There should not be a bubble above Coffee Machine since it is still not ready and brew.
 Actual Result:  Visible. Suspect to be from BaseEntity's update function.
+
+Bug ID: #09 - Dev Tool Time Skip
+Status: Open
+Reporter: Kyaw Sis Thway
+Debugger:
+Description: Skip to day 9 but play day 8
+Steps to Reproduce:
+     Start the game.
+     Press 'k'.
+     Enter '\dev skip 9'.
+Expected Result: Playing date should be 8 in day end state and 9 in play state.
+Actual Result:  Day end state date is 9 and play state date is 8.
+
+Bug ID: #10 - Color Bleeding
+Status: Open
+Reporter: Kyaw Sis Thway
+Debugger:
+Description: Colors for buttons and bubbles
+Steps to Reproduce:
+     Start the game.
+     Complete some order.
+Expected Result: Buttons and bubbles should be independent of the color change in reputation bar.
+Actual Result:  Color of reputation bar is used in buttons and bubbles.
