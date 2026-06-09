@@ -57,7 +57,9 @@ function Cursor:isDragged(item)
     elseif item.type == 'BreadPlate' then
         self.heldItem = 'SliceOfBread'
     elseif item.type == 'SandwichPlate' then
-        self.heldItem = 'Sandwich'
+        self.heldItem = item.sandwichType
+    elseif item.type == 'Stove' then
+        self.heldItem = 'Meat'
     end
     self.frame = gFrames[self.heldItem]
 end

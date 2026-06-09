@@ -37,10 +37,19 @@ local items = {
         stock = 0,
         purchasable = true,
     },
+    ['Meat'] = {
+        type = 'Meat',
+        frame = nil,
+        id = 4,
+        name = 'Meat',
+        price = 5,
+        stock = 1,
+        purchasable = true,
+    },
     ['UpgradeLabel'] = {
         type = 'Label',
         frame = nil,
-        id = 4,
+        id = 5,
         name = 'Upgradable Items List',
         price = 0,
         stock = 0,
@@ -49,13 +58,23 @@ local items = {
     ['CoffeeMachine'] = {
         type = 'CoffeeMachine',
         frame = nil,
-        id = 5,
+        id = 6,
         name = 'Coffee Machine',
         price = 50,
         stock = 0,
         purchasable = false,
         level = 1,
     },
+    ['Stove'] = {
+        type = 'Stove',
+        frame = nil,
+        id = 7,
+        name = 'Stove',
+        price = 50,
+        stock = 0,
+        purchasable = false,
+        level = 1,
+    }
 }
 
 local buffer = 5

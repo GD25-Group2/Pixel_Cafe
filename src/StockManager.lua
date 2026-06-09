@@ -9,6 +9,7 @@ end
 local countingTable = {
     'CoffeeMachine',
     'BreadPlate',
+    'Stove',
 }
 
 local function getDigit(number, placeholder)

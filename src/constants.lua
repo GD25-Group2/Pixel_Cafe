@@ -143,7 +143,8 @@ AVAILABLE_ITEMS = {}
 ORDER_TYPES = {
     ['Coffee']       = {price = 5, name = 'Coffee'},
     ['SliceOfBread'] = {price = 3, name = 'SliceOfBread'},
-    ['Sandwich']     = {price = 7, name = 'Sandwich'},
+    ['FreeSandwich']     = {price = 7, name = 'FreeSandwich'},
+    ['MeatSandwich'] = {price = 8, name = 'MeatSandwich'},
     ['LoafOfBread']  = {price = 6, name = 'LoafOfBread'},
 }
 
@@ -466,6 +467,22 @@ BREAD_PLATE_CONFIG = {
 SANDWICH_PLATE_CONFIG = {
     frame = gFrames['SandwichPlate'],
     x = VIRTUAL_WIDTH - 60,
+    y = 180,
+    desired_width = 32,
+    desired_height = 32,
+}
+
+STOVE_CONFIG = {
+    frame = nil,
+    x = VIRTUAL_WIDTH - 130,
+    y = 180,
+    desired_width = 32,
+    desired_height = 32,
+}
+
+KNIFE_BOARD_CONFIG = {
+    frame = nil,
+    x = VIRTUAL_WIDTH - 180,
     y = 180,
     desired_width = 32,
     desired_height = 32,

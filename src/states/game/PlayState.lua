@@ -31,7 +31,8 @@ function PlayState:init()
         table.insert(AVAILABLE_ITEMS, 'SliceOfBread')
     end
     if find(self.data['unlockedMachine'], 'SandwichPlate') then
-        table.insert(AVAILABLE_ITEMS, 'Sandwich')
+        table.insert(AVAILABLE_ITEMS, 'FreeSandwich')
+        table.insert(AVAILABLE_ITEMS, 'MeatSandwich')
     end
 
     self.cityBackground = CityBackground()
@@ -82,6 +83,15 @@ function PlayState:init()
     self.shopButton      = Button(BUTTON_PARAMS['ToShop'])
     gStateStack:push(self.shopButton)
     table.insert(self.interactables, self.shopButton)
+
+    --here to test
+    self.stove = Stove()
+    gStateStack:push(self.stove)
+    table.insert(self.interactables, self.stove)
+    
+    self.knifeBoard = KnifeAndBoard()
+    gStateStack:push(self.knifeBoard)
+    table.insert(self.interactables, self.knifeBoard)
 
     if find(self.data['unlockedMachine'], 'CoffeeMachine') then
         self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)

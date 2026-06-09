@@ -48,12 +48,15 @@
 - CustomerManager.lua
 - OrderBox.lua
 - FloatingMoney.lua
+- KinfeAndBoard.lua
+- Meat.lua
 - SandwichPlate.lua
 - Scrollbar.lua
 - ShopItem.lua
 - TimeManager.lua
 - QueueShowcase.lua
 - ReputationBar.lua
+- Stove.lua
 ### src/states/GUI
 - StartMenuBackground.lua
 - PauseMenuCard.lua

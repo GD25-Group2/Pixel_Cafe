@@ -146,6 +146,8 @@ require('src.states.entity.ScrollBar')
 require('src.states.entity.ShopItem')
 require('src.states.entity.ReputationBar')
 require('src.states.entity.QueueShowcase')
+require('src.states.entity.Stove')
+require('src.states.entity.KnifeAndBoard')
 
 require('src.states.GUI.DayEndStateCard')
 require('src.states.GUI.PauseMenuCard')

@@ -9,6 +9,7 @@ function SandwichPlate:init(params)
     self.productionStage = 'Void'
     self.color = gColors['transparent']
     self._bubbleColor = gColors['green']
+    self.sandwichType = 'None'
 end
 
 function SandwichPlate:render()
@@ -26,7 +27,16 @@ function SandwichPlate:taken()
 end
 
 function SandwichPlate:receiveItem(item)
-    if item == 'SliceOfBread' and self.productionStage == 'Void' then
+    if item then
+        if item == 'SliceOfBread' and self.sandwichType == 'None' then
+            self.sandwichType = 'FreeSandwich'
+        elseif item == 'SliceOfBread' and self.sandwichType == 'OnlyMeat' then
+            self.sandwichType = 'MeatSandwich'
+        elseif item == 'Meat' and self.sandwichType == 'FreeSandwich' then
+            self.sandwichType = 'MeatSandwich'
+        elseif item == 'Meat' and self.sandwichType == 'None' then
+            self.sandwichType = 'OnlyMeat'
+        end
         self.productionStage = 'Ready'
         self.color = gColors['green']
         self:showBubble(self._bubbleColor)

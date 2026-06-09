@@ -92,9 +92,9 @@ function BaseState:mouseResponse()
                     delivered = self:deliverItem(target)
                 elseif target.type == 'BreadPlate' and target.loafRemaining == 0 then
                     delivered = self:deliverItem(target)
-                elseif target.type == 'SandwichPlate' and target.productionStage == 'Void' then
+                elseif target.type == 'SandwichPlate' then
                     delivered = self:deliverItem(target)
-                    if delivered then self.breadPlate:taken() end
+                    if delivered and self.cursor.dragSource.type == 'BreadPlate' then self.breadPlate:taken() end
                 elseif target.type == 'CoffeeTray' then
                     delivered = self:deliverItem(target)
                 end
@@ -123,7 +123,7 @@ function BaseState:mouseResponse()
                     local target = self._mouseDown.target
                     if target then --target is not dragged but clicked
                         if target.isMachine then
-                            if target.type == 'CoffeeMachine' then
+                            if target.type == 'CoffeeMachine' or target.type == 'Stove' then
                                 target:produce()
                             elseif target.productionStage == 'Void' then
                                 target:produce()
