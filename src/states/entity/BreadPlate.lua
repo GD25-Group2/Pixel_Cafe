@@ -74,6 +74,7 @@ function BreadPlate:action()
 end
 
 function BreadPlate:taken()
+    print('BreadPlate - taken')
     self.slices = self.slices - 1
     if self.slices < 0 then
         self.slices = 0
@@ -103,4 +104,9 @@ function BreadPlate:receiveItem(item)
     end
 
     return false
+end
+
+function BreadPlate:drag()
+    self.productionStage = 'Holding'
+    self:hideBubble()
 end

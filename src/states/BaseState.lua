@@ -92,6 +92,7 @@ function BaseState:mouseResponse()
                     delivered = self:deliverItem(target)
                 elseif target.type == 'BreadPlate' and target.loafRemaining == 0 then
                     delivered = self:deliverItem(target)
+                    print('BaseState - deliverItem to BreadPlate, delivered:', delivered)
                 elseif target.type == 'SandwichPlate' then
                     delivered = self:deliverItem(target)
                     if delivered and self.cursor.dragSource.type == 'BreadPlate' then self.breadPlate:taken() end
@@ -103,6 +104,7 @@ function BaseState:mouseResponse()
             local source = self.cursor.dragSource
             if delivered then
                 if source and source.taken then
+                    print('BaseState - deliverItem success, calling source:taken()')
                     source:taken()
                 end
             else
