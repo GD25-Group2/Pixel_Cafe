@@ -59,28 +59,28 @@ ANIMATION_DEFS = {
     end,
 }
 
-
+--the overlapping hurtbox is making thing painful. Change it so that the hurtbox is limited to jar.
 COFFEE_MACHINE_ENTITY = {
     frame = gFrames['CoffeeMachineAnimation'][1], -- default frame when idle
     animation = ANIMATION_DEFS.CoffeeMachine,
     x = 10,
-    y = 130,
+    y = 70,
     desired_width = 80,
     desired_height = 80,
 }
 
 COFFEE_CUP_STACK_CONFIG = {
     frame = gFrames['CoffeeCupStack'],
-    x = 70,
-    y = 168,
+    x = 10,
+    y = 140,
     desired_width = 32,
     desired_height = 32,
 }
 
 COFFEE_TRAY_CONFIG = {
     frame = gFrames['EmptyTray'],
-    x = 96,
-    y = 182,
+    x = 50,
+    y = 140,
     desired_width = 32,
     desired_height = 32,
 }
@@ -102,7 +102,7 @@ CUSTOMER_CONFIG = {
     moveSpeed         = 100,  -- pixels per second
     spawnInterval     = 4,    -- seconds between arrivals
     patienceMax       = 100,  -- full patience value
-    patienceDecayRate = 2,    -- patience lost per second while waiting
+    patienceDecayRate = 4,    -- patience lost per second while waiting
     baseTip           = 0.2,  -- 20% base tip
     patienceBonus     = 0.3,  -- up to 30% extra tip based on patience
     wrongOrderPatiencePenalty = 10, -- we can adjust penalty here
@@ -418,11 +418,12 @@ BUTTON_PARAMS = {
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
+    --repostition the queue display to be below or completely remove it.
     ['QueueExpand'] = {
         text = nil,
         frame = gFrames['QueueExpandIcon'],
         x = VIRTUAL_WIDTH - 20, --with width or height and buffer
-        y = VIRTUAL_HEIGHT / 2 - 20,
+        y = VIRTUAL_HEIGHT - 20,
         desired_width = 16,
         desired_height = 16,
         action = function()
@@ -436,7 +437,7 @@ BUTTON_PARAMS = {
         text = nil,
         frame = gFrames['QueueContractIcon'],
         x = VIRTUAL_WIDTH - 20,
-        y = VIRTUAL_HEIGHT / 2 - 20,
+        y = VIRTUAL_HEIGHT - 20,
         desired_width = 16,
         desired_height = 16,
         action = function()
@@ -450,16 +451,16 @@ BUTTON_PARAMS = {
 
 BREAD_BASKET_CONFIG = {
     frame = gFrames['BreadBasket'],
-    x = VIRTUAL_WIDTH - 100,
-    y = 130,
+    x = 100,
+    y = 110,
     desired_width = 32,
     desired_height = 32,
 }
 
 BREAD_PLATE_CONFIG = {
     frame = gFrames['BreadPlate'],
-    x = VIRTUAL_WIDTH - 60,
-    y = 130,
+    x = 100,
+    y = 140,
     desired_width = 32,
     desired_height = 32,
 }
@@ -474,16 +475,29 @@ SANDWICH_PLATE_CONFIG = {
 
 STOVE_CONFIG = {
     frame = nil,
+    x = VIRTUAL_WIDTH - 10 - 80,
+    y = 70,
+    desired_width = 80,
+    desired_height = 80,
+}
+
+CHOPPING_BOARD_CONFIG = {
+    frame = nil,
     x = VIRTUAL_WIDTH - 130,
-    y = 180,
+    y = 110,
     desired_width = 32,
     desired_height = 32,
 }
 
-KNIFE_BOARD_CONFIG = {
+PLATE_MANAGER_CONFIG = {
+    x = 140,
+    y = 110,
+    desired_width = 150,
+    desired_height = 60,
+}
+
+PLATE_CONFIG = {
     frame = nil,
-    x = VIRTUAL_WIDTH - 180,
-    y = 180,
     desired_width = 32,
     desired_height = 32,
 }

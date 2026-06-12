@@ -67,14 +67,7 @@ function PopupWindow:update(dt)
                 local amount = tonumber(tokens[3]) or 0
                 gMoney = (gMoney or 0) + amount
                 -- Sync with MoneyManager in base states if present
-                for _, state in ipairs(gStateStack.states) do
-                    if state.totalMoney then
-                        state.totalMoney = state.totalMoney + amount
-                        if state.displayMoney then
-                            state.displayMoney = state.totalMoney
-                        end
-                    end
-                end
+                Signal:emit('dev-money-add', amount)
                 -- Close the console after executing the command
                 gStateStack:clear()
                 gStateStack:popupDelete()

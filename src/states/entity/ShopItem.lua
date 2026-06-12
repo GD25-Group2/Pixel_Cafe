@@ -37,7 +37,7 @@ function ShopItem:init(data)
             action = function()
                 if self.purchasable and DataManager:getData('totalMoney') >= self.price then
                     self.stock = StockManager:purchase(self.type, self.price)
-                elseif not self.purchasable and self.level < 3 then
+                elseif not self.purchasable and self.level < 3 and DataManager:getData('totalMoney') >= self.price then
                     StockManager:upgrade(self.type, self.price)
                     self.level = self.level + 1
                     self.price = self.price * 2

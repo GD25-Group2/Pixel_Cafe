@@ -51,7 +51,6 @@ function BaseEntity:render()
 
     if not self.frame then return end
 
-    -- Using :typeOf() is completely bulletproof across all LÖVE versions
     if type(self.frame) == "userdata" and self.frame:typeOf("Quad") then
         local _, _, qw, qh = self.frame:getViewport()
         local texture = self.texture or (self.animation and self.animation.texture)
@@ -61,12 +60,10 @@ function BaseEntity:render()
                 self.desired_width / qw, self.desired_height / qh)
         end
     elseif type(self.frame) == "userdata" and (self.frame:typeOf("Image") or self.frame:typeOf("Texture")) then
-        -- FIXED: Standalone full images (like GrumpyOldMan) fall into this crisp scaler block
         love.graphics.draw(self.frame, self.x, self.y, 0, 
             self.desired_width / self.frame:getWidth(), self.desired_height / self.frame:getHeight())
     end
-    love.graphics.draw(self.frame, self.x, self.y, 0, 
-        self.desired_width / self.frame:getWidth(), self.desired_height / self.frame:getHeight())
+    
     love.graphics.setColor(gColors['white'])
 end
 

@@ -10,6 +10,12 @@ function MoneyManager:init(totalMoney, todayMoney)
     self._dailyTipsAmount = 0
 
     self.displayMoney = self.totalMoney
+
+    self.devFunc = function (added)
+        self.totalMoney = self.totalMoney + added
+    end
+
+    Signal:register('dev-money-add', self.devFunc)
 end
 
 function MoneyManager:calculatePayment(customer)

@@ -14,7 +14,7 @@ function BreadPlate:init(params)
 end
 
 function BreadPlate:update(dt)
-    if self.productionStage == 'Producing' then
+    --[[if self.productionStage == 'Producing' then
         if self.slices > 0 then
             self.productionStage = 'Ready'
             self:showBubble(self._bubbleColor)
@@ -29,7 +29,7 @@ function BreadPlate:update(dt)
             end
             self:hideBubble()
         end
-    end
+    end]]
 
     if self.productionStage == 'Void' then
         self.color = gColors['transparent']
@@ -63,43 +63,24 @@ function BreadPlate:render()
 end
 
 function BreadPlate:action()
-    if self.loafRemaining > 0 then
+    --[[if self.loafRemaining > 0 then
         self.slices = self.slices + 1
         self.loafRemaining = self.loafRemaining - 1
         if self.productionStage ~= 'Ready' then
             self.productionStage = 'Ready'
             self:showBubble(self._bubbleColor)
         end
-    end
-end
-
-function BreadPlate:taken()
-    print('BreadPlate - taken')
-    self.slices = self.slices - 1
-    if self.slices < 0 then
-        self.slices = 0
-    elseif self.slices == 0 then
-        if self.loafRemaining > 0 then
-            self.productionStage = 'Producing'
-        else
-            self.productionStage = 'Void'
-        end
-        self:hideBubble()
-    else
-        self:showBubble(self._bubbleColor)
-    end
+    end]]
 end
 
 function BreadPlate:receiveItem(item)
-    if item == 'LoafOfBread' then
+    if item == 'SlicedBread' then
         -- Only accept a new loaf when the previous loaf is finished
-        if self.loafRemaining == 0 then
-            self.productionStage = 'Producing'
-            self.loafRemaining = 3
+        if self.slices == 0 then
+            self.productionStage = 'Ready'
+            self.slices = 3
             self:hideBubble() -- ensure hidden when starting new loaf
             return true
-        else
-            return false
         end
     end
 
@@ -109,4 +90,38 @@ end
 function BreadPlate:drag()
     self.productionStage = 'Holding'
     self:hideBubble()
+end
+
+function BreadPlate:undrag()
+    if self.slices > 0 then
+        self.productionStage = 'Ready'
+        self:showBubble(self._bubbleColor)
+    elseif self.loafRemaining > 0 then
+        self.productionStage = 'Producing'
+    else
+        self.productionStage = 'Void'
+    end
+end
+
+function BreadPlate:taken()
+    print('BreadPlate - taken')
+    self.slices = self.slices - 1
+    if self.slices < 0 then
+        self.slices = 0
+    elseif self.slices > 0 then
+        self.productionStage = 'Ready'
+        self:showBubble(self._bubbleColor)
+    end
+
+    --[[if self.slices == 0 then
+        if self.loafRemaining > 0 then
+            self.productionStage = 'Producing'
+        else
+            self.productionStage = 'Void'
+        end
+        self:hideBubble()
+    else
+        self.productionStage = 'Ready'
+        self:showBubble(self._bubbleColor)
+    end]]
 end

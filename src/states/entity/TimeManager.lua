@@ -4,8 +4,8 @@ function TimeManager:init(currentDate, customerManager)
     -- Default to start hour 8 (8:00 AM)
     self.dayTime = 8 * 60
     
-    -- 1 real second = 15 game minutes
-    self.timeScale = 15
+    -- 1 real second = 10 game minutes
+    self.timeScale = 10
 
     self.currentDate = currentDate
     self.customerManager = customerManager

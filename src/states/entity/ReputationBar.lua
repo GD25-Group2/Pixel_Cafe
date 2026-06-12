@@ -18,11 +18,11 @@ function ReputationBar:init()
     self.rColor = gColors['yellow']
     self:updateColors()
 
-    self.onCustomerServed = function(amount)
+    self.onCustomerResponse = function(amount)
         self:changeReputation(amount)
     end
 
-    Signal:register('customer-served', self.onCustomerServed)
+    Signal:register('customer-served', self.onCustomerResponse)
 end
 
 function ReputationBar:changeReputation(amount)

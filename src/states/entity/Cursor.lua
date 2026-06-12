@@ -55,14 +55,33 @@ function Cursor:isDragged(item)
     elseif item.type == 'BreadBasket' then
         self.heldItem = 'LoafOfBread'
     elseif item.type == 'BreadPlate' then
-        self.heldItem = 'SliceOfBread'
+        self.heldItem = 'SlicedBread'
     elseif item.type == 'SandwichPlate' then
         self.heldItem = item.sandwichType
     elseif item.type == 'Stove' then
         self.heldItem = 'Meat'
+    elseif item.type == 'ChoppingBoard' then
+        self.heldItem = item.hasIngredient
+    elseif item.type == 'Plate' then
+        self.heldItem = item.heldItem
     end
     self.frame = gFrames[self.heldItem]
 end
+
+--[[
+'DisposableCoffeeCup'
+'Coffee'
+'LoafOfBread'
+'SlicedBread'
+'Meat'
+'ChoppedMeat'
+'Vegetable'
+'ChoppedVegetable'
+'FreeSandwich'
+'OnlyMeat'
+'MeatSandwich'
+'DeluxeSandwich'
+]]
 
 function Cursor:isReleased()
     self.isDragging = false

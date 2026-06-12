@@ -63,7 +63,7 @@ gFrames = {
     ['ThreeCupsFillStage1by3'] = love.graphics.newImage('assets/Cups and stack/CupFillStage3/ThreeCupsFillStage1by3.png'),
     ['ThreeCupsFillStage2by3'] = love.graphics.newImage('assets/Cups and stack/CupFillStage3/ThreeCupsFillStage2by3.png'),
     ['TwoCupsFillStage1by2'] = love.graphics.newImage('assets/Cups and stack/CupFillStage2/2CupsFillStage1by2.png'),
-    ['CounterBackground'] = love.graphics.newImage('assets/pixelCafeCounterBackground.png'),
+    ['CounterBackground'] = love.graphics.newImage('assets/pixelCafeCounterBackground3.png'),
     ['CityBackground'] = love.graphics.newImage('assets/City3.png'),
     ['ShopIcon'] = love.graphics.newImage('assets/ShopIcon.png'),
     ['QueueExpandIcon'] = love.graphics.newImage('assets/expandToLeft.png'),
@@ -147,7 +147,10 @@ require('src.states.entity.ShopItem')
 require('src.states.entity.ReputationBar')
 require('src.states.entity.QueueShowcase')
 require('src.states.entity.Stove')
-require('src.states.entity.KnifeAndBoard')
+require('src.states.entity.ChoppingBoard')
+require('src.states.entity.Lettuce')
+require('src.states.entity.Plate')
+require('src.states.entity.PlateManager')
 
 require('src.states.GUI.DayEndStateCard')
 require('src.states.GUI.PauseMenuCard')

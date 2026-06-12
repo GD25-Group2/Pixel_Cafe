@@ -23,7 +23,7 @@ function DataManager:getDefaultData()
             'CoffeeMachine',
         },
         ['name'] = 'None',
-        ['levelMachine'] = 111, --[Coffee Machine, Bread Plate, Stove] from right to left
+        ['levelMachine'] = 1111, --[Coffee Machine, Bread Plate, Stove, PlateManager] from right to left
         ['stock'] = {
             ['CoffeeSeed'] = 2,
             ['Bread'] = 0,

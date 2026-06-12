@@ -90,13 +90,15 @@ function BaseState:mouseResponse()
             if target then
                 if target.type == 'CustomerState' and target.orderBox then
                     delivered = self:deliverItem(target)
-                elseif target.type == 'BreadPlate' and target.loafRemaining == 0 then
+                elseif target.type == 'BreadPlate' then
                     delivered = self:deliverItem(target)
-                    print('BaseState - deliverItem to BreadPlate, delivered:', delivered)
                 elseif target.type == 'SandwichPlate' then
                     delivered = self:deliverItem(target)
-                    if delivered and self.cursor.dragSource.type == 'BreadPlate' then self.breadPlate:taken() end
                 elseif target.type == 'CoffeeTray' then
+                    delivered = self:deliverItem(target)
+                elseif target.type == 'ChoppingBoard' then
+                    delivered = self:deliverItem(target)
+                elseif target.type == 'Plate' then
                     delivered = self:deliverItem(target)
                 end
             end
@@ -104,7 +106,6 @@ function BaseState:mouseResponse()
             local source = self.cursor.dragSource
             if delivered then
                 if source and source.taken then
-                    print('BaseState - deliverItem success, calling source:taken()')
                     source:taken()
                 end
             else
@@ -130,10 +131,19 @@ function BaseState:mouseResponse()
                             elseif target.productionStage == 'Void' then
                                 target:produce()
                             end
-                        elseif target.isClicker and target.productionStage ~= 'Void' then
-                            target:action()
+                        elseif target.isClicker then
+                            if target.type == 'BreadPlate' and target.productionStage ~= 'Void' then
+                                target:action()
+                            elseif target.type == 'ChoppingBoard' and target.productionStage ~= 'Ready' then
+                                target:action()
+                            end
                         elseif target.isGUI then
                             target:clicked()
+                        elseif target.type == 'CustomerState' then
+                            if self.choppingBoard.productionStage == 'Selected' then
+                                self.choppingBoard:slash()
+                                target:slashed()
+                            end
                         end
                     end
                 end

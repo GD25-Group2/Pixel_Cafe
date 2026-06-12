@@ -35,7 +35,7 @@ function SandwichPlate:receiveItem(item)
         elseif item == 'Meat' and self.sandwichType == 'FreeSandwich' then
             self.sandwichType = 'MeatSandwich'
         elseif item == 'Meat' and self.sandwichType == 'None' then
-            self.sandwichType = 'OnlyMeat'
+            self.sandwichType = 'Meat'
         end
         self.productionStage = 'Ready'
         self.color = gColors['green']

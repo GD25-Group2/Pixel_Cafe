@@ -74,7 +74,17 @@ local items = {
         stock = 0,
         purchasable = false,
         level = 1,
-    }
+    },
+    ['PlateManager'] = {
+        type = 'PlateManager',
+        frame = nil,
+        id = 8,
+        name = 'Plate',
+        price = 50,
+        stock = 0,
+        purchasable = false,
+        level = 1,
+    },
 }
 
 local buffer = 5

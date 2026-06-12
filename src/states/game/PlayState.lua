@@ -73,8 +73,13 @@ function PlayState:init()
         end
     end
 
+    self.plateManagerPlateAdded = function(plate)
+        table.insert(self.interactables, plate)
+    end
+
     Signal:register('queue-button-contract', self.queueContract)
     Signal:register('queue-button-expand', self.queueExpand)
+    Signal:register('plate-manager-plate-added', self.plateManagerPlateAdded)
 
     self.queueButton     = Button(BUTTON_PARAMS['QueueExpand'])
     gStateStack:push(self.queueButton)
@@ -89,9 +94,12 @@ function PlayState:init()
     gStateStack:push(self.stove)
     table.insert(self.interactables, self.stove)
     
-    self.knifeBoard = KnifeAndBoard()
-    gStateStack:push(self.knifeBoard)
-    table.insert(self.interactables, self.knifeBoard)
+    self.choppingBoard = ChoppingBoard()
+    gStateStack:push(self.choppingBoard)
+    table.insert(self.interactables, self.choppingBoard)
+
+    self.plateManager = PlateManager()
+    gStateStack:push(self.plateManager)
 
     if find(self.data['unlockedMachine'], 'CoffeeMachine') then
         self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)
