@@ -11,8 +11,8 @@ end
 
 local chop_table = {
     ['Meat'] = 'ChoppedMeat',
-    ['Vegetable'] = 'ChoppedVegetable',
-    ['LoafOfBread'] = 'SlicedBread'
+    ['Lettuce'] = 'ChoppedLettuce',
+    ['LoafOfBread'] = 'ChoppedBread'
 }
 
 function ChoppingBoard:action()
@@ -29,7 +29,7 @@ function ChoppingBoard:action()
 end
 
 function ChoppingBoard:receiveItem(item, source)
-    if item == 'Meat' or item == 'Vegetable' or item == 'LoafOfBread' then
+    if item == 'Meat' or item == 'Lettuce' or item == 'LoafOfBread' then
         if self.productionStage ~= 'Ready' then
             self.hasIngredient = item
             return true

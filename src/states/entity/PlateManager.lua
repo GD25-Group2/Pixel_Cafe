@@ -36,13 +36,17 @@ function PlateManager:init()
     end
 
     local addPlate = function ()
-        local updatedLevel = StockManager:getLevel(self.type)
-        if updatedLevel > self.level then
-            self:addPlate(updatedLevel)
-        end
+        self.upgradedLevel = StockManager:getLevel(self.type)
     end
 
     Signal:register('plate-manager-plate-add', addPlate)
+end
+
+function PlateManager:update(dt)
+    if self.upgradedLevel and self.upgradedLevel > self.level then
+        self.level = self.upgradedLevel
+        self:addPlate(self.level)
+    end
 end
 
 function PlateManager:render()

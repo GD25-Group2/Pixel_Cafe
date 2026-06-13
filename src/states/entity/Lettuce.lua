@@ -27,4 +27,5 @@ function Lettuce:taken()
 end
 
 function Lettuce:render()
+    BaseEntity.render(self)
 end

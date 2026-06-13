@@ -2,25 +2,36 @@
 Plate = class{__includes = BaseEntity}
 
 local supply_yield_table = {
-    ['SlicedBread']      = 'SliceOfBread',
-    ['ChoppedMeat']      = 'Meat',
-    ['ChoppedVegetable'] = 'Vegetable'
+    ['ChoppedBread']   = 'SliceOfBread',
+    ['ChoppedMeat']    = 'Meat',
+    ['ChoppedLettuce'] = 'Lettuce',
 }
 
---[[
-'DisposableCoffeeCup'
-'Coffee'
-'LoafOfBread'
-'SlicedBread'
-'Meat'
-'ChoppedMeat'
-'Vegetable'
-'ChoppedVegetable'
-'FreeSandwich'
-'Meat'
-'MeatSandwich'
-'DeluxeSandwich'
-]]
+-- Raw ingredients
+local valid_assembly_items = {
+    ['SliceOfBread'] = true, 
+    ['ChoppedBread'] = true,
+    ['Meat'] = true,
+    ['ChoppedMeat'] = true,
+    ['Lettuce'] = true,
+    ['ChoppedLettuce'] = true,
+    ['Vegetable'] = true
+}
+
+-- Finished items that can be placed on plates
+local finished_products = {
+    ['MeatSandwich'] = true,
+    ['DeluxeSandwich'] = true,
+    ['FreeSandwich'] = true,
+    ['Meat'] = true, -- Meat is both a product and an ingredient
+    ['Lettuce'] = true
+}
+
+local storage_items = {
+    ['LoafOfBread'] = true,
+    ['Lettuce'] = true,
+    ['Meat'] = true
+}
 
 function Plate:init(params)
     BaseEntity.init(self, params)
@@ -64,7 +75,12 @@ function Plate:render()
     
     local text = ""
     if self.mode == 'Supply' and self.count > 0 then
-        text = string.format("Slices: %d", self.count)
+        -- If it's a bulk supply, show count. If it's single storage, just show the item name.
+        if self.count > 1 then
+            text = string.format("Slices: %d", self.count)
+        else
+            text = self.heldItem
+        end
     elseif self.mode == 'Assembly' and self.productionStage == 'Ready' then
         text = self.currentOutput or "Assembling..."
     end
@@ -76,63 +92,87 @@ function Plate:render()
 end
 
 function Plate:receiveItem(item, source)
+    if source == self then return false end
+
+    -- Normalize for 'FreeSandwich' (for backwards compatibility)
+    local actual_item = item
+    if item == 'FreeSandwich' then actual_item = 'SliceOfBread' end
+
+    -- 1. If plate is empty: Decide to become Supply or Assembly
     if self.mode == 'Empty' then
-        if supply_yield_table[item] then
+        if supply_yield_table[actual_item] then
             self.mode = 'Supply'
-            self.supplySourceItem = item
+            self.supplySourceItem = actual_item
             self.count = 3
             self.productionStage = 'Ready'
-            self.heldItem = supply_yield_table[item]
+            self.heldItem = supply_yield_table[actual_item]
             return true
-        else
+        elseif storage_items[actual_item] then
+            self.mode = 'Supply'
+            self.supplySourceItem = actual_item
+            self.count = 1
+            self.productionStage = 'Ready'
+            self.heldItem = actual_item
+            return true
+        elseif valid_assembly_items[actual_item] then
             self.mode = 'Assembly'
-            table.insert(self.heldItems, item)
+            table.insert(self.heldItems, actual_item)
+            self:evaluateRecipes()
+            return true
+        end
+        return false
+    end
+
+    -- 2. If Supply Plate: Handle restocking
+    if self.mode == 'Supply' then
+        local max_count = supply_yield_table[self.supplySourceItem] and 3 or 1
+        if actual_item == self.heldItem and self.count < max_count then
+            self.count = self.count + 1
+            return true
+        end
+        return false
+    end
+
+    -- 3. If Assembly Plate: Handle Ingredients vs Finished Products
+    if self.mode == 'Assembly' then
+        
+        -- NEW: If item is a Finished Product, just hold it (don't add to recipe list)
+        if finished_products[item] and #self.heldItems == 0 then
+            self.heldItem = item
+            self.currentOutput = item
+            self.productionStage = 'Ready'
+            return true
+        end
+
+        -- Handle conversion from 1 ingredient to Supply stack
+        if #self.heldItems == 1 and actual_item == self.heldItems[1] then
+            local sourceItem = nil
+            for src, yield in pairs(supply_yield_table) do
+                if yield == actual_item then sourceItem = src; break end
+            end
+            if sourceItem then
+                self.mode = 'Supply'; self.supplySourceItem = sourceItem; self.count = 2;
+                self.productionStage = 'Ready'; self.heldItem = actual_item; self.heldItems = {}; return true
+            end
+        end
+
+        -- Add to sandwich assembly
+        if #self.heldItems < self.maxCapacity and valid_assembly_items[actual_item] then
+            table.insert(self.heldItems, actual_item)
             self:evaluateRecipes()
             return true
         end
     end
 
-    if self.mode == 'Assembly' and #self.heldItems < self.maxCapacity then
-        table.insert(self.heldItems, item)
-        self:evaluateRecipes()
-        return true
-    end
-
     return false
-end
-
-function Plate:evaluateRecipes()
-    local hasBread = false
-    local hasMeat = false
-    local hasVeg = false
-
-    for _, v in ipairs(self.heldItems) do
-        if v == 'SliceOfBread'     then hasBread = true end
-        if v == 'Meat' or v == 'ChoppedMeat' then hasMeat = true end
-        if v == 'Vegetable'        then hasVeg = true end
-    end
-
-    if hasBread and hasMeat and hasVeg then
-        self.currentOutput = 'DeluxeSandwich'
-    elseif hasBread and hasMeat then
-        self.currentOutput = 'MeatSandwich'
-    elseif hasBread then
-        self.currentOutput = 'FreeSandwich'
-    elseif hasMeat then
-        self.currentOutput = 'Meat'
-    end
-
-    if not self.currentOutput then return end
-
-    self.productionStage = 'Ready'
-    self.heldItem = self.currentOutput
 end
 
 function Plate:drag()
     self.productionStage = 'Holding'
 
     if self.mode == 'Supply' then
-        self.heldItem = supply_yield_table[self.supplySourceItem]
+        -- Fallback to the source item if it's a storage item (which yields nil in the table)
+        self.heldItem = supply_yield_table[self.supplySourceItem] or self.supplySourceItem
     elseif self.mode == 'Assembly' then
         self.heldItem = self.currentOutput
     end
@@ -145,7 +185,7 @@ function Plate:undrag()
         self.productionStage = 'Ready'
 
         if self.mode == 'Supply' then
-            self.heldItem = supply_yield_table[self.supplySourceItem]
+            self.heldItem = supply_yield_table[self.supplySourceItem] or self.supplySourceItem
         elseif self.mode == 'Assembly' then
             self.heldItem = self.currentOutput
         end
@@ -162,16 +202,16 @@ function Plate:taken()
             self:resetPlate()
         else
             self.productionStage = 'Ready'
-            self.heldItem = supply_yield_table[self.supplySourceItem]
+            self.heldItem = supply_yield_table[self.supplySourceItem] or self.supplySourceItem
         end
     elseif self.mode == 'Assembly' then
-        self.productionStage = 'Void'
         self:resetPlate()
     end
 end
 
 function Plate:resetPlate()
     self.mode = 'Empty'
+    self.productionStage = 'Void'
     self.heldItems = {}
     self.supplySourceItem = nil
     self.count = 0
