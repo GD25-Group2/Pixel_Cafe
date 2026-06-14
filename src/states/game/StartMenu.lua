@@ -30,6 +30,12 @@ function StartMenu:init()
         gMusic:setVolume(gSettings.musicVolume)
         gMusic:play()
     end
+
+    if gSounds then
+        for _, source in pairs(gSounds) do
+            source:stop()
+        end
+    end
 end
 
 function StartMenu:update(dt)

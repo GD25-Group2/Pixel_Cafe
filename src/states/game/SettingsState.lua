@@ -60,10 +60,12 @@ function SettingsState:update(dt)
 
     if suit.Slider(self.sfxSliderData, {id='sfx', draw=drawPixelSlider}, sliderX, card.y + 85, sliderW, 16).changed then
         gSettings.sfxVolume = self.sfxSliderData.value
-        if gSounds and gSounds['click'] then
-            gSounds['click']:setVolume(gSettings.sfxVolume)
-            if gSettings.sfxVolume == 0 then
-                gSounds['click']:stop()
+        if gSounds then
+            for name, source in pairs(gSounds) do
+                source:setVolume(gSettings.sfxVolume)
+                if gSettings.sfxVolume == 0 then
+                    source:stop()
+                end
             end
         end
     end

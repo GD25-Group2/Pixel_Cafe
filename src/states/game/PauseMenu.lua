@@ -20,6 +20,10 @@ function PauseMenu:init()
     for _, btn in ipairs(self.interactables) do
         gStateStack:push(btn)
     end
+
+    if gSounds and gSounds['coffee-machine'] then
+        gSounds['coffee-machine']:pause()
+    end
 end
 
 function PauseMenu:update(dt)

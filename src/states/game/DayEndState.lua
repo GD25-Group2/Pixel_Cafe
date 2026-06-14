@@ -32,6 +32,12 @@ function DayEndState:init()
     for _, btn in ipairs(self.interactables) do
         gStateStack:push(btn)
     end
+
+    if gSounds then
+        for _, source in pairs(gSounds) do
+            source:stop()
+        end
+    end
 end
 
 function DayEndState:update(dt)

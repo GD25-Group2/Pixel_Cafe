@@ -110,7 +110,11 @@ gMusic = love.audio.newSource('assets/music&SFX/Cafe Love - WOW Sound  The Boba 
 gMusic:setLooping(true)
 -- SFX 
 gSounds = {
-    ['click'] = love.audio.newSource('assets/music&SFX/SFX/mouse-click.mp3', 'static'),
+    ['click'] = love.audio.newSource('assets/music&SFX/bottom sfx.mp3', 'static'),
+    ['cup-drag'] = love.audio.newSource('assets/music&SFX/cup-drag-2.mp3', 'static'),
+    ['cup-fill'] = love.audio.newSource('assets/music&SFX/coffee-fill.mp3', 'static'),
+    ['coffee-machine'] = love.audio.newSource('assets/music&SFX/coffee-machine.mp3', 'static'),
+    ['coin-receive'] = love.audio.newSource('assets/music&SFX/coin-receive.mp3', 'static'),
 }
 
 require('src.states.BaseState')
