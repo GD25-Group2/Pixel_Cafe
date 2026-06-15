@@ -6,10 +6,11 @@ local menuItems = {
     { type = 'CoffeeSeed', id = 2, name = 'Rotten Tooth', price = 10, purchasable = true },
     { type = 'Bread', id = 3, name = 'Revolting Loaf', price = 5, purchasable = true },
     { type = 'Meat', id = 4, name = 'Meat', price = 5, purchasable = true },
-    { type = 'Label', id = 5, name = 'Upgradable Items List', price = 0, purchasable = false },
-    { type = 'CoffeeMachine', id = 6, name = 'Coffee Machine', price = 50, purchasable = false, level = 1 },
-    { type = 'Stove', id = 7, name = 'Stove', price = 50, purchasable = false, level = 1 },
-    { type = 'PlateManager', id = 8, name = 'Plate', price = 50, purchasable = false, level = 1 }
+    { type = 'Lettuce', id = 5, name = 'Lettuce', price = 5, purchasable = true },
+    { type = 'Label', id = 6, name = 'Upgradable Items List', price = 0, purchasable = false },
+    { type = 'CoffeeMachine', id = 7, name = 'Coffee Machine', price = 50, purchasable = false, level = 1 },
+    { type = 'Stove', id = 8, name = 'Stove', price = 50, purchasable = false, level = 1 },
+    { type = 'PlateManager', id = 9, name = 'Plate', price = 50, purchasable = false, level = 1 }
 }
 
 function GameStartShopState:init()

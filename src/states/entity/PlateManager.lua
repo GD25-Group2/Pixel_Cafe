@@ -2,21 +2,21 @@ PlateManager = class {__includes = BaseEntity}
 
 local buffer = 2
 local MAX_UPGRADE_LEVEL = 3
+local TOTAL_COLUMNS = 4
 
 function PlateManager:init()
     BaseEntity.init(self, PLATE_MANAGER_CONFIG)
 
     self.type = 'PlateManager'
     
-    local currentLevel = StockManager:getLevel(self.type) or 0
-    if currentLevel == 0 then currentLevel = 1 end
+    local currentLevel = StockManager:getLevel(self.type) or 1
     self.level = currentLevel
     
     print('Plate Manager Active Level:', self.level)
     self.plates = {}
 
-    for i = 1, MAX_UPGRADE_LEVEL do
-        local startActive = (i <= self.level)
+    for i = 1, TOTAL_COLUMNS do
+        local startActive = (i <= self.level + 1)
         self:addPlate(i, startActive)
     end
 
@@ -57,8 +57,9 @@ end
 function PlateManager:update(dt)
     if self.upgradedLevel and self.upgradedLevel > self.level then
         for l = self.level + 1, self.upgradedLevel do
-            local idx1 = (l - 1) * 2 + 1
-            local idx2 = (l - 1) * 2 + 2
+            local targetColumn = l + 1
+            local idx1 = (targetColumn - 1) * 2 + 1
+            local idx2 = (targetColumn - 1) * 2 + 2
 
             if self.plates[idx1] then
                 self.plates[idx1]:activate()

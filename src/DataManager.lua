@@ -101,6 +101,8 @@ local dateDependentUnlock = {
     'BreadBasket',
     false,
     'Lettuce',
+    false,
+    'Stove'
 }
 
 function DataManager:autoUnlockMachine(day)
