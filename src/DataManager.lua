@@ -29,6 +29,7 @@ function DataManager:getDefaultData()
             ['Bread'] = 0,
             ['PaperCup'] = 10,
             ['Meat'] = 2,
+            ['Lettuce'] = 1,
         },
         ['reputation'] = 50, --out of 100
     }
@@ -99,9 +100,7 @@ local dateDependentUnlock = {
     false,
     'BreadBasket',
     false,
-    'BreadPlate',
-    false,
-    'SandwichPlate',
+    'Lettuce',
 }
 
 function DataManager:autoUnlockMachine(day)

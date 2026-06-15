@@ -1,6 +1,6 @@
 ShopItem = class {__includes = BaseEntity}
 
-function ShopItem:init(data, card)
+function ShopItem:init(data)
     self.type = data.type
     self.id = data.id
     self.name = data.name
@@ -14,11 +14,10 @@ function ShopItem:init(data, card)
         self.price = data.price
     end
     
-    self.card = card
-    self.innerX = card.x + 10
-    self.innerY = card.y + 60
-    self.innerW = card.width - 20
-    self.innerH = card.height - 90
+    self.innerX = data.innerX or 10
+    self.innerY = data.innerY or 60
+    self.innerW = data.innerW or (VIRTUAL_WIDTH - 20)
+    self.innerH = data.innerH or (VIRTUAL_HEIGHT - 90)
     self.height = 45
     self.changeY = 0
     self.isVisible = true
@@ -30,7 +29,7 @@ function ShopItem:init(data, card)
         
         self.button = Button({
             text = bText,
-            x = self.card.x + self.card.width - 80,
+            x = self.innerX + self.innerW - 75,
             y = self.y + 11,
             desired_width = 60,
             desired_height = 18,
@@ -55,7 +54,8 @@ function ShopItem:init(data, card)
             id = self.id,
             item_height = self.height,
             buffer = 5,
-            scrollY = 0
+            scrollY = 0,
+            changeY = 0 
         })
         
         local originalRender = self.button.render
@@ -65,6 +65,13 @@ function ShopItem:init(data, card)
                 originalRender(btnSelf)
                 love.graphics.setScissor()
             end
+        end
+        
+        local originalUpdate = self.button.update
+        self.button.update = function(btnSelf, dt)
+            if originalUpdate then originalUpdate(btnSelf, dt) end
+            btnSelf.x = self.innerX + self.innerW - 75
+            btnSelf.y = self.y + 11
         end
     end
 end

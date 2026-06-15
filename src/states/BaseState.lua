@@ -60,6 +60,10 @@ function BaseState:mouseResponse()
                     if (self.breadPlate and not target:canDragToPlate(self.breadPlate)) or (target.stock <= 0) then --if the plate is unable to accept the dragged entity
                         allowDrag = false
                     end
+                elseif target.type == 'Lettuce' then
+                    if target.stock <= 0 then
+                        allowDrag = false
+                    end
                 elseif target.type == 'CoffeeCupStack' and self.coffeeTray then
                     local total = self.coffeeTray.emptyCups + self.coffeeTray.filledCups
                     if total >= 4 or target.stock <= 0 then

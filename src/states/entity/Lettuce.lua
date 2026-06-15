@@ -1,7 +1,7 @@
 Lettuce = class {__includes = BaseEntity}
 
-function Lettuce:init(def)
-    BaseEntity.init(self, def)
+function Lettuce:init()
+    BaseEntity.init(self, LETTUCE_CONFIG)
 
     self.type = 'Lettuce'
     self.isMachine = true
@@ -28,4 +28,7 @@ end
 
 function Lettuce:render()
     BaseEntity.render(self)
+
+    love.graphics.setColor(gColors['blue'])
+    love.graphics.rectangle('fill', self.x, self.y, self.desired_width, self.desired_height)
 end

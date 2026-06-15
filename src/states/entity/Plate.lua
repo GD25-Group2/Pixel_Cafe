@@ -13,14 +13,14 @@ local valid_assembly_items = {
     ['ChoppedMeat'] = true,
     ['Lettuce'] = true,
     ['ChoppedLettuce'] = true,
-    ['Vegetable'] = true
 }
 
 local finished_products = {
     ['MeatSandwich'] = true,
     ['DeluxeSandwich'] = true,
     ['FreeSandwich'] = true,
-    ['Meat'] = true, 
+    ['VegeSandwich'] = true,
+    ['Meat'] = true,
     ['Lettuce'] = true
 }
 

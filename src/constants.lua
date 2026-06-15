@@ -146,6 +146,7 @@ ORDER_TYPES = {
     ['FreeSandwich']     = {price = 7, name = 'FreeSandwich'},
     ['MeatSandwich'] = {price = 8, name = 'MeatSandwich'},
     ['LoafOfBread']  = {price = 6, name = 'LoafOfBread'},
+    ['VegeSandwich'] = {price = 6, name = 'VegeSandwich'}
 }
 
 POPUP_WINDOW_CONFIG = {
@@ -164,6 +165,15 @@ POPUP_INPUT_BOX = {
     desired_height = 30,
     color = gColors['gray'],
     border = gColors['black'],
+}
+
+GAME_START_CONFIG = {
+    width = 320,
+    height = 190,
+    x = math.floor(VIRTUAL_WIDTH / 2 - 160),
+    y = math.floor(VIRTUAL_HEIGHT / 2 - 95),
+    color = {0.14, 0.16, 0.22, 1},
+    border = {0.4, 0.5, 0.6, 1},
 }
 
 BUTTON_PARAMS = {
@@ -212,7 +222,7 @@ BUTTON_PARAMS = {
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
-    ['ToShop'] = {
+    --[[['ToShop'] = {
         text = nil,
         frame = gFrames['ShopIcon'],
         x = 5 + 16 + 4,
@@ -243,7 +253,7 @@ BUTTON_PARAMS = {
         clickable = true,
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
-    },
+    },]]
     ['Resume'] = {
         text = 'Resume',
         x = PAUSE_MENU_CONFIG.btnX,
@@ -418,7 +428,7 @@ BUTTON_PARAMS = {
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
-    --repostition the queue display to be below or completely remove it.
+    --[[repostition the queue display to be below or completely remove it.
     ['QueueExpand'] = {
         text = nil,
         frame = gFrames['QueueExpandIcon'],
@@ -446,6 +456,20 @@ BUTTON_PARAMS = {
         clickable = true,
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
+    },]]
+    ['StartShift'] = {
+        text = 'Start Shift',
+        x = GAME_START_CONFIG.x + GAME_START_CONFIG.width / 2 - 40,
+        y = GAME_START_CONFIG.y + GAME_START_CONFIG.height - 25,
+        desired_width = 80,
+        desired_height = 20,
+        action = function()
+            gStateStack:clear()
+            gStateStack:resume()
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
     },
 }
 
@@ -457,8 +481,8 @@ BREAD_BASKET_CONFIG = {
     desired_height = 32,
 }
 
-BREAD_PLATE_CONFIG = {
-    frame = gFrames['BreadPlate'],
+LETTUCE_CONFIG = {
+    frame = nil,
     x = 100,
     y = 140,
     desired_width = 32,

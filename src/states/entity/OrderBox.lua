@@ -6,6 +6,7 @@ local ORDER_LABELS = {
     ['FreeSandwich'] = 'Free Sandwich',
     ['MeatSandwich'] = 'Meat Sandwich',
     ['LoafOfBread']  = 'Loaf',
+    ['VegeSandwich'] = 'Vege Sandwich',
 }
 
 local ORDER_COLORS = {
@@ -14,6 +15,7 @@ local ORDER_COLORS = {
     ['FreeSandwich'] = {0.45, 0.25, 0.65, 1},
     ['MeatSandwich'] = gColors['brown'],
     ['LoafOfBread']  = {0.85, 0.45, 0.15, 1},
+    ['VegeSandwich'] = gColors['red'],
 }
 
 function OrderBox:init(params)
