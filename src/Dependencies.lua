@@ -40,8 +40,8 @@ gFrames = {
     },
     ['Coffee'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume4by4.png'),
     ['LoafOfBread'] = love.graphics.newImage('assets/loafOfBread.png'),
-    ['BreadBasket'] = love.graphics.newImage('assets/panOfLoavesOfBread.png'),
-    ['SliceOfBread'] = love.graphics.newImage('assets/sliceOfBread.png'),
+    ['BreadBasket'] = love.graphics.newImage('assets/breadLoaf.png'),
+    ['SliceOfBread'] = love.graphics.newImage('assets/breadCarry.png'),
     ['BreadPlate'] = love.graphics.newImage('assets/panOfSlicesOfBread.png'),
     ['SandwichPlate'] = love.graphics.newImage('assets/sandwichPlate.png'),
     ['EmptyTray'] = love.graphics.newImage('assets/Cups and stack/EmptyTray.png'),
@@ -68,6 +68,19 @@ gFrames = {
     ['ShopIcon'] = love.graphics.newImage('assets/ShopIcon.png'),
     ['QueueExpandIcon'] = love.graphics.newImage('assets/expandToLeft.png'),
     ['QueueContractIcon'] = love.graphics.newImage('assets/expandToRight.png'),
+    ['choppedPlatet'] = love.graphics.newImage('assets/choppedPlatet.png'),
+    ['ChoppingBoard'] = love.graphics.newImage('assets/choppingBoard&Knife.png'),
+    ['ChoppedMeat'] = love.graphics.newImage('assets/choppedMeatFromBoard.png'),
+    ['ChoppedLettuce'] = love.graphics.newImage('assets/choppedLettuceFromBoard.png'),
+    ['ChoppedBread'] = love.graphics.newImage('assets/choppedBreadFromBoard.png'),
+    ['Meat'] = love.graphics.newImage('assets/meatCarry.png'),
+    ['Lettuce'] = love.graphics.newImage('assets/lettuceCarry.png'),
+    ['FreeSandwich'] = love.graphics.newImage('assets/breadCarry.png'),
+    --['MeatLettuce'] = ,
+    ['MeatSandwich'] = love.graphics.newImage('assets/meatSandwich.png'),
+    ['VegeSandwich'] = love.graphics.newImage('assets/vegeSandwich.png'),
+    ['DeluxeSandwich'] = love.graphics.newImage('assets/deluxeSandwich.png'),
+    ['LettuceBig'] = love.graphics.newImage('assets/lettuce.png'),
 }
 
 -- Coffee Machine Animation Frames
@@ -100,6 +113,8 @@ gFrames['CoffeeJarVolume2by4'] = love.graphics.newImage('assets/JarVolumeStages/
 gFrames['CoffeeJarVolume3by4'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume3y4.png')
 gFrames['CoffeeJarVolume4by4'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume4by4.png')
 
+gFrames['choppedPlatetQuads'] = GenerateQuads(gFrames['choppedPlatet'], 32, 32)
+gFrames['ChoppingBoardQuads'] = GenerateQuads(gFrames['ChoppingBoard'], 32, 32)
 
 --require('src.Animation')
 DataManager = require('src.DataManager')

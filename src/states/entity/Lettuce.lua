@@ -28,7 +28,6 @@ end
 
 function Lettuce:render()
     BaseEntity.render(self)
-
-    love.graphics.setColor(gColors['blue'])
-    love.graphics.rectangle('fill', self.x, self.y, self.desired_width, self.desired_height)
+    --[[love.graphics.setColor(gColors['blue'])
+    love.graphics.rectangle('fill', self.x, self.y, self.desired_width, self.desired_height)]]
 end

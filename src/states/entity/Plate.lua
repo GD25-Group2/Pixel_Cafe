@@ -2,8 +2,8 @@ Plate = class{__includes = BaseEntity}
 
 local supply_yield_table = {
     ['ChoppedBread']   = 'SliceOfBread',
-    ['ChoppedMeat']    = 'Meat',
-    ['ChoppedLettuce'] = 'Lettuce',
+    ['ChoppedMeat']    = 'ChoppedMeatPortion',
+    ['ChoppedLettuce'] = 'ChoppedLettucePortion',
 }
 
 local valid_assembly_items = {
@@ -11,8 +11,11 @@ local valid_assembly_items = {
     ['ChoppedBread'] = true,
     ['Meat'] = true,
     ['ChoppedMeat'] = true,
+    ['ChoppedMeatPortion'] = true,
     ['Lettuce'] = true,
     ['ChoppedLettuce'] = true,
+    ['ChoppedLettucePortion'] = true,
+    ['ChoppedMeatLettuce'] = true
 }
 
 local finished_products = {
@@ -21,7 +24,12 @@ local finished_products = {
     ['FreeSandwich'] = true,
     ['VegeSandwich'] = true,
     ['Meat'] = true,
-    ['Lettuce'] = true
+    ['Lettuce'] = true,
+    ['ChoppedMeat'] = true,
+    ['ChoppedMeatPortion'] = true,
+    ['ChoppedLettuce'] = true,
+    ['ChoppedLettucePortion'] = true,
+    ['ChoppedMeatLettuce'] = true,
 }
 
 local storage_items = {
@@ -32,6 +40,12 @@ local storage_items = {
 
 function Plate:init(params)
     BaseEntity.init(self, params)
+
+    -- Safe lazy-loading to prevent 'nil graphics' crash on LÖVE startup
+    if not gFrames['choppedPlatet'] then
+        gFrames['choppedPlatet'] = love.graphics.newImage('assets/choppedPlatet.png')
+        gFrames['choppedPlatetQuads'] = GenerateQuads(gFrames['choppedPlatet'], 32, 32)
+    end
 
     self.type = 'Plate'
     self.productionStage = 'Void'
@@ -48,26 +62,48 @@ function Plate:init(params)
 end
 
 function Plate:evaluateRecipes()
-    local hasBread = false
+    local hasSliceOfBread = false
+    local hasChoppedBread = false
     local hasMeat = false
-    local hasVeg = false
+    local hasChoppedMeat = false
+    local hasLettuce = false
+    local hasChoppedLettuce = false
 
     for _, v in ipairs(self.heldItems) do
-        if v == 'SliceOfBread' then hasBread = true end
-        if v == 'Meat' or v == 'ChoppedMeat' then hasMeat = true end
-        if v == 'Vegetable' or v == 'Lettuce' or v == 'ChoppedLettuce' then hasVeg = true end
+        if v == 'SliceOfBread' then hasSliceOfBread = true end
+        if v == 'ChoppedBread' then hasChoppedBread = true end
+        if v == 'Meat' then hasMeat = true end
+        if v == 'ChoppedMeat' or v == 'ChoppedMeatPortion' then hasChoppedMeat = true end
+        if v == 'Lettuce' or v == 'Vegetable' then hasLettuce = true end
+        if v == 'ChoppedLettuce' or v == 'ChoppedLettucePortion' then hasChoppedLettuce = true end
+        if v == 'ChoppedMeatLettuce' then
+            hasChoppedMeat = true
+            hasChoppedLettuce = true
+        end
     end
 
-    if hasBread and hasMeat and hasVeg then
+    local bread = hasSliceOfBread or hasChoppedBread
+
+    if bread and hasChoppedMeat and hasChoppedLettuce then
         self.currentOutput = 'DeluxeSandwich'
-    elseif hasBread and hasMeat then
+    elseif bread and hasChoppedMeat then
         self.currentOutput = 'MeatSandwich'
-    elseif hasBread then
+    elseif bread and hasChoppedLettuce then
+        self.currentOutput = 'VegeSandwich' 
+    elseif bread then
         self.currentOutput = 'FreeSandwich'
+    elseif hasChoppedMeat and hasChoppedLettuce then
+        self.currentOutput = 'ChoppedMeatLettuce'
+    elseif hasChoppedMeat then
+        self.currentOutput = 'ChoppedMeatPortion'
     elseif hasMeat then
         self.currentOutput = 'Meat'
-    elseif hasVeg then
+    elseif hasChoppedLettuce then
+        self.currentOutput = 'ChoppedLettucePortion'
+    elseif hasLettuce then
         self.currentOutput = 'Lettuce'
+    else
+        self.currentOutput = nil
     end
 
     if not self.currentOutput then return end
@@ -187,6 +223,15 @@ end
 function Plate:update(dt)
     if not self.activated then return end
 
+    if gFrames then
+        if gFrames['ChoppedLettuce'] and not gFrames['ChoppedLettucePortion'] then
+            gFrames['ChoppedLettucePortion'] = gFrames['ChoppedLettuce']
+        end
+        if gFrames['ChoppedMeat'] and not gFrames['ChoppedMeatPortion'] then
+            gFrames['ChoppedMeatPortion'] = gFrames['ChoppedMeat']
+        end
+    end
+
     if self.productionStage == 'Void' then
         self.color = gColors['green']
     elseif self.productionStage == 'Holding' then
@@ -204,16 +249,88 @@ function Plate:render()
 
     BaseEntity.render(self)
 
-    love.graphics.setColor(self.color)
-    love.graphics.rectangle('fill', self.x, self.y, self.desired_width, self.desired_height)
+    local frameIndex = 1
+
+    if self.mode == 'Supply' and self.count > 0 then
+        local base = 0
+        if self.heldItem == 'Meat' or self.heldItem == 'ChoppedMeat' or self.heldItem == 'ChoppedMeatPortion' then
+            base = 1  
+        elseif self.heldItem == 'Lettuce' or self.heldItem == 'ChoppedLettuce' or self.heldItem == 'ChoppedLettucePortion' or self.heldItem == 'Vegetable' then
+            base = 4  
+        elseif self.heldItem == 'SliceOfBread' or self.heldItem == 'ChoppedBread' then
+            base = 7  
+        end
+        
+        if base > 0 then
+            frameIndex = base + math.min(self.count, 3)
+        end
+
+    elseif self.mode == 'Assembly' then
+        local hasSliceOfBread = false
+        local hasChoppedBread = false
+        local hasMeat = false
+        local hasChoppedMeat = false
+        local hasLettuce = false
+        local hasChoppedLettuce = false
+
+        for _, v in ipairs(self.heldItems) do
+            if v == 'SliceOfBread' then hasSliceOfBread = true end
+            if v == 'ChoppedBread' then hasChoppedBread = true end
+            if v == 'Meat' then hasMeat = true end
+            if v == 'ChoppedMeat' or v == 'ChoppedMeatPortion' then hasChoppedMeat = true end
+            if v == 'Lettuce' or v == 'Vegetable' then hasLettuce = true end
+            if v == 'ChoppedLettuce' or v == 'ChoppedLettucePortion' then hasChoppedLettuce = true end
+            if v == 'ChoppedMeatLettuce' then -- FIX: Unpack combined state flags for rendering
+                hasChoppedMeat = true
+                hasChoppedLettuce = true
+            end
+        end
+
+        local bread = hasSliceOfBread or hasChoppedBread
+
+        if bread and hasChoppedMeat and hasChoppedLettuce then
+            frameIndex = 14  
+        elseif bread and hasChoppedLettuce then
+            frameIndex = 13  
+        elseif bread and hasChoppedMeat then
+            frameIndex = 12  
+        elseif hasChoppedMeat and hasChoppedLettuce then
+            frameIndex = 11  
+        elseif bread then
+            frameIndex = 8   
+        elseif hasChoppedLettuce then
+            frameIndex = 5   
+        elseif hasLettuce then
+            frameIndex = 4   
+        elseif hasMeat or hasChoppedMeat then
+            frameIndex = 2   
+        else
+            frameIndex = 1   
+        end
+    end
+
+    if gFrames['choppedPlatet'] and gFrames['choppedPlatetQuads'] then
+        love.graphics.setColor(gColors['white'] or {1, 1, 1, 1})
+        local safeFrame = math.min(frameIndex, #gFrames['choppedPlatetQuads'])
+        love.graphics.draw(gFrames['choppedPlatet'], gFrames['choppedPlatetQuads'][safeFrame], self.x, self.y)
+    else
+        love.graphics.setColor(self.color)
+        love.graphics.rectangle('fill', self.x, self.y, self.desired_width, self.desired_height)
+    end
 
     love.graphics.setFont(gFonts['small'])
     love.graphics.setColor(gColors['white'])
     
-    local text = ""
+    --[[local text = ""
     if self.mode == 'Supply' and self.count > 0 then
         if self.count > 1 then
-            text = string.format("Slices: %d", self.count)
+            if self.heldItem == 'SliceOfBread' then
+                text = string.format("Slices: %d", self.count)
+            elseif self.heldItem == 'ChoppedMeat' or self.heldItem == 'ChoppedMeatPortion' then
+                text = string.format("Patties: %d", self.count)
+            else
+                text = string.format("Portions: %d", self.count)
+            end
         else
             text = self.heldItem
         end
@@ -224,7 +341,7 @@ function Plate:render()
     if text ~= "" then
         local tw = gFonts['small']:getWidth(text)
         love.graphics.print(text, self.x + self.desired_width / 2 - tw / 2, self.y + self.desired_height / 2)
-    end
+    end]]
 end
 
 function Plate:drag()
@@ -233,7 +350,7 @@ function Plate:drag()
     if self.mode == 'Supply' then
         self.heldItem = supply_yield_table[self.supplySourceItem] or self.supplySourceItem
     elseif self.mode == 'Assembly' then
-        self.heldItem = self.currentOutput
+        self.heldItem = self.currentOutput or self.heldItem
     end
     self:hideBubble()
 end

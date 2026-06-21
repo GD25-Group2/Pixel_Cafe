@@ -80,7 +80,7 @@ COFFEE_CUP_STACK_CONFIG = {
 COFFEE_TRAY_CONFIG = {
     frame = gFrames['EmptyTray'],
     x = 50,
-    y = 140,
+    y = 145,
     desired_width = 32,
     desired_height = 32,
 }
@@ -482,7 +482,7 @@ BREAD_BASKET_CONFIG = {
 }
 
 LETTUCE_CONFIG = {
-    frame = nil,
+    frame = gFrames['LettuceBig'],
     x = 100,
     y = 140,
     desired_width = 32,
