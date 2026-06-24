@@ -24,6 +24,13 @@ function PauseMenu:init()
     if gSounds and gSounds['coffee-machine'] then
         gSounds['coffee-machine']:pause()
     end
+    if gSounds and gSounds['time-ticking'] then
+        gSounds['time-ticking']:pause()
+    end
+    if gSounds then
+        if gSounds['walking-song1'] then gSounds['walking-song1']:pause() end
+        if gSounds['walking-song2'] then gSounds['walking-song2']:pause() end
+    end
 end
 
 function PauseMenu:update(dt)

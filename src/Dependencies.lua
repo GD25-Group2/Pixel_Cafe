@@ -115,6 +115,9 @@ gSounds = {
     ['cup-fill'] = love.audio.newSource('assets/music&SFX/coffee-fill.mp3', 'static'),
     ['coffee-machine'] = love.audio.newSource('assets/music&SFX/coffee-machine.mp3', 'static'),
     ['coin-receive'] = love.audio.newSource('assets/music&SFX/coin-receive.mp3', 'static'),
+    ['time-ticking'] = love.audio.newSource('assets/music&SFX/time-ticking.mp3', 'static'),
+    ['walking-song1'] = love.audio.newSource('assets/music&SFX/walking-song1.mp3', 'static'),
+    ['walking-song2'] = love.audio.newSource('assets/music&SFX/walking-song2.mp3', 'static'),
 }
 
 require('src.states.BaseState')
