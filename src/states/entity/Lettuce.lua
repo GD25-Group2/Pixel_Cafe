@@ -7,10 +7,9 @@ function Lettuce:init()
     self.isMachine = true
     self.stockType = 'Lettuce'
     self.stock = StockManager:getStockTotal()[self.stockType]
-    self._bubbleColor = gColors['yellow']
+    self.bubbleColor = gColors['yellow']
 
     self.productionStage = 'Ready'
-    self:showBubble(self._bubbleColor)
 end
 
 function Lettuce:canDragToPlate(plate)

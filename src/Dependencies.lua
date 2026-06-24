@@ -16,7 +16,7 @@ gFonts = {
 }
 
 gFrames = {
-    ['StartMenuBackground'] = love.graphics.newImage('assets/MainScreen.png'),
+    ['StartMenuBackground'] = love.graphics.newImage('assets/pixelCafeCityBackground.png'),
     ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.png'),
     customers = {
         ['Headless'] = {
@@ -39,11 +39,6 @@ gFrames = {
         },
     },
     ['Coffee'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume4by4.png'),
-    ['LoafOfBread'] = love.graphics.newImage('assets/loafOfBread.png'),
-    ['BreadBasket'] = love.graphics.newImage('assets/breadLoaf.png'),
-    ['SliceOfBread'] = love.graphics.newImage('assets/breadCarry.png'),
-    ['BreadPlate'] = love.graphics.newImage('assets/panOfSlicesOfBread.png'),
-    ['SandwichPlate'] = love.graphics.newImage('assets/sandwichPlate.png'),
     ['EmptyTray'] = love.graphics.newImage('assets/Cups and stack/EmptyTray.png'),
     ['CoffeeCupStack'] = love.graphics.newImage('assets/Cups and stack/coffeecupstack.png'),
     ['DisposableCoffeeCup'] = love.graphics.newImage('assets/Cups and stack/DisposableCoffeeCup.png'),
@@ -64,7 +59,7 @@ gFrames = {
     ['ThreeCupsFillStage2by3'] = love.graphics.newImage('assets/Cups and stack/CupFillStage3/ThreeCupsFillStage2by3.png'),
     ['TwoCupsFillStage1by2'] = love.graphics.newImage('assets/Cups and stack/CupFillStage2/2CupsFillStage1by2.png'),
     ['CounterBackground'] = love.graphics.newImage('assets/pixelCafeCounterBackground3.png'),
-    ['CityBackground'] = love.graphics.newImage('assets/City3.png'),
+    ['CityBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundLowerPerspective.png'),
     ['ShopIcon'] = love.graphics.newImage('assets/ShopIcon.png'),
     ['QueueExpandIcon'] = love.graphics.newImage('assets/expandToLeft.png'),
     ['QueueContractIcon'] = love.graphics.newImage('assets/expandToRight.png'),
@@ -176,3 +171,4 @@ require('src.states.GUI.CityBackground')
 --require('src.states.GUI.ShopBackground')
 --require('src.states.GUI.ShopTopBox')
 require('src.states.GUI.GameStartShopStateCard')
+require('src.states.GUI.Bubble')

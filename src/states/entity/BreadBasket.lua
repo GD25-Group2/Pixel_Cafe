@@ -7,10 +7,20 @@ function BreadBasket:init(def)
     self.isMachine = true
     self.stockType = 'Bread'
     self.stock = StockManager:getStockTotal()[self.stockType]
-    self._bubbleColor = gColors['yellow']
+    self.bubbleColor = gColors['yellow']
+    self.bubble = Bubble({
+        x = self.x,
+        y = self.y,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        bubbleColor = self.bubbleColor,
+    })
+
+    if self.stock > 0 then self.bubble:activate()
+    else self.bubble:deactivate()
+    end
 
     self.productionStage = 'Ready'
-    self:showBubble(self._bubbleColor)
 end
 
 function BreadBasket:canDragToPlate(plate)

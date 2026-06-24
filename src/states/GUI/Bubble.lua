@@ -1,65 +1,16 @@
-BaseEntity = class {__includes = BaseState}
+Bubble = class {__includes = BaseEntity}
 
-function BaseEntity:init(params)
-    for k, v in pairs(params) do
-        self[k] = v
-    end
+function Bubble:init(params)
+    BaseEntity.init(self, params)
+    self.type = 'Bubble'
+    self.isGui = true
+    self.isActive = false
 end
 
-function BaseEntity:isMouseOver()
-    return mouseX > self.x and mouseX < self.x + self.desired_width and
-           mouseY > self.y and mouseY < self.y + self.desired_height
-end
-
-function BaseEntity:update(dt)
-    if self.animation then
-        self.animation:update(dt)
-        local frame = self.animation:getCurrentFrame()
-        if frame then
-            self.frame = frame
-        end
-    end
-
-    if self.stock and self.stockType then
-        self.stock = StockManager:getStockTotal()[self.stockType]
-    end
-end
-
---[[function BaseEntity:showBubble(color)
-    self._isBubbleActive = true
-    self._bubbleColor = color or self._bubbleColor or gColors['white']
-end
-
-function BaseEntity:hideBubble()
-    self._isBubbleActive = false
-end]]
-
-function BaseEntity:render()
-    if self.type == 'Cursor' then
-        self.x = mouseX
-        self.y = mouseY
-    end
-
-    if not self.frame then return end
-
-    if type(self.frame) == "userdata" and self.frame:typeOf("Quad") then
-        local _, _, qw, qh = self.frame:getViewport()
-        local texture = self.texture or (self.animation and self.animation.texture)
+function Bubble:render()
+    if self.isActive then
+        love.graphics.setColor(gColors['white'])
         
-        if texture then
-            love.graphics.draw(texture, self.frame, self.x, self.y, 0, 
-                self.desired_width / qw, self.desired_height / qh)
-        end
-    elseif type(self.frame) == "userdata" and (self.frame:typeOf("Image") or self.frame:typeOf("Texture")) then
-        love.graphics.draw(self.frame, self.x, self.y, 0, 
-            self.desired_width / self.frame:getWidth(), self.desired_height / self.frame:getHeight())
-    end
-    
-    love.graphics.setColor(gColors['white'])
-end
-
---[[function BaseEntity:renderBubble()
-    if self._isBubbleActive then
         -- Event-driven floating animation using math.sin
         local floatOffset = math.sin(love.timer.getTime() * 4) * 2
         local bx = self.x + self.desired_width / 2
@@ -74,7 +25,7 @@ end
         -- Adjust 'by' so the pointer tip floats dynamically based on entity height
         local by = self.y - 10 - ((self.desired_height or 0) * 0.2) + floatOffset
         
-        local r, g, b, a = unpack(self._bubbleColor)
+        local r, g, b, a = table.unpack(self.bubbleColor)
         
         -- Pre-calculate tail polygon points for main bubble
         local bx1 = bx + R * math.cos(angle1)
@@ -127,7 +78,14 @@ end
         love.graphics.line(bx1, by1, bx_tip, by_tip)
         love.graphics.line(bx2, by2, bx_tip, by_tip)
         
-        
         love.graphics.setColor(gColors['white'])
     end
-end]]
+end
+
+function Bubble:activate()
+    self.isActive = true
+end
+
+function Bubble:deactivate()
+    self.isActive = false
+end

@@ -76,6 +76,6 @@ function PlateManager:update(dt)
 end
 
 function PlateManager:render()
-    love.graphics.setColor(gColors['red'])
-    love.graphics.rectangle('line', self.x, self.y, self.desired_width, self.desired_height)
+    --[[love.graphics.setColor(gColors['red'])
+    love.graphics.rectangle('line', self.x, self.y, self.desired_width, self.desired_height)]]
 end
