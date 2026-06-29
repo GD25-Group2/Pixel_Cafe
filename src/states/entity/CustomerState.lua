@@ -34,17 +34,17 @@ function CustomerState:init(params)
     -- FIXED: Changed getFrame() to getCurrentFrame() with an explicit asset fallback
     self.frame = (self.animation and self.animation:getCurrentFrame()) or gFrames.customers[self.customerType]
     
-    self.desired_width  = 64
-    self.desired_height = 64
+    self.desired_width  = self.desired_width or 64
+    self.desired_height = self.desired_height or 64
 
-    -- Position: spawn at entrance, move linearly to assigned slot
+    --[[Position: spawn at entrance, move linearly to assigned slot
     self.x     = ENTRANCE_X
     self.y     = self.slot.y
     self.slotX = self.slot.x
-    self.slotY = self.slot.y
+    self.slotY = self.slot.y]]
 
     -- State machine
-    self.state      = 'moving_in'
+    self.state      = 'queue'
     self.stateTimer = 0
 
     -- Payment
@@ -53,6 +53,15 @@ function CustomerState:init(params)
 
     -- Flags
     self.leftImpatient = false
+end
+
+function CustomerState:setSlot(slot)
+    self.slotIndex = slot.index
+    self.slot      = slot
+    self.x         = ENTRANCE_X
+    self.y         = self.slot.y
+    self.slotX = self.slot.x
+    self.slotY = self.slot.y
 end
 
 -- ─── Main update dispatcher ───────────────────────────────────────────────────
@@ -74,10 +83,15 @@ function CustomerState:update(dt)
     elseif self.state == 'waiting'   then self:updateWaiting(dt)
     elseif self.state == 'paying'    then self:updatePaying(dt)
     elseif self.state == 'leaving'   then self:updateLeaving(dt)
+    elseif self.state == 'queue'     then self:updateQueue(dt)
     end
 end
 
 -- ─── Per-state update functions ───────────────────────────────────────────────
+
+function CustomerState:updateQueue(dt)
+    return
+end
 
 function CustomerState:updateMovingIn(dt)
     local distance = self.slotX - self.x
@@ -137,12 +151,58 @@ function CustomerState:render()
     end
 end
 
+function CustomerState:renderMini(x, y, size)
+    local sprite = nil
+
+    if self.animation and self.animation.frames and #self.animation.frames > 0 then
+        local currentIdx = self.animation.currentFrame or 1
+        sprite = self.animation.frames[currentIdx]
+    end
+
+    if not sprite and self.customerType and gFrames.customers[self.customerType] then
+        local folder = gFrames.customers[self.customerType]
+        if folder['idle'] and folder['idle'][1] then
+            sprite = folder['idle'][1]
+        elseif folder['walk'] and folder['walk'][1] then
+            sprite = folder['walk'][1]
+        end
+    end
+
+    if sprite then
+        local spriteW = sprite:getWidth()
+        local spriteH = sprite:getHeight()
+        
+        local scaleX = size / spriteW
+        local scaleY = size / spriteH
+
+        love.graphics.setColor(gColors['white'] or {1, 1, 1, 1})
+        love.graphics.draw(sprite, x, y, 0, scaleX, scaleY)
+    else
+        if self.customerType == 'LegLady' then love.graphics.setColor(0.8, 0.2, 0.6, 1)
+        elseif self.customerType == 'ArmEater' then love.graphics.setColor(0.2, 0.7, 0.3, 1)
+        else love.graphics.setColor(0.8, 0.3, 0.2, 1) end
+        
+        love.graphics.rectangle('fill', x, y, size, size, 2, 2)
+    end
+
+    love.graphics.setColor(gColors['white'])
+end
+
 -- ─── Public API ───────────────────────────────────────────────────────────────
 
 function CustomerState:setState(newState)
     self.state      = newState
     self.stateTimer = 0
 end
+
+--[[local function interactRep(amount)
+    for i = 1, #gStateStack.states do
+        local state = gStateStack.states[i]
+        if state.type == 'ReputationBar' then
+            state:changeReputation(amount) --consider adding satisfaction level to this reputation adding amount
+        end
+    end
+end]]
 
 function CustomerState:receiveItem(itemType)
     if self.state ~= 'waiting' then return false end
@@ -154,6 +214,9 @@ function CustomerState:receiveItem(itemType)
             self.patienceAtPayment = self.orderBox.patience
             self.orderBox:deactivate()
         end
+
+        --interactRep(5)
+        Signal:emit('customer-served', 5)
         self:setState('paying')
         return true
     else
@@ -161,6 +224,7 @@ function CustomerState:receiveItem(itemType)
         if self.orderBox then
             self.orderBox:decreasePatience(CUSTOMER_CONFIG.wrongOrderPatiencePenalty or 10)
         end
+        Signal:emit('customer-served', -5)
         return false
     end
 end

@@ -66,6 +66,8 @@ gFrames = {
     ['CounterBackground'] = love.graphics.newImage('assets/pixelCafeCounterBackground.png'),
     ['CityBackground'] = love.graphics.newImage('assets/City3.png'),
     ['ShopIcon'] = love.graphics.newImage('assets/ShopIcon.png'),
+    ['QueueExpandIcon'] = love.graphics.newImage('assets/expandToLeft.png'),
+    ['QueueContractIcon'] = love.graphics.newImage('assets/expandToRight.png'),
 }
 
 -- Coffee Machine Animation Frames
@@ -102,6 +104,7 @@ gFrames['CoffeeJarVolume4by4'] = love.graphics.newImage('assets/JarVolumeStages/
 --require('src.Animation')
 DataManager = require('src.DataManager')
 StockManager = require('src.StockManager')
+Signal = require('src.Signal')
 require('src.constants')
 InputBox = require('src.InputBox')
 
@@ -148,6 +151,8 @@ require('src.states.entity.CoffeeCupStack')
 require('src.states.entity.CoffeeTray')
 require('src.states.entity.ScrollBar')
 require('src.states.entity.ShopItem')
+require('src.states.entity.ReputationBar')
+require('src.states.entity.QueueShowcase')
 
 require('src.states.GUI.DayEndStateCard')
 require('src.states.GUI.PauseMenuCard')

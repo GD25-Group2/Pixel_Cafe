@@ -36,7 +36,7 @@ function PopupWindow:update(dt)
         name, tokens = self.inputBox.update(dt)
         if name then
             DataManager:getDefaultData()
-            DataManager:nameDataSave(name)
+            DataManager:set('name', name)
             StockManager:load()
             print(DataManager:getData('name'))
             gStateStack:clear()

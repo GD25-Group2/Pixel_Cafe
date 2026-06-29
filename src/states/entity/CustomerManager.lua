@@ -6,10 +6,11 @@ CustomerManager = class{__includes = BaseState}
 
 function CustomerManager:init()
     self.customers     = {}   -- list of active CustomerState objects
+    self.queue = {}
     self.occupiedSlots = {}   -- [slotIndex] = true/false
 
     self.spawnTimer    = 0
-    self.nextSpawnTime = CUSTOMER_CONFIG.spawnInterval
+    self.nextSpawnTime = 1--CUSTOMER_CONFIG.spawnInterval
 
     -- Mark all slots free
     for i = 1, #WAITING_SLOTS do
@@ -27,13 +28,23 @@ function CustomerManager:update(dt)
             self:spawnCustomer()
             self.spawnTimer    = 0
             -- Add ±0.5 s of jitter so arrivals feel natural
-            self.nextSpawnTime = CUSTOMER_CONFIG.spawnInterval + (math.random() - 0.5)
+            self.nextSpawnTime = self:calculateNextSpawnTime()
         end
+    end
+
+    local slot = self:getAvailableSlot()
+    if slot and #self.queue > 0 then
+        local customer = table.remove(self.queue, 1)
+        customer:setSlot(slot)
+        self.occupiedSlots[slot.index] = true
+        table.insert(self.customers, customer)
+        customer:setState('moving_in')
     end
 
     -- Remove customers that have fully exited (state == 'done')
     for i = #self.customers, 1, -1 do
         local c = self.customers[i]
+        c:update(dt)
         if c.state == 'done' then
             if c.slotIndex then
                 self.occupiedSlots[c.slotIndex] = false
@@ -90,18 +101,34 @@ function CustomerManager:update(dt)
 end
 
 function CustomerManager:spawnCustomer()
-    local slot = self:getAvailableSlot()
-    if not slot then return nil end   -- all slots full
+    --[[local slot = self:getAvailableSlot()
+    if not slot then return end   -- all slots full]]
 
     local customer = CustomerState({
-        slotIndex = slot.index,
-        slot      = slot,
+        --slotIndex = slot.index,
+        --slot      = slot,
         --orderType = 'Coffee',
     })
 
-    self.occupiedSlots[slot.index] = true
-    table.insert(self.customers, customer)
-    return customer
+    --self.occupiedSlots[slot.index] = true
+    table.insert(self.queue, customer)
+    Signal:emit('queue-count', self:getQueueCount())
+    Signal:emit('queue-customers', self.queue)
+    --return customer
+end
+
+function CustomerManager:calculateNextSpawnTime()
+    local reputation = DataManager:getData('reputation') or 50
+    local repPercent = reputation / 100
+
+    local slowestSpawn = 8.0
+    local fastestSpawn = 2.0
+
+    local baseSpawnInterval = slowestSpawn - (slowestSpawn - fastestSpawn) * repPercent
+
+    local jitter = (math.random() - 0.5)
+
+    return math.max(0.75, baseSpawnInterval + jitter)
 end
 
 function CustomerManager:getAvailableSlot()
@@ -110,16 +137,14 @@ function CustomerManager:getAvailableSlot()
             return {index = i, x = s.x, y = s.y, id = s.id}
         end
     end
-    return nil
+    return false
 end
 
-function CustomerManager:getAllCustomers()
-    return self.customers
-end
+function CustomerManager:getAllCustomers() return self.customers end
 
-function CustomerManager:getCustomerCount()
-    return #self.customers
-end
+function CustomerManager:getCustomerCount() return #self.customers end
+
+function CustomerManager:getQueueCount() return #self.queue end
 
 function CustomerManager:getOccupiedSlotCount()
     local n = 0
@@ -130,18 +155,15 @@ function CustomerManager:getOccupiedSlotCount()
 end
 
 function CustomerManager:forceExitAll()
+    self.queue = {}
     for _, c in ipairs(self.customers) do
         c:leave()
     end
 end
 
-function CustomerManager:isEmpty()
-    return #self.customers == 0
-end
+function CustomerManager:isEmpty() return #self.customers == 0 end
 
-function CustomerManager:stopSpawning()
-    self.spawningEnabled = false
-end
+function CustomerManager:stopSpawning() self.spawningEnabled = false end
 
 function CustomerManager:render()
     for _, c in ipairs(self.customers) do

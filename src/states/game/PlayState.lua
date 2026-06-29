@@ -49,9 +49,35 @@ function PlayState:init()
     self.timeManager     = TimeManager(self.data['currentDate'], self.customerManager)
     gStateStack:push(self.timeManager)
 
+    self.reputationBar = ReputationBar()
+    gStateStack:push(self.reputationBar)
+
     self.pauseButton     = Button(BUTTON_PARAMS['Pause'])
     gStateStack:push(self.pauseButton)
     table.insert(self.interactables, self.pauseButton)
+
+    self.queueContract = function()
+        gStateStack:pop(QueueShowcase)
+        if self.queueButton then
+            self.queueButton.frame = gFrames['QueueExpandIcon']
+            self.queueButton.action = BUTTON_PARAMS['QueueExpand'].action
+        end
+    end
+
+    self.queueExpand = function()
+        gStateStack:push(QueueShowcase())
+        if self.queueButton then
+            self.queueButton.frame = gFrames['QueueContractIcon']
+            self.queueButton.action = BUTTON_PARAMS['QueueContract'].action
+        end
+    end
+
+    Signal:register('queue-button-contract', self.queueContract)
+    Signal:register('queue-button-expand', self.queueExpand)
+
+    self.queueButton     = Button(BUTTON_PARAMS['QueueExpand'])
+    gStateStack:push(self.queueButton)
+    table.insert(self.interactables, self.queueButton)
 
     self.shopButton      = Button(BUTTON_PARAMS['ToShop'])
     gStateStack:push(self.shopButton)

@@ -16,6 +16,7 @@
 - DataManager.lua
 - Dependencies.lua
 - InputBox.lua
+- Signal.lua
 - StockManager.lua
 ### src/libs
 - Animation.lua
@@ -51,6 +52,8 @@
 - Scrollbar.lua
 - ShopItem.lua
 - TimeManager.lua
+- QueueShowcase.lua
+- ReputationBar.lua
 ### src/states/GUI
 - StartMenuBackground.lua
 - PauseMenuCard.lua
