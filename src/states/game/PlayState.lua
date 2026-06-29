@@ -22,7 +22,7 @@ function PlayState:init()
     -- we can insert more item here
     for k, v in pairs(AVAILABLE_ITEMS) do AVAILABLE_ITEMS[k] = nil end
     if find(self.data['unlockedMachine'], 'CoffeeMachine') then
-        table.insert(AVAILABLE_ITEMS, 'Coffee')
+        table.insert(AVAILABLE_ITEMS, 'CoffeeCup')
     end
     --[[if find(self.data['unlockedMachine'], 'BreadBasket') then
         table.insert(AVAILABLE_ITEMS, 'LoafOfBread')
@@ -30,17 +30,27 @@ function PlayState:init()
     if find(self.data['unlockedMachine'], 'BreadPlate') then
         table.insert(AVAILABLE_ITEMS, 'SliceOfBread')
     end]]
-    if find(self.data['unlockedMachine'], 'SandwichPlate') then
-        table.insert(AVAILABLE_ITEMS, 'VegeSandwich')
-        table.insert(AVAILABLE_ITEMS, 'MeatSandwich')
-        table.insert(AVAILABLE_ITEMS, 'DeluxeSandwich')
+    if find(self.data['unlockedMachine'], 'BreadBasket') then
+        if find(self.data['unlockedMachine'], 'Lettuce') then
+            print('PlayState - lettuce unlocked')
+            table.insert(AVAILABLE_ITEMS, 'VegeSandwich')
+        end
+        if find(self.data['unlockedMachine'], 'Stove') then
+            print('PlayState - stove unlocked')
+            table.insert(AVAILABLE_ITEMS, 'MeatSandwich')
+        end
+        if find(self.data['unlockedMachine'], 'Stove') and find(self.data['unlockedMachine'], 'Lettuce') then
+            table.insert(AVAILABLE_ITEMS, 'DeluxeSandwich')
+        end
     end
-    if find(self.data['unlockedMachine'], 'Lettuce') then
+    
+    for k, v in pairs(AVAILABLE_ITEMS) do print('PlayState - ', AVAILABLE_ITEMS[k]) end
+    --[[if find(self.data['unlockedMachine'], 'Lettuce') then
         table.insert(AVAILABLE_ITEMS, 'Lettuce')
     end
     if find(self.data['unlockedMachine'], 'Stove') then
         table.insert(AVAILABLE_ITEMS, 'Meat')
-    end
+    end]]
 
     self.cityBackground = CityBackground()
     gStateStack:push(self.cityBackground)
@@ -84,7 +94,13 @@ function PlayState:init()
         table.insert(self.interactables, plate)
     end
 
+    self.gameOver = function()
+        gStateStack:clear()
+        gStateStack:push(GameOver())
+    end
+
     Signal:register('plate-manager-plate-added', self.plateManagerPlateAdded)
+    Signal:register('game-over', self.gameOver)
 
     if find(self.data['unlockedMachine'], 'BreadBasket') then
         self.breadBasket = BreadBasket(BREAD_BASKET_CONFIG)
@@ -171,8 +187,6 @@ function PlayState:update(dt)
         print('Developer Mode')
         self.timeManager:devTimeSkip()]]
     end
-
-    self.moneyManager:updateMoney()
 
     self:mouseResponse()
 end

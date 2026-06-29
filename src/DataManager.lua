@@ -35,9 +35,11 @@ function DataManager:getDefaultData()
     }
 end
 
-function DataManager:load()
-    if love.filesystem.getInfo(SAVE_FILE) then
-        local contents, message = love.filesystem.read(SAVE_FILE)
+function DataManager:load(file)
+    self.currentSlotFile = file or self.currentSlotFile or 'slot1.json'
+    
+    if love.filesystem.getInfo(self.currentSlotFile) then
+        local contents, message = love.filesystem.read(self.currentSlotFile)
         if contents then 
             self.data = json.decode(contents)
             self:ensureUnlocks(self.data['currentDate'])
@@ -45,10 +47,36 @@ function DataManager:load()
     end
 end
 
-function DataManager:create()
+function DataManager:create(file)
+    self.currentSlotFile = file or self.currentSlotFile or 'slot1.json'
     local contents = json.encode(self.data)
-    local success, message = love.filesystem.write(SAVE_FILE, contents)
+    local success, message = love.filesystem.write(self.currentSlotFile, contents)
     if success then print(message) end
+end
+
+function DataManager:loadSettings(file)
+    local targetFile = file or SETTING_FILE
+    if love.filesystem.getInfo(targetFile) then
+        local contents, message = love.filesystem.read(targetFile)
+        if contents then
+            local loadedSettings = json.decode(contents)
+            if loadedSettings then
+                for k, v in pairs(loadedSettings) do
+                    gSettings[k] = v
+                end
+                print("Settings loaded successfully.")
+            end
+        else print(message) end
+    else
+        self:saveSettings(targetFile)
+    end
+end
+
+function DataManager:saveSettings(file)
+    local targetFile = file or SETTING_FILE
+    local contents = json.encode(gSettings)
+    love.filesystem.write(targetFile, contents)
+    print("Settings saved permanently.")
 end
 
 --[[function DataManager:moneyDataSave(totalMoney, todayMoney)
@@ -139,6 +167,28 @@ end
 
 function DataManager:saveOldData(data)
     self.oldData = data
+end
+
+function DataManager:destroy()
+    local fileToDelete = self.currentSlotFile or 'slot1.json'
+    love.filesystem.remove(fileToDelete)
+end
+
+function DataManager:getSlotMetadata(file)
+    if love.filesystem.getInfo(file) then
+        local contents = love.filesystem.read(file)
+        if contents then
+            local decoded = json.decode(contents)
+            if decoded then
+                return {
+                    name = decoded.name or 'None',
+                    currentDate = decoded.currentDate or 1,
+                    totalMoney = decoded.totalMoney or 0
+                }
+            end
+        end
+    end
+    return nil
 end
 
 return DataManager

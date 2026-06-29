@@ -98,7 +98,6 @@ end
 function ChoppingBoard:taken()
     self.productionStage = 'Void'
     self.hasIngredient = false
-    self:hideBubble()
 end
 
 function ChoppingBoard:slash()

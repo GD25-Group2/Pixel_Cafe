@@ -24,14 +24,18 @@ function CoffeeMachine:init(params)
     self.duration = levelPerformance[self.level].duration
     self.stockType = 'CoffeeSeed'
     self.stock = StockManager:getStockTotal()[self.stockType]
-    self._bubbleColor = gColors['brown']
+    self.bubbleColor = gColors['brown']
+    self.bubble = Bubble({
+        x = self.x,
+        y = self.y,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        bubbleColor = self.bubbleColor,
+    })
+    gStateStack:push(self.bubble)
 
     self.animation = Animation(self.animation)
     self:updateFrame()
-
-    if self.productionStage == 'Ready' and self.volume > 0 then
-        self:showBubble(self._bubbleColor)
-    end
 end
 
 function CoffeeMachine:updateFrame()
@@ -56,7 +60,7 @@ function CoffeeMachine:updateFrame()
 end
 
 function CoffeeMachine:getHitbox()
-    local scale = 0.7 -- Reduce width by 30%
+    local scale = 0.7
     local w = self.desired_width * scale
     local h = self.desired_height
     local x = self.x + (self.desired_width - w) / 2 - 1 -- Move left by 1 pixel
@@ -82,8 +86,7 @@ function CoffeeMachine:update(dt)
             self.productionStage = 'Ready'
             self.volume = 4
             self.counter = 0
-            
-            -- FIXED: Use refresh() instead of stop() to park the animation back at frame 1
+
             if self.animation then
                 self.animation:refresh()
             end
@@ -91,6 +94,12 @@ function CoffeeMachine:update(dt)
     end
 
     self.level = StockManager:getLevel(self.type)
+    
+    if self.volume > 0 and self.productionStage ~= 'Holding' then
+        self.bubble:activate()
+    else
+        self.bubble:deactivate()
+    end
 
     BaseEntity.update(self, dt)
     self:updateFrame()
@@ -135,23 +144,14 @@ end
 function CoffeeMachine:drag()
     self.productionStage = 'Holding'
     self:updateFrame()
-    self:hideBubble()
 end
 
 function CoffeeMachine:taken()
     self.productionStage = 'Ready'
     self:updateFrame()
-    if self.volume > 0 then
-        self:showBubble(self._bubbleColor)
-    else
-        self:hideBubble()
-    end
 end
 
 function CoffeeMachine:undrag()
     self.productionStage = 'Ready'
     self:updateFrame()
-    if self.volume > 0 then
-        self:showBubble(self._bubbleColor)
-    end
 end

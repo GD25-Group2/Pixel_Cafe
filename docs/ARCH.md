@@ -32,8 +32,12 @@
 ### src/states/game
 - PlayState.lua 
 - DayEndState.lua
+- ClosingState.lua
+- GameOver.lua
+- GameStartShopState.lua
 - PauseMenu.lua
 - PopupWindow.lua
+- SaveSlotState.lua
 - SettingState.lua
 - ShopMenu.lua
 - StartMenu.lua
@@ -63,6 +67,7 @@
 - ReputationBar.lua
 - Stove.lua
 ### src/states/GUI
+- Bubble.lua
 - StartMenuBackground.lua
 - PauseMenuCard.lua
 - DayEndStateCard.lua
@@ -70,6 +75,7 @@
 - PopupWindowCard.lua
 - CityBackground.lua
 - CounterBackground.lua
+- SaveSlotBackground.lua
 - ShopBackground.lua
 - ShopTopBox.lua
 

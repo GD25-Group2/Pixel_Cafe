@@ -65,17 +65,21 @@ gFrames = {
     ['QueueContractIcon'] = love.graphics.newImage('assets/expandToRight.png'),
     ['choppedPlatet'] = love.graphics.newImage('assets/choppedPlatet.png'),
     ['ChoppingBoard'] = love.graphics.newImage('assets/choppingBoard&Knife.png'),
+    ['Stove'] = love.graphics.newImage('assets/stove.png'),
     ['ChoppedMeat'] = love.graphics.newImage('assets/choppedMeatFromBoard.png'),
     ['ChoppedLettuce'] = love.graphics.newImage('assets/choppedLettuceFromBoard.png'),
     ['ChoppedBread'] = love.graphics.newImage('assets/choppedBreadFromBoard.png'),
     ['Meat'] = love.graphics.newImage('assets/meatCarry.png'),
     ['Lettuce'] = love.graphics.newImage('assets/lettuceCarry.png'),
     ['FreeSandwich'] = love.graphics.newImage('assets/breadCarry.png'),
-    --['MeatLettuce'] = ,
     ['MeatSandwich'] = love.graphics.newImage('assets/meatSandwich.png'),
     ['VegeSandwich'] = love.graphics.newImage('assets/vegeSandwich.png'),
     ['DeluxeSandwich'] = love.graphics.newImage('assets/deluxeSandwich.png'),
     ['LettuceBig'] = love.graphics.newImage('assets/lettuce.png'),
+    ['LoafOfBread'] = love.graphics.newImage('assets/breadLoaf.png'),
+    ['CoffeeCup'] = love.graphics.newImage('assets/Cups and stack/DisposableCoffeeCupFilled11.png'),
+    ['DayEndBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundShopFocus.png'),
+    ['SaveSlotBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundSkyFocus.png'),
 }
 
 -- Coffee Machine Animation Frames
@@ -110,6 +114,7 @@ gFrames['CoffeeJarVolume4by4'] = love.graphics.newImage('assets/JarVolumeStages/
 
 gFrames['choppedPlatetQuads'] = GenerateQuads(gFrames['choppedPlatet'], 32, 32)
 gFrames['ChoppingBoardQuads'] = GenerateQuads(gFrames['ChoppingBoard'], 32, 32)
+gFrames['StoveQuads'] = GenerateQuads(gFrames['Stove'], 64, 64)
 
 --require('src.Animation')
 DataManager = require('src.DataManager')
@@ -136,6 +141,8 @@ require('src.states.game.SettingsState')
 --require('src.states.game.ShopMenu')
 require('src.states.game.GameStartShopState')
 require('src.states.game.ClosingState')
+require('src.states.game.GameOver')
+require('src.states.game.SaveSlotState')
 
 require('src.states.entity.BaseEntity')
 require('src.states.entity.CoffeeMachine')
@@ -172,3 +179,4 @@ require('src.states.GUI.CityBackground')
 --require('src.states.GUI.ShopTopBox')
 require('src.states.GUI.GameStartShopStateCard')
 require('src.states.GUI.Bubble')
+require('src.states.GUI.SaveSlotBackground')

@@ -6,13 +6,17 @@ local supply_yield_table = {
     ['ChoppedLettuce'] = 'ChoppedLettucePortion',
 }
 
+local storage_items = {
+    ['LoafOfBread'] = true,
+    ['Lettuce'] = true,
+    ['Meat'] = true
+}
+
 local valid_assembly_items = {
     ['SliceOfBread'] = true, 
     ['ChoppedBread'] = true,
-    ['Meat'] = true,
     ['ChoppedMeat'] = true,
     ['ChoppedMeatPortion'] = true,
-    ['Lettuce'] = true,
     ['ChoppedLettuce'] = true,
     ['ChoppedLettucePortion'] = true,
     ['ChoppedMeatLettuce'] = true
@@ -23,19 +27,11 @@ local finished_products = {
     ['DeluxeSandwich'] = true,
     ['FreeSandwich'] = true,
     ['VegeSandwich'] = true,
-    ['Meat'] = true,
-    ['Lettuce'] = true,
     ['ChoppedMeat'] = true,
     ['ChoppedMeatPortion'] = true,
     ['ChoppedLettuce'] = true,
     ['ChoppedLettucePortion'] = true,
     ['ChoppedMeatLettuce'] = true,
-}
-
-local storage_items = {
-    ['LoafOfBread'] = true,
-    ['Lettuce'] = true,
-    ['Meat'] = true
 }
 
 function Plate:init(params)
@@ -56,25 +52,31 @@ function Plate:init(params)
     self.maxCapacity = 4
     self.heldItem = 'None'
     self.color = gColors['green']
-    self._bubbleColor = gColors['green']
-    
+    self.bubbleColor = gColors['green']
+    self.bubble = Bubble({
+        x = self.x,
+        y = self.y,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        bubbleColor = self.bubbleColor,
+    }
+    )
+    gStateStack:push(self.bubble)
+
     self.activated = params.activated or false
 end
 
 function Plate:evaluateRecipes()
     local hasSliceOfBread = false
     local hasChoppedBread = false
-    local hasMeat = false
     local hasChoppedMeat = false
-    local hasLettuce = false
+    local hasLettuce = false -- leftover check from old code
     local hasChoppedLettuce = false
 
     for _, v in ipairs(self.heldItems) do
         if v == 'SliceOfBread' then hasSliceOfBread = true end
         if v == 'ChoppedBread' then hasChoppedBread = true end
-        if v == 'Meat' then hasMeat = true end
         if v == 'ChoppedMeat' or v == 'ChoppedMeatPortion' then hasChoppedMeat = true end
-        if v == 'Lettuce' or v == 'Vegetable' then hasLettuce = true end
         if v == 'ChoppedLettuce' or v == 'ChoppedLettucePortion' then hasChoppedLettuce = true end
         if v == 'ChoppedMeatLettuce' then
             hasChoppedMeat = true
@@ -96,12 +98,8 @@ function Plate:evaluateRecipes()
         self.currentOutput = 'ChoppedMeatLettuce'
     elseif hasChoppedMeat then
         self.currentOutput = 'ChoppedMeatPortion'
-    elseif hasMeat then
-        self.currentOutput = 'Meat'
     elseif hasChoppedLettuce then
         self.currentOutput = 'ChoppedLettucePortion'
-    elseif hasLettuce then
-        self.currentOutput = 'Lettuce'
     else
         self.currentOutput = nil
     end
@@ -134,13 +132,6 @@ function Plate:receiveItem(item, source)
             self.count = 3
             self.productionStage = 'Ready'
             self.heldItem = supply_yield_table[actual_item]
-            return true
-        elseif storage_items[actual_item] then
-            self.mode = 'Supply'
-            self.supplySourceItem = actual_item
-            self.count = 1
-            self.productionStage = 'Ready'
-            self.heldItem = actual_item
             return true
         elseif valid_assembly_items[actual_item] then
             self.mode = 'Assembly'
@@ -280,7 +271,7 @@ function Plate:render()
             if v == 'ChoppedMeat' or v == 'ChoppedMeatPortion' then hasChoppedMeat = true end
             if v == 'Lettuce' or v == 'Vegetable' then hasLettuce = true end
             if v == 'ChoppedLettuce' or v == 'ChoppedLettucePortion' then hasChoppedLettuce = true end
-            if v == 'ChoppedMeatLettuce' then -- FIX: Unpack combined state flags for rendering
+            if v == 'ChoppedMeatLettuce' then
                 hasChoppedMeat = true
                 hasChoppedLettuce = true
             end
@@ -352,7 +343,6 @@ function Plate:drag()
     elseif self.mode == 'Assembly' then
         self.heldItem = self.currentOutput or self.heldItem
     end
-    self:hideBubble()
 end
 
 function Plate:undrag()
@@ -392,7 +382,6 @@ function Plate:resetPlate()
     self.count = 0
     self.currentOutput = nil
     self.heldItem = 'None'
-    self:hideBubble()
 end
 
 function Plate:activate()

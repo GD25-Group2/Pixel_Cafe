@@ -3,7 +3,14 @@ WINDOW_HEIGHT = 720
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
-SAVE_FILE = 'data.json'
+SETTING_FILE = 'setting.json'
+
+gTexts = {
+    ['DataLossAsk'] = 'You might lose your progress! Proceed?',
+    ['Dev'] = 'Developer Tool',
+    ['NameGive'] = 'Select the input box and press \'enter\' to register Cafe name!',
+    ['NoSlotsError'] = 'All save slots are full! Clear a slot to start fresh.', -- ✅ New Error Text
+}
 
 gColors = {
     ['white'] = {1, 1, 1, 1},
@@ -20,12 +27,6 @@ gColors = {
     ['transparent'] = {1, 1, 1, 0},
     ['curtain'] = {0, 0, 0, 0.5},
     ['cyan'] = {0.2, 1, 1, 1},
-}
-
-gTexts = {
-    ['DataLossAsk'] = 'You might lose your progress! Proceed?',
-    ['Dev'] = 'Developer Tool',
-    ['NameGive'] = 'Select the input box and press \'enter\' to register Cafe name!',
 }
 
 ANIMATION_DEFS = {
@@ -57,11 +58,16 @@ ANIMATION_DEFS = {
             texture = texture
         }
     end,
+    Stove = {
+        frames = gFrames['StoveQuads'],
+        interval = 1,
+        looping = false,
+    }
 }
 
 --the overlapping hurtbox is making thing painful. Change it so that the hurtbox is limited to jar.
 COFFEE_MACHINE_ENTITY = {
-    frame = gFrames['CoffeeMachineAnimation'][1], -- default frame when idle
+    frame = gFrames['CoffeeMachineAnimation'][1],
     animation = ANIMATION_DEFS.CoffeeMachine,
     x = 10,
     y = 70,
@@ -141,7 +147,7 @@ PAUSE_MENU_CONFIG = {
 AVAILABLE_ITEMS = {}
 
 ORDER_TYPES = {
-    ['Coffee']       = {price = 5, name = 'Coffee'},
+    ['CoffeeCup']       = {price = 5, name = 'Coffee'},
     ['SliceOfBread'] = {price = 3, name = 'SliceOfBread'},
     ['FreeSandwich']     = {price = 7, name = 'FreeSandwich'},
     ['MeatSandwich'] = {price = 8, name = 'MeatSandwich'},
@@ -179,15 +185,13 @@ GAME_START_CONFIG = {
 BUTTON_PARAMS = {
     ['Play'] = {
         text = 'Play',
-        x = VIRTUAL_WIDTH / 2 - 16,
+        x = VIRTUAL_WIDTH / 2 - 32,
         y = VIRTUAL_HEIGHT / 2 - 16,
-        desired_width = 32,
+        desired_width = 64,
         desired_height = 16,
         action = function()
-            DataManager:load()
-            StockManager:load()
             gStateStack:clear()
-            gStateStack:push(PlayState())
+            gStateStack:push(SaveSlotState())
         end,
         clickable = false,
         defaultColor = gColors['white'],
@@ -195,13 +199,30 @@ BUTTON_PARAMS = {
     },
     ['New'] = {
         text = 'New',
-        x = VIRTUAL_WIDTH / 2 - 16,
+        x = VIRTUAL_WIDTH / 2 - 32,
         y = VIRTUAL_HEIGHT / 2 - 35,
-        desired_width = 32,
+        desired_width = 64,
         desired_height = 16,
         action = function()
-            gStateStack:popupCreate()
-            gStateStack:push(PopupWindow('NameGive'))
+            local freeSlot = nil
+            for i = 1, 3 do
+                local filename = 'slot' .. i .. '.json'
+                if not love.filesystem.getInfo(filename) then
+                    freeSlot = filename
+                    break
+                end
+            end
+
+            if not freeSlot then
+                gStateStack:popupCreate()
+                gStateStack:push(PopupWindow('NoSlotsError'))
+            else
+                DataManager.targetNewSlot = freeSlot
+                DataManager.currentSlotFile = freeSlot 
+                
+                gStateStack:popupCreate()
+                gStateStack:push(PopupWindow('NameGive'))
+            end
         end,
         clickable = true,
         defaultColor = gColors['white'],
@@ -320,6 +341,7 @@ BUTTON_PARAMS = {
         desired_width = PAUSE_MENU_CONFIG.btnW,
         desired_height = PAUSE_MENU_CONFIG.btnH,
         action = function()
+            DataManager:saveSettings(SETTING_FILE)
             gStateStack:pop()
         end,
         clickable = true,
@@ -371,7 +393,14 @@ BUTTON_PARAMS = {
         desired_width = 80,
         desired_height = 18,
         action = function()
-            love.event.quit()
+            gStateStack:clear()
+            gStateStack:popupDelete()
+            gStateStack:clear() --pause quit button's action
+            gStateStack:resume()
+            gStateStack:clear()
+            gMoney = nil
+            gTodayMoney = nil
+            gStateStack:push(StartMenu())
         end,
         clickable = true,
         defaultColor = gColors['red'],
@@ -420,7 +449,12 @@ BUTTON_PARAMS = {
         action = function()
             gStateStack:clear()
             gStateStack:popupDelete()
-            DataManager:getDefaultData() --new button's action
+            
+            local targetFile = DataManager.currentSlotFile or 'slot1.json'
+            
+            DataManager:getDefaultData()
+            DataManager:create(targetFile)
+            
             gStateStack:clear()
             gStateStack:push(PlayState())
         end,
@@ -471,10 +505,51 @@ BUTTON_PARAMS = {
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
+    ['GameOver'] = {
+        text = 'Back to Menu',
+        x = UI_CARD.x + UI_CARD.width / 2 - 40,
+        y = UI_CARD.y + 115,
+        desired_width = 80,
+        desired_height = 18,
+        action = function()
+            DataManager:destroy()
+            gStateStack:push(StartMenu())
+        end,
+        clickable = true,
+        defaultColor = gColors['red'],
+        hoverColor = gColors['scarlet'],
+    },
+    ['SlotsBack'] = {
+        text = 'BACK',
+        x = 71,
+        y = 184,
+        desired_width = 40,
+        desired_height = 14,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+        action = function()
+            gStateStack:clear()
+            gStateStack:push(StartMenu())
+        end
+    },
+    ['MenuQuit'] = {
+        text = 'Quit',
+        x = VIRTUAL_WIDTH / 2 - 32,
+        y = VIRTUAL_HEIGHT / 2 + 24,
+        desired_width = 64,
+        desired_height = 16,
+        action = function()
+            love.event.quit()
+        end,
+        clickable = true,
+        defaultColor = gColors['red'],
+        hoverColor = gColors['scarlet'],
+    }
 }
 
 BREAD_BASKET_CONFIG = {
-    frame = gFrames['BreadBasket'],
+    frame = gFrames['LoafOfBread'],
     x = 100,
     y = 110,
     desired_width = 32,
@@ -498,7 +573,9 @@ SANDWICH_PLATE_CONFIG = {
 }
 
 STOVE_CONFIG = {
-    frame = nil,
+    frame = gFrames['StoveQuads'][1],
+    frames = gFrames['StoveQuads'],
+    texture = gFrames['Stove'],
     x = VIRTUAL_WIDTH - 10 - 80,
     y = 70,
     desired_width = 80,

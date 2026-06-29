@@ -28,7 +28,7 @@ function DayEndState:init()
         ['currentDate'] = currentDate + 1,
     })
     DataManager:autoUnlockMachine()
-    DataManager:create()
+    DataManager:create(SAVE_FILE)
 
     self.card = DayEndStateCard({earnedToday = self._earnedToday, finalTotal = self._finalTotal, currentDate = currentDate})
     gStateStack:push(self.card)

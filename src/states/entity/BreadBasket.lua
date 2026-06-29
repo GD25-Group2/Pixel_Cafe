@@ -16,11 +16,15 @@ function BreadBasket:init(def)
         bubbleColor = self.bubbleColor,
     })
 
-    if self.stock > 0 then self.bubble:activate()
-    else self.bubble:deactivate()
+    if self.stock > 0 then
+        self.bubble:activate()
+        print('BreadBasket - has stock')
+    else
+        self.bubble:deactivate()
     end
 
     self.productionStage = 'Ready'
+    print('BreadBasket - initiated')
 end
 
 function BreadBasket:canDragToPlate(plate)
@@ -37,5 +41,9 @@ function BreadBasket:taken()
 end
 
 function BreadBasket:render()
-    BaseEntity.render(self)
+    if self.frame then
+        --print('BreadBasket - has frame')
+        --love.graphics.draw(self.frame, self.x, self.y, 0, self.desired_width, self.desired_height)
+        BaseEntity.render(self)
+    end
 end

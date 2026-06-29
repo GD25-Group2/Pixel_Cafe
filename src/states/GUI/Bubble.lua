@@ -25,7 +25,7 @@ function Bubble:render()
         -- Adjust 'by' so the pointer tip floats dynamically based on entity height
         local by = self.y - 10 - ((self.desired_height or 0) * 0.2) + floatOffset
         
-        local r, g, b, a = table.unpack(self.bubbleColor)
+        local r, g, b, a = unpack(self.bubbleColor)
         
         -- Pre-calculate tail polygon points for main bubble
         local bx1 = bx + R * math.cos(angle1)

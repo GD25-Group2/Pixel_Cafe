@@ -1,7 +1,8 @@
 PopupWindow = class {__includes = BaseState}
 
-function PopupWindow:init(type)
+function PopupWindow:init(type, slotIndex)
     self.type = type
+    self.slotIndex = slotIndex or 1
 
     self.text = gTexts[self.type] or 'None'
 
@@ -35,8 +36,11 @@ function PopupWindow:update(dt)
     if self.type == 'NameGive' then
         name, tokens = self.inputBox.update(dt)
         if name then
+            SAVE_FILE = DataManager.currentSlotFile or 'slot1.json'
             DataManager:getDefaultData()
             DataManager:set('name', name)
+            DataManager:create()
+            
             StockManager:load()
             print(DataManager:getData('name'))
             gStateStack:clear()
@@ -57,12 +61,14 @@ function PopupWindow:update(dt)
                     gStateStack:popupDelete()
                     gStateStack:clear()
                     gStateStack:push(DayEndState())
+                else
+
+                    DataManager:modify('currentDate', tonumber(tokens[3]))
+                    gStateStack:clear()
+                    gStateStack:popupDelete()
+                    gStateStack:clear()
+                    gStateStack:push(DayEndState())
                 end
-                DataManager:modify('currentDate', tonumber(tokens[3]))
-                gStateStack:clear()
-                gStateStack:popupDelete()
-                gStateStack:clear()
-                gStateStack:push(DayEndState())
             elseif string.lower(tostring(tokens[2])) == 'money' and tokens[3] then
                 local amount = tonumber(tokens[3]) or 0
                 gMoney = (gMoney or 0) + amount
