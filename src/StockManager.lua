@@ -9,6 +9,8 @@ end
 local countingTable = {
     'CoffeeMachine',
     'BreadPlate',
+    'Stove',
+    'PlateManager',
 }
 
 local function getDigit(number, placeholder)
@@ -49,6 +51,7 @@ function StockManager:upgrade(machine, price)
                 end
                 self.levelMachine = self.levelMachine + (1 * (10 ^ (placeholder - 1)))
                 DataManager:modify('levelMachine', self.levelMachine)
+                if machine == 'PlateManager' then Signal:emit('plate-manager-plate-add') end
             end
         end
     end

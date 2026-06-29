@@ -16,7 +16,7 @@ gFonts = {
 }
 
 gFrames = {
-    ['StartMenuBackground'] = love.graphics.newImage('assets/MainScreen.png'),
+    ['StartMenuBackground'] = love.graphics.newImage('assets/pixelCafeCityBackground.png'),
     ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.png'),
     customers = {
         ['Headless'] = {
@@ -39,11 +39,6 @@ gFrames = {
         },
     },
     ['Coffee'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume4by4.png'),
-    ['LoafOfBread'] = love.graphics.newImage('assets/loafOfBread.png'),
-    ['BreadBasket'] = love.graphics.newImage('assets/panOfLoavesOfBread.png'),
-    ['SliceOfBread'] = love.graphics.newImage('assets/sliceOfBread.png'),
-    ['BreadPlate'] = love.graphics.newImage('assets/panOfSlicesOfBread.png'),
-    ['SandwichPlate'] = love.graphics.newImage('assets/sandwichPlate.png'),
     ['EmptyTray'] = love.graphics.newImage('assets/Cups and stack/EmptyTray.png'),
     ['CoffeeCupStack'] = love.graphics.newImage('assets/Cups and stack/coffeecupstack.png'),
     ['DisposableCoffeeCup'] = love.graphics.newImage('assets/Cups and stack/DisposableCoffeeCup.png'),
@@ -63,11 +58,28 @@ gFrames = {
     ['ThreeCupsFillStage1by3'] = love.graphics.newImage('assets/Cups and stack/CupFillStage3/ThreeCupsFillStage1by3.png'),
     ['ThreeCupsFillStage2by3'] = love.graphics.newImage('assets/Cups and stack/CupFillStage3/ThreeCupsFillStage2by3.png'),
     ['TwoCupsFillStage1by2'] = love.graphics.newImage('assets/Cups and stack/CupFillStage2/2CupsFillStage1by2.png'),
-    ['CounterBackground'] = love.graphics.newImage('assets/pixelCafeCounterBackground.png'),
-    ['CityBackground'] = love.graphics.newImage('assets/City3.png'),
+    ['CounterBackground'] = love.graphics.newImage('assets/pixelCafeCounterBackground3.png'),
+    ['CityBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundLowerPerspective.png'),
     ['ShopIcon'] = love.graphics.newImage('assets/ShopIcon.png'),
     ['QueueExpandIcon'] = love.graphics.newImage('assets/expandToLeft.png'),
     ['QueueContractIcon'] = love.graphics.newImage('assets/expandToRight.png'),
+    ['choppedPlatet'] = love.graphics.newImage('assets/choppedPlatet.png'),
+    ['ChoppingBoard'] = love.graphics.newImage('assets/choppingBoard&Knife.png'),
+    ['Stove'] = love.graphics.newImage('assets/stove.png'),
+    ['ChoppedMeat'] = love.graphics.newImage('assets/choppedMeatFromBoard.png'),
+    ['ChoppedLettuce'] = love.graphics.newImage('assets/choppedLettuceFromBoard.png'),
+    ['ChoppedBread'] = love.graphics.newImage('assets/choppedBreadFromBoard.png'),
+    ['Meat'] = love.graphics.newImage('assets/meatCarry.png'),
+    ['Lettuce'] = love.graphics.newImage('assets/lettuceCarry.png'),
+    ['FreeSandwich'] = love.graphics.newImage('assets/breadCarry.png'),
+    ['MeatSandwich'] = love.graphics.newImage('assets/meatSandwich.png'),
+    ['VegeSandwich'] = love.graphics.newImage('assets/vegeSandwich.png'),
+    ['DeluxeSandwich'] = love.graphics.newImage('assets/deluxeSandwich.png'),
+    ['LettuceBig'] = love.graphics.newImage('assets/lettuce.png'),
+    ['LoafOfBread'] = love.graphics.newImage('assets/breadLoaf.png'),
+    ['CoffeeCup'] = love.graphics.newImage('assets/Cups and stack/DisposableCoffeeCupFilled11.png'),
+    ['DayEndBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundShopFocus.png'),
+    ['SaveSlotBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundSkyFocus.png'),
 }
 
 -- Coffee Machine Animation Frames
@@ -100,6 +112,9 @@ gFrames['CoffeeJarVolume2by4'] = love.graphics.newImage('assets/JarVolumeStages/
 gFrames['CoffeeJarVolume3by4'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume3y4.png')
 gFrames['CoffeeJarVolume4by4'] = love.graphics.newImage('assets/JarVolumeStages/CoffeeJarVolume4by4.png')
 
+gFrames['choppedPlatetQuads'] = GenerateQuads(gFrames['choppedPlatet'], 32, 32)
+gFrames['ChoppingBoardQuads'] = GenerateQuads(gFrames['ChoppingBoard'], 32, 32)
+gFrames['StoveQuads'] = GenerateQuads(gFrames['Stove'], 64, 64)
 
 --require('src.Animation')
 DataManager = require('src.DataManager')
@@ -130,9 +145,11 @@ require('src.states.game.DayEndState')
 require('src.states.game.PauseMenu')
 require('src.states.game.PopupWindow')
 require('src.states.game.SettingsState')
-require('src.states.game.ShopMenu')
+--require('src.states.game.ShopMenu')
 require('src.states.game.GameStartShopState')
 require('src.states.game.ClosingState')
+require('src.states.game.GameOver')
+require('src.states.game.SaveSlotState')
 
 require('src.states.entity.BaseEntity')
 require('src.states.entity.CoffeeMachine')
@@ -152,7 +169,12 @@ require('src.states.entity.CoffeeTray')
 require('src.states.entity.ScrollBar')
 require('src.states.entity.ShopItem')
 require('src.states.entity.ReputationBar')
-require('src.states.entity.QueueShowcase')
+--require('src.states.entity.QueueShowcase')
+require('src.states.entity.Stove')
+require('src.states.entity.ChoppingBoard')
+require('src.states.entity.Lettuce')
+require('src.states.entity.Plate')
+require('src.states.entity.PlateManager')
 
 require('src.states.GUI.DayEndStateCard')
 require('src.states.GUI.PauseMenuCard')
@@ -160,5 +182,8 @@ require('src.states.GUI.StartMenuBackground')
 require('src.states.GUI.PopupWindowCard')
 require('src.states.GUI.CounterBackground')
 require('src.states.GUI.CityBackground')
-require('src.states.GUI.ShopBackground')
-require('src.states.GUI.ShopTopBox')
+--require('src.states.GUI.ShopBackground')
+--require('src.states.GUI.ShopTopBox')
+require('src.states.GUI.GameStartShopStateCard')
+require('src.states.GUI.Bubble')
+require('src.states.GUI.SaveSlotBackground')

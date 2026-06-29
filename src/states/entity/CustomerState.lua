@@ -19,6 +19,9 @@ local animate = function(self, animationState)
     return self.animation
 end
 
+local impatientLeaveRepLoss = -7
+local slashedRepLoss = -8
+
 function CustomerState:init(params)
     BaseEntity.init(self, params)
     self.type = 'CustomerState'
@@ -232,11 +235,18 @@ end
 -- Called by OrderBox when patience hits 0.
 function CustomerState:leaveImpatient()
     self.leftImpatient = true
+    Signal:emit('customer-served', impatientLeaveRepLoss)
     if self.orderBox then self.orderBox:deactivate() end
     self:setState('leaving')
 end
 
 function CustomerState:leave()
+    if self.orderBox then self.orderBox:deactivate() end
+    self:setState('leaving')
+end
+
+function CustomerState:slashed()
+    Signal:emit('customer-served', slashedRepLoss)
     if self.orderBox then self.orderBox:deactivate() end
     self:setState('leaving')
 end

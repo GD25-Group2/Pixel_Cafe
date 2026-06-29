@@ -15,14 +15,19 @@ function ReputationBar:init()
     self.type = 'ReputationBar'
     self.backgroundColor = gColors['curtain']
     self.reputation = DataManager:getData('reputation')
-    self.rColor = gColors['yellow']
+    self.rColor = {
+        gColors['yellow'][1], 
+        gColors['yellow'][2], 
+        gColors['yellow'][3], 
+        gColors['yellow'][4] or 1
+    }
     self:updateColors()
 
-    self.onCustomerServed = function(amount)
+    self.onCustomerResponse = function(amount)
         self:changeReputation(amount)
     end
 
-    Signal:register('customer-served', self.onCustomerServed)
+    Signal:register('customer-served', self.onCustomerResponse)
 end
 
 function ReputationBar:changeReputation(amount)
@@ -56,6 +61,8 @@ function ReputationBar:update(dt)
             self.backgroundColor = gColors['curtain']
         end
     end
+
+    if self.reputation <= 0 then Signal:emit('game-over') end
 end
 
 function ReputationBar:render()

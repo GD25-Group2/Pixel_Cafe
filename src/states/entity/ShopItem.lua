@@ -1,58 +1,83 @@
 ShopItem = class {__includes = BaseEntity}
 
-local buffer = 5
-
 function ShopItem:init(data)
-    BaseEntity.init(self, ITEM_LOG_CONFIG)
-
-    if data then
-        self.type = data.type
-        self.frame = data.frame
-        self.id = data.id
-        self.name = data.name
-        self.stock = data.stock
-        self.purchasable = data.purchasable
-        if data.level then
-            self.level = data.level
-            self.price = data.price * (2 ^ (self.level - 1))
-        else
-            self.price = data.price
-        end
+    self.type = data.type
+    self.id = data.id
+    self.name = data.name
+    self.stock = data.stock
+    self.purchasable = data.purchasable
+    
+    if data.level then
+        self.level = data.level
+        self.price = data.price * (2 ^ (self.level - 1))
+    else
+        self.price = data.price
     end
-
+    
+    self.innerX = data.innerX or 10
+    self.innerY = data.innerY or 60
+    self.innerW = data.innerW or (VIRTUAL_WIDTH - 20)
+    self.innerH = data.innerH or (VIRTUAL_HEIGHT - 90)
+    self.height = 45
     self.changeY = 0
     self.isVisible = true
-
-    self.y = (self.id * (self.desired_height + buffer)) + 20 + buffer
-
-    local bText = self.purchasable and 'Purchase' or 'Upgrade'
-
+    
+    self.y = self.innerY + 5 + (self.id * self.height)
+    
     if self.type ~= 'Label' then
+        local bText = self.purchasable and 'Purchase' or (self.level >= 3 and 'Max' or 'Upgrade')
+        
         self.button = Button({
             text = bText,
-            x = self.buttonX,
-            y = self.y + buffer * 2,
-            desired_width = 48,
-            desired_height = 16,
+            x = self.innerX + self.innerW - 75,
+            y = self.y + 11,
+            desired_width = 60,
+            desired_height = 18,
             action = function()
-                if self.purchasable and DataManager:getData('totalMoney') >= self.price then
+                local totalMoney = DataManager:getData('totalMoney') or 0
+                if self.purchasable and totalMoney >= self.price then
                     self.stock = StockManager:purchase(self.type, self.price)
-                elseif not self.purchasable and self.level < 3 then
+                elseif not self.purchasable and self.level < 3 and totalMoney >= self.price then
                     StockManager:upgrade(self.type, self.price)
                     self.level = self.level + 1
                     self.price = self.price * 2
+                    if self.level >= 3 then
+                        self.button.clickable = false
+                        self.button.text = 'Max'
+                    end
                 end
             end,
             clickable = self.purchasable or self.level < 3,
             defaultColor = gColors['white'],
             hoverColor = gColors['yellow'],
             coordinateChange = true,
+            id = self.id,
+            item_height = self.height,
+            buffer = 5,
+            scrollY = 0,
+            changeY = 0 
         })
+        
+        local originalRender = self.button.render
+        self.button.render = function(btnSelf)
+            if self.isVisible then
+                love.graphics.setScissor(self.innerX, self.innerY, self.innerW, self.innerH)
+                originalRender(btnSelf)
+                love.graphics.setScissor()
+            end
+        end
+        
+        local originalUpdate = self.button.update
+        self.button.update = function(btnSelf, dt)
+            if originalUpdate then originalUpdate(btnSelf, dt) end
+            btnSelf.x = self.innerX + self.innerW - 75
+            btnSelf.y = self.y + 11
+        end
     end
 end
 
 function ShopItem:update(dt)
-    self.y = (self.id * (self.desired_height + buffer)) + 20 - self.changeY
+    self.y = self.innerY + 5 + (self.id * self.height) - self.changeY
 end
 
 function ShopItem:updateY(y)
@@ -60,39 +85,40 @@ function ShopItem:updateY(y)
 end
 
 function ShopItem:render()
+    if not self.isVisible then return end
+    
+    love.graphics.setScissor(self.innerX, self.innerY, self.innerW, self.innerH)
+    
     if self.type ~= 'Label' then
+        love.graphics.setColor(self.purchasable and {0.22, 0.14, 0.16, 1} or {0.14, 0.16, 0.22, 1})
+        love.graphics.rectangle('fill', self.innerX + 5, self.y, self.innerW - 10, 40, 4, 4)
         love.graphics.setColor(self.purchasable and gColors['scarlet'] or gColors['blue'])
-        love.graphics.rectangle('fill', self.x, self.y, self.desired_width, self.desired_height)
-        love.graphics.setColor(gColors['black'])
-        love.graphics.rectangle('line', self.x, self.y, self.desired_width, self.desired_height)
-
+        love.graphics.rectangle('line', self.innerX + 5, self.y, self.innerW - 10, 40, 4, 4)
+        
         love.graphics.setColor(gColors['white'])
-        love.graphics.rectangle('fill', self.frameX, self.y + buffer, self.frameWidth, self.frameHeight)
-        love.graphics.setColor(gColors['black'])
-        love.graphics.rectangle('line', self.frameX, self.y + buffer, self.frameWidth, self.frameHeight)
-        if self.frame then
-            love.graphics.setColor(gColors['white'])
-            love.graphics.draw(self.frame, self.frameX, self.y + buffer, 0, 
-                self.frameWidth / self.frame:getWidth(), self.frameHeight / self.frame:getHeight())
-        end
-
-        love.graphics.setColor(gColors['black'])
+        love.graphics.setFont(gFonts['small'])
+        love.graphics.printf("Name: " .. self.name, self.innerX + 15, self.y + 5, self.innerW, 'left')
+        
+        love.graphics.setColor(0.7, 0.7, 0.7, 1)
         if self.purchasable then
-            love.graphics.printf('Name: ' .. self.name .. '\nPrice: ' .. tostring(self.price) 
-                .. '\nOwned: ' .. tostring(self.stock), self.infoX, self.y + buffer, self.infoWidth, 'left')
+            love.graphics.printf("Price: " .. self.price, self.innerX + 15, self.y + 20, self.innerW, 'left')
+            love.graphics.printf("Owned: " .. self.stock, self.innerX + 100, self.y + 20, self.innerW, 'left')
         else
-            love.graphics.printf('Name: ' .. self.name .. '\nPrice: ' .. tostring(self.price) 
-                .. '\nCurrent Level: ' .. tostring(self.level), self.infoX, self.y + buffer, self.infoWidth, 'left')
+            love.graphics.printf("Price: " .. self.price, self.innerX + 15, self.y + 20, self.innerW, 'left')
+            love.graphics.printf("Level: " .. self.level, self.innerX + 100, self.y + 20, self.innerW, 'left')
         end
     else
         love.graphics.setColor(gColors['white'])
-        love.graphics.line(self.x, self.y + self.desired_height / 2, self.x + self.desired_width, self.y + self.desired_height / 2)
-        love.graphics.rectangle('line', self.x + self.desired_width / 4, self.y + buffer, self.desired_width / 2, self.desired_height - buffer * 2)
+        love.graphics.line(self.innerX + 10, self.y + self.height / 2, self.innerX + self.innerW - 10, self.y + self.height / 2)
+        love.graphics.rectangle('line', self.innerX + self.innerW / 4, self.y + 8, self.innerW / 2, 24, 4, 4)
         love.graphics.setColor(gColors['cyan'])
-        love.graphics.rectangle('fill', self.x + self.desired_width / 4, self.y + buffer, self.desired_width / 2, self.desired_height - buffer * 2)
+        love.graphics.rectangle('fill', self.innerX + self.innerW / 4, self.y + 8, self.innerW / 2, 24, 4, 4)
         love.graphics.setColor(gColors['black'])
-        love.graphics.printf(self.name, self.x + self.desired_width / 4, self.y + self.desired_height / 2 - buffer, self.desired_width / 2, 'center')
+        love.graphics.setFont(gFonts['small'])
+        love.graphics.printf(self.name, self.innerX + self.innerW / 4, self.y + 13, self.innerW / 2, 'center')
     end
+    
+    love.graphics.setScissor()
 end
 
 function ShopItem:getButton()
@@ -100,9 +126,9 @@ function ShopItem:getButton()
 end
 
 function ShopItem:getBottom()
-    return self.y + self.desired_height
+    return self.y + self.height
 end
 
 function ShopItem:getHeight()
-    return self.desired_height
+    return self.height
 end

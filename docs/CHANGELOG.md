@@ -210,3 +210,37 @@ nothing solid came and there might be more I missed.
 - `CustomerState.lua` & `CustomerManager.lua`: Extensively refactored customer lifecycle flows and layout handling to seamlessly hook into the new signal-driven event loop and state tracking features.
 - `PlayState.lua`: Fully integrated the QueueShowcase, ReputationBar, and updated core systems directly into the gameplay rendering pipeline layers.
 - `DataManager.lua`: Expanded core loading/saving attributes to handle persistent data exchanges required by new shop and state modifications.
+
+### v0.20.0 - 2026-06-02
+- `BaseEntity.lua` has no addition. Reduced lines that are unnecessary or redundunt.
+- `BreadPlate.lua` will no longer be used. `Plate.lua` will replace it.
+- `ChoppingBoard.lua` is added. It can handle bread, lettuce and meat. It also have the ability to stab customers.
+- `Cursor.lua` has more lines dedicated to handling newly added entitites.
+- `Customer.lua` now responds to loss of reputation.
+- `Lettuce.lua` is a almost-replica of `BreadBasket.lua`.
+- `OrderBox.lua` can handle new added entities.
+- `Plate.lua` is the focal point of this update. It replace the functions of existing bread plate, sandwich plate
+and possible lettuce sliced plate and so on. It can handle all kinds of functions for them flawlessly. However, it
+will be a pain to animate.
+- `PlateManager.lua` handles multiple plate entities and level-related mechanic.
+- `SandwichPlate.lua` is now replaced.
+- `ShopItem.lua` is tweaked to fit into DayStartShop.
+- `Stove.lua` acts like `CoffeeMachine.lua`. Its animation is to be a tongue being bitten by its own mouth and being
+spat out to be eaten by the customers.
+- `TimerManager.lua` has smaller time scale to have longer in game day time.
+- `GameStartShopState.lua` has the previous graphics but its architecture and mechanics uses `ShopMenu.lua`.
+- `PlayState.lua` init function has lots of codes commented out due to replace entities and some new entities are
+added.
+- `ShopMenu.lua` can longer be accessed from play state and is considered replaced.
+- `GameStartShopStateCard.lua` handles the ui for `GameStartShopState.lua`.
+
+### v1.0.0 - 2026-06-30
+- `Bubble.lua` GUI state replace the previous bubble related codes.
+- `OrderBox.lua` changes its order representation from texts to icons.
+- `Plate.lua` will no longer accept bread loaf, raw meat and lettuce.
+- `ReputationBar.lua` has the power to end the game now. The objective of the game is now to not lose reputation.
+- `Stove.lua` gets an animation sprite.
+- `GameOver.lua` is triggered when the reputation hit zero. The play data will be deleted.
+- `SaveSlotState.lua` is a new addition that will be redirected from Start Menu when play button is hit.
+- `SaveSlotBackground.lua` handles non-interactive parts of the new state.
+- `DataManager.lua` receives a major update. It can now save up to 3 independent game progress with the addition of setting data.

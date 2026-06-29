@@ -5,9 +5,13 @@ function DayEndStateCard:init(params)
     self.earnedToday = params.earnedToday
     self.finalTotal = params.finalTotal
     self.currentDate = params.currentDate
+    self.gameOver = params.gameOver or false
+    self.backgroundFrame = gFrames['DayEndBackground']
 end
 
 function DayEndStateCard:render()
+    love.graphics.setColor(gColors['white'])
+    love.graphics.draw(self.backgroundFrame, 0, 0, 0, VIRTUAL_WIDTH / self.backgroundFrame:getWidth(), VIRTUAL_HEIGHT / self.backgroundFrame:getHeight())
     local card = UI_CARD
 
     love.graphics.setColor(card.color)
@@ -19,7 +23,8 @@ function DayEndStateCard:render()
 
     love.graphics.setColor(gColors['white'])
     love.graphics.setFont(gFonts['large'])
-    love.graphics.printf('DAY END', card.x, card.y + 6, card.width, 'center')
+    local text = self.gameOver and 'GAME OVER' or'DAY END'
+    love.graphics.printf(text, card.x, card.y + 6, card.width, 'center')
 
     love.graphics.setFont(gFonts['medium'])
     local line1Y = card.y + 45

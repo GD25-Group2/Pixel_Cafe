@@ -60,6 +60,10 @@ function BaseState:mouseResponse()
                     if (self.breadPlate and not target:canDragToPlate(self.breadPlate)) or (target.stock <= 0) then --if the plate is unable to accept the dragged entity
                         allowDrag = false
                     end
+                elseif target.type == 'Lettuce' then
+                    if target.stock <= 0 then
+                        allowDrag = false
+                    end
                 elseif target.type == 'CoffeeCupStack' and self.coffeeTray then
                     local total = self.coffeeTray.emptyCups + self.coffeeTray.filledCups
                     if total >= 4 or target.stock <= 0 then
@@ -99,12 +103,15 @@ function BaseState:mouseResponse()
             if target then
                 if target.type == 'CustomerState' and target.orderBox then
                     delivered = self:deliverItem(target)
-                elseif target.type == 'BreadPlate' and target.loafRemaining == 0 then
+                elseif target.type == 'BreadPlate' then
                     delivered = self:deliverItem(target)
-                elseif target.type == 'SandwichPlate' and target.productionStage == 'Void' then
+                elseif target.type == 'SandwichPlate' then
                     delivered = self:deliverItem(target)
-                    if delivered then self.breadPlate:taken() end
                 elseif target.type == 'CoffeeTray' then
+                    delivered = self:deliverItem(target)
+                elseif target.type == 'ChoppingBoard' then
+                    delivered = self:deliverItem(target)
+                elseif target.type == 'Plate' then
                     delivered = self:deliverItem(target)
                 end
             end
@@ -133,15 +140,24 @@ function BaseState:mouseResponse()
                     local target = self._mouseDown.target
                     if target then --target is not dragged but clicked
                         if target.isMachine then
-                            if target.type == 'CoffeeMachine' then
+                            if target.type == 'CoffeeMachine' or target.type == 'Stove' then
                                 target:produce()
                             elseif target.productionStage == 'Void' then
                                 target:produce()
                             end
-                        elseif target.isClicker and target.productionStage ~= 'Void' then
-                            target:action()
+                        elseif target.isClicker then
+                            if target.type == 'BreadPlate' and target.productionStage ~= 'Void' then
+                                target:action()
+                            elseif target.type == 'ChoppingBoard' and target.productionStage ~= 'Ready' then
+                                target:action()
+                            end
                         elseif target.isGUI then
                             target:clicked()
+                        elseif target.type == 'CustomerState' then
+                            if self.choppingBoard.productionStage == 'Selected' then
+                                self.choppingBoard:slash()
+                                target:slashed()
+                            end
                         end
                     end
                 end
