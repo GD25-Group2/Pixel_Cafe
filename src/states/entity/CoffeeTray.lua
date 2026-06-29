@@ -79,6 +79,11 @@ function CoffeeTray:receiveItem(item, source)
             source.volume = source.volume - cupsToFill
             source:updateFrame()
             self:updateFrame()
+            if gSounds and gSounds['cup-fill'] then
+                gSounds['cup-fill']:setVolume(gSettings.sfxVolume)
+                gSounds['cup-fill']:stop()
+                gSounds['cup-fill']:play()
+            end
             return true
         end
     end

@@ -52,6 +52,7 @@ function Button:clicked()
     if self.clickable then
         if gSounds['click'] then
             gSounds['click']:setVolume(gSettings.sfxVolume)
+            gSounds['click']:stop()
             gSounds['click']:play()
         end
         self.action()

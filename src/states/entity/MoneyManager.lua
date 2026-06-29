@@ -50,6 +50,12 @@ function MoneyManager:addPayment(amount, base, tip)
 
     self._dailySalesAmount = self._dailySalesAmount + (base or amount)
     self._dailyTipsAmount = self._dailyTipsAmount + (tip or 0)
+
+    if gSounds and gSounds['coin-receive'] then
+        gSounds['coin-receive']:setVolume(gSettings.sfxVolume)
+        gSounds['coin-receive']:stop()
+        gSounds['coin-receive']:play()
+    end
 end
 
 function MoneyManager:spawnFloatingMoney(x, y, amount)

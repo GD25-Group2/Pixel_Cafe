@@ -78,6 +78,12 @@ function CoffeeMachine:update(dt)
             self.animation:update(dt) 
         end
 
+        if gSounds and gSounds['coffee-machine'] and not gSounds['coffee-machine']:isPlaying() then
+            gSounds['coffee-machine']:setVolume(gSettings.sfxVolume)
+            gSounds['coffee-machine']:setLooping(true)
+            gSounds['coffee-machine']:play()
+        end
+
         if self.counter >= self.duration then
             self.productionStage = 'Ready'
             self.volume = 4
@@ -87,6 +93,10 @@ function CoffeeMachine:update(dt)
             if self.animation then
                 self.animation:refresh()
             end
+        end
+    else
+        if gSounds and gSounds['coffee-machine'] and gSounds['coffee-machine']:isPlaying() then
+            gSounds['coffee-machine']:stop()
         end
     end
 
@@ -116,6 +126,14 @@ function CoffeeMachine:produce()
         self.counter = 0
 
         self.stock = StockManager:consume(self.stockType)
+        
+        -- Start coffee-machine sound
+        if gSounds and gSounds['coffee-machine'] then
+            gSounds['coffee-machine']:setVolume(gSettings.sfxVolume)
+            gSounds['coffee-machine']:setLooping(true)
+            gSounds['coffee-machine']:stop()
+            gSounds['coffee-machine']:play()
+        end
         
         -- FIXED: Use refresh() instead of play() to reset the GD50 animation
         if self.animation then

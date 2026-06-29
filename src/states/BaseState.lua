@@ -76,6 +76,15 @@ function BaseState:mouseResponse()
                     self.cursor.dragSource = target
                     if target.drag then target:drag() end
                     self._mouseDown = nil
+
+                    local held = self.cursor.heldItem
+                    if held == 'Coffee' or held == 'DisposableCoffeeCup' or held == 'CoffeeMachine' then
+                        if gSounds and gSounds['cup-drag'] then
+                            gSounds['cup-drag']:setVolume(gSettings.sfxVolume)
+                            gSounds['cup-drag']:stop()
+                            gSounds['cup-drag']:play()
+                        end
+                    end
                 end
             end
         end
@@ -101,6 +110,7 @@ function BaseState:mouseResponse()
             end
 
             local source = self.cursor.dragSource
+            local held = self.cursor.heldItem
             if delivered then
                 if source and source.taken then
                     source:taken()

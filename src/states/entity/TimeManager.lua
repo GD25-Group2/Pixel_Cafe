@@ -18,6 +18,19 @@ function TimeManager:update(dt)
     end
     local currentHour = math.floor(self.dayTime / 60)
     
+    -- Play ticking sound when nearly to close (between 6:30 PM and 8:00 PM)
+    if self.dayTime >= 18.5 * 60 and not self.isFrozen then
+        if gSounds and gSounds['time-ticking'] and not gSounds['time-ticking']:isPlaying() then
+            gSounds['time-ticking']:setVolume(gSettings.sfxVolume)
+            gSounds['time-ticking']:setLooping(true)
+            gSounds['time-ticking']:play()
+        end
+    else
+        if gSounds and gSounds['time-ticking'] and gSounds['time-ticking']:isPlaying() then
+            gSounds['time-ticking']:stop()
+        end
+    end
+
     -- Night time transition (8:00 PM / 20 hours)
     if currentHour >= 20 and not self.isFrozen then
         DataManager:set('currentDate', self.currentDate)

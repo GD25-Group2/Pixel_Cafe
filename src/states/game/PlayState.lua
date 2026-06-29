@@ -117,6 +117,10 @@ function PlayState:init()
 
     self.cursor          = Cursor()
     gStateStack:push(self.cursor)
+
+    if gSounds and gSounds['time-ticking'] then
+        gSounds['time-ticking']:stop()
+    end
 end
 
 function PlayState:enter()
@@ -132,6 +136,11 @@ end
 function PlayState:exit()
     if gMusic then
         gMusic:stop()
+    end
+    if gSounds then
+        if gSounds['time-ticking'] then gSounds['time-ticking']:stop() end
+        if gSounds['walking-song1'] then gSounds['walking-song1']:stop() end
+        if gSounds['walking-song2'] then gSounds['walking-song2']:stop() end
     end
 end
 

@@ -18,6 +18,7 @@ function CustomerManager:init()
     end
 
     self.spawningEnabled = true
+    self.walkSongIndex = 1
 end
 
 function CustomerManager:update(dt)
@@ -50,6 +51,52 @@ function CustomerManager:update(dt)
             end
             table.remove(self.customers, i)
         end
+    end
+
+    for _, c in ipairs(self.customers) do
+        c:update(dt)
+    end
+
+    -- Play walking song while any customer is walking in or out
+    local isAnyoneWalking = false
+    for _, c in ipairs(self.customers) do
+        if c.state == 'moving_in' or c.state == 'leaving' then
+            isAnyoneWalking = true
+            break
+        end
+    end
+
+    if isAnyoneWalking then
+        if gSounds then
+            local currentSound = self.currentWalkSong and gSounds[self.currentWalkSong]
+            if currentSound and currentSound:isPlaying() then
+                -- Already playing/resuming the current walking song
+            else
+                -- Choose next song alternately if none is tracked
+                if not currentSound then
+                    self.walkSongIndex = self.walkSongIndex == 1 and 2 or 1
+                    self.currentWalkSong = 'walking-song' .. self.walkSongIndex
+                    currentSound = gSounds[self.currentWalkSong]
+                end
+
+                if currentSound then
+                    currentSound:setVolume(gSettings.sfxVolume)
+                    currentSound:setLooping(true)
+                    currentSound:play()
+                end
+            end
+        end
+    else
+        -- Stop all walking songs if no one is walking
+        if gSounds then
+            if gSounds['walking-song1']:isPlaying() then
+                gSounds['walking-song1']:stop()
+            end
+            if gSounds['walking-song2']:isPlaying() then
+                gSounds['walking-song2']:stop()
+            end
+        end
+        self.currentWalkSong = nil
     end
 end
 
