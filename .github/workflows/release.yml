@@ -1,0 +1,33 @@
+name: Build and Release LÖVE Game
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers the build whenever you push a tag like v1.0.0
+
+jobs:
+  build:
+    name: Package and Release Game
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Allows the runner to create a release and upload assets
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: LÖVE Release Action
+        uses: straymaris/love-release-action@v2
+        with:
+          game_name: PixelCafe        # Change this to your preferred executable name
+          love_version: 11.5          # Change this to match the LÖVE version you built it on
+          path: '.'                   # Points to where main.lua lives
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            build/*.zip
+            build/*.love
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
