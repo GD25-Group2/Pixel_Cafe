@@ -154,7 +154,7 @@ function BaseState:mouseResponse()
                         elseif target.isGUI then
                             target:clicked()
                         elseif target.type == 'CustomerState' then
-                            if self.choppingBoard.productionStage == 'Selected' then
+                            if self.choppingBoard and self.choppingBoard.productionStage == 'Selected' then
                                 self.choppingBoard:slash()
                                 target:slashed()
                             end

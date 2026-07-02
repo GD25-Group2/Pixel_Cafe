@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Strict Local Archive",
+            "type": "shell",
+            "command": "tar -acf debug_game.love main.lua src assets; love debug_game.love; Remove-Item -ErrorAction SilentlyContinue debug_game.love",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
