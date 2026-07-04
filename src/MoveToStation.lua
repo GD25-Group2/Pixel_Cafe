@@ -1,7 +1,6 @@
 local MoveToStation = {}
-setmetatable(MoveToStation, MoveToStation)
 
-function MoveToStation:init(source, target, process)
+function MoveToStation.init(source, target, process)
     local src = source
     local tgt = target
     local proc = process

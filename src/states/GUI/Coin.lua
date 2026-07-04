@@ -32,7 +32,7 @@ function Coin:init(params)
 
     Signal:register('coin-remove-' .. tostring(self.id), self.removeSelf)
 
-    MoveToStation:init(self, target, self.process)
+    MoveToStation.init(self, target, self.process)
 end
 
 function Coin:render()
