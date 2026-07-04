@@ -623,4 +623,6 @@ ITEM_LOG_CONFIG = {
     buttonX = 10 + (VIRTUAL_WIDTH - 30) - 48 - 5, -- x + width - button width - buffer
 }
 
+COIN_INDEX = 0
+
 --money-related global variables are all in MoneyManager line #54

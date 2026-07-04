@@ -8,6 +8,7 @@ _G.suit  = require('src.libs.SUIT')
 _G.json = require('src.libs.dkjson')
 require('src.libs.Util')
 require('src.libs.Animation')
+_G.timer = require('src.libs.hump.timer')
 
 gFonts = {
     ['large']  = love.graphics.newFont('assets/font.ttf', 32),
@@ -80,6 +81,7 @@ gFrames = {
     ['CoffeeCup'] = love.graphics.newImage('assets/Cups and stack/DisposableCoffeeCupFilled11.png'),
     ['DayEndBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundShopFocus.png'),
     ['SaveSlotBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundSkyFocus.png'),
+    ['Coin'] = love.graphics.newImage('assets/coin.png'),
 }
 
 -- Coffee Machine Animation Frames
@@ -122,6 +124,7 @@ StockManager = require('src.StockManager')
 Signal = require('src.Signal')
 require('src.constants')
 InputBox = require('src.InputBox')
+MoveToStation = require('src.MoveToStation')
 
 -- Audio loading
 gMusic = love.audio.newSource('assets/music&SFX/Cafe Love - WOW Sound  The Boba Teashop Main Theme.mp3', 'stream')
@@ -187,3 +190,4 @@ require('src.states.GUI.CityBackground')
 require('src.states.GUI.GameStartShopStateCard')
 require('src.states.GUI.Bubble')
 require('src.states.GUI.SaveSlotBackground')
+require('src.states.GUI.Coin')

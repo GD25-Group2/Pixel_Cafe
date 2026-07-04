@@ -36,6 +36,7 @@ function love.update(dt)
         gStateStack:push(PopupWindow('Dev'))
     end
 
+    timer.update(dt)
     gStateStack:update(dt)
     love.keyboard.keysPressed = {}
     love.mouse.keysPressed = {}
