@@ -36,6 +36,14 @@ function DayEndState:init()
         gStateStack:push(btn)
     end
 
+    self.particleBurst = ParticleBurst()
+    gStateStack:push(self.particleBurst)
+
+    -- Celebratory Day-Win green burst pop!
+    Signal:emit('trigger_burst', VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, {0.2, 0.95, 0.35, 1}, 80)
+    Signal:emit('trigger_burst', VIRTUAL_WIDTH / 2 - 80, VIRTUAL_HEIGHT / 2 + 20, {0.3, 0.9, 0.4, 0.8}, 40)
+    Signal:emit('trigger_burst', VIRTUAL_WIDTH / 2 + 80, VIRTUAL_HEIGHT / 2 + 20, {0.3, 0.9, 0.4, 0.8}, 40)
+
     if gSounds then
         for _, source in pairs(gSounds) do
             source:stop()
@@ -45,4 +53,10 @@ end
 
 function DayEndState:update(dt)
     self:mouseResponse()
+end
+
+function DayEndState:exit()
+    if self.particleBurst then
+        self.particleBurst:exit()
+    end
 end
