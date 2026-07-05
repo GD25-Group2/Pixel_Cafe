@@ -184,13 +184,11 @@ function PlayState:exit()
     if self.particleBurst then
         self.particleBurst:exit()
     end
-    if gMusic then
-        gMusic:stop()
-    end
     if gSounds then
         if gSounds['time-ticking'] then gSounds['time-ticking']:stop() end
         if gSounds['walking-song1'] then gSounds['walking-song1']:stop() end
         if gSounds['walking-song2'] then gSounds['walking-song2']:stop() end
+        if gSounds['coffee-machine'] then gSounds['coffee-machine']:stop() end
     end
 end
 

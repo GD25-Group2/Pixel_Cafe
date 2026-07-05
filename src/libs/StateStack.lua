@@ -68,12 +68,20 @@ function StateStack:render()
 end
 
 function StateStack:clear()
+    local tbl
     if self.isPopup then
-        self.popupTable = {}
+        tbl = self.popupTable
     elseif self.paused then
-        self.pausedTable = {}
+        tbl = self.pausedTable
     else
-        self.states = {}
+        tbl = self.states
+    end
+    for i = #tbl, 1, -1 do
+        local state = tbl[i]
+        if state and state.exit then
+            state:exit()
+        end
+        tbl[i] = nil
     end
 end
 
