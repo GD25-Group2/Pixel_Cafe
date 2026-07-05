@@ -159,6 +159,9 @@ function PlayState:init()
         table.insert(self.interactables, self.lettuce)
     end
 
+    self.particleBurst   = ParticleBurst()
+    gStateStack:push(self.particleBurst)
+
     self.cursor          = Cursor()
     gStateStack:push(self.cursor)
 
@@ -178,6 +181,9 @@ function PlayState:enter()
 end
 
 function PlayState:exit()
+    if self.particleBurst then
+        self.particleBurst:exit()
+    end
     if gMusic then
         gMusic:stop()
     end

@@ -36,6 +36,12 @@ function DayEndState:init()
         gStateStack:push(btn)
     end
 
+    self.particleBurst = ParticleBurst()
+    gStateStack:push(self.particleBurst)
+
+    -- Trigger the grand victory fireworks show!
+    Signal:emit('victory_fireworks')
+
     if gSounds then
         for _, source in pairs(gSounds) do
             source:stop()
@@ -45,4 +51,10 @@ end
 
 function DayEndState:update(dt)
     self:mouseResponse()
+end
+
+function DayEndState:exit()
+    if self.particleBurst then
+        self.particleBurst:exit()
+    end
 end

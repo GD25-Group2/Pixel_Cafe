@@ -252,3 +252,14 @@ added.
 - `OrderBox.lua` register coin create signal passing its own position. Use customer's slotIndex to create unique coin groups.
 - `Coin.lua` has source, target place (which is fixed) and process to be passed to MoveToStation. It register a coin remove signal using global incrementing index to get unique removal.
 - `MoveToStation.lua` has only one function init and take three parameters from the caller. It can perform four tween functions; initial scatter for x and y, bob up and down, travel to target, delay a bit before removing the coin from gStateStack with unique index signal. All of these tween functions' parameters could be defined by the user.
+#### 2026-07-05
+- 'particleBurst.lua' and relevant parts in 'DayEndState.lua' are added to display green burst pop effect when the day ends.
+- 'particleBurst.lua' uses the 'Particle' libaray instead of its own custom code
+- 'particleBurst.lua'in 'PlayState.lua' is added to display particle effect for customer ordering and receiving orders
+-ps_standard: A snappy, quick particle system for standard servicing bursts.
+-ps_fireworks: A larger particle system (buffer size 5000) configured with:
+   -Lingering lifetimes (0.8 to 1.5 seconds).
+   -Wider initial launch speeds (80 to 240).
+   -Lower damping (0.8) so particles travel much further.
+   -Downward gravity/acceleration (-10 to 10 x-acceleration, 60 to 100 y-acceleration) to simulate physical arcing.
+   -Sizing interpolation starting larger (3.5) and shrinking down to nothing (0)
