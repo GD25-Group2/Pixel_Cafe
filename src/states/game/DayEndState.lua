@@ -39,10 +39,8 @@ function DayEndState:init()
     self.particleBurst = ParticleBurst()
     gStateStack:push(self.particleBurst)
 
-    -- Celebratory Day-Win green burst pop!
-    Signal:emit('trigger_burst', VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, {0.2, 0.95, 0.35, 1}, 80)
-    Signal:emit('trigger_burst', VIRTUAL_WIDTH / 2 - 80, VIRTUAL_HEIGHT / 2 + 20, {0.3, 0.9, 0.4, 0.8}, 40)
-    Signal:emit('trigger_burst', VIRTUAL_WIDTH / 2 + 80, VIRTUAL_HEIGHT / 2 + 20, {0.3, 0.9, 0.4, 0.8}, 40)
+    -- Trigger the grand victory fireworks show!
+    Signal:emit('victory_fireworks')
 
     if gSounds then
         for _, source in pairs(gSounds) do
