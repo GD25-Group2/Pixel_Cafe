@@ -14,7 +14,7 @@ function ParticleBurst:init(params)
     end
     self.particleTexture = love.graphics.newImage(imageData)
     
-    -- 1. Initialize standard particle system for snappy serve/hit bursts
+    -- Initialize standard particle system for snappy serve/hit bursts
     self.ps_standard = love.graphics.newParticleSystem(self.particleTexture, 1000)
     self.ps_standard:setParticleLifetime(0.2, 0.45) -- snappy, tight lifetime
     self.ps_standard:setEmissionRate(0) -- emit on demand
@@ -25,7 +25,7 @@ function ParticleBurst:init(params)
     self.ps_standard:setSizeVariation(0.4)
     self.ps_standard:setSizes(2.5, 0.5) -- scale down from 2.5px to 0.5px
     
-    -- 2. Initialize fireworks particle system for Day End celebration
+    --fireworks particle system for Day End celebration
     self.ps_fireworks = love.graphics.newParticleSystem(self.particleTexture, 5000)
     self.ps_fireworks:setParticleLifetime(0.8, 1.5) -- lingering lifetime for arcs
     self.ps_fireworks:setEmissionRate(0)
@@ -37,7 +37,7 @@ function ParticleBurst:init(params)
     self.ps_fireworks:setSizeVariation(0.5)
     self.ps_fireworks:setSizes(3.5, 1.5, 0) -- start slightly larger and fade/shrink to zero
     
-    -- Celebratory colors table: Neon Teal, Bright Gold, Pastel Pink, Electric Purple, Lime Green
+    -- color table 
     self.celebratoryColors = {
         {0.0, 1.0, 0.8, 1},   -- Neon Teal
         {1.0, 0.85, 0.0, 1},  -- Bright Gold
@@ -48,7 +48,7 @@ function ParticleBurst:init(params)
     
     self.scheduledBursts = {}
     
-    -- Register callbacks for the signals
+    
     self.signalCallback = function(x, y, color, count, lifetime, speed, damping)
         self:trigger(x, y, color, count, lifetime, speed, damping)
     end
@@ -102,13 +102,13 @@ end
 
 function ParticleBurst:startFireworkShow()
     self.scheduledBursts = {}
-    -- Automate a sequence of 4 to 6 distinct firework bursts
+    
     local count = love.math.random(4, 6)
     for i = 1, count do
         local x = love.math.random(math.floor(VIRTUAL_WIDTH * 0.1), math.floor(VIRTUAL_WIDTH * 0.9))
         local y = love.math.random(math.floor(VIRTUAL_HEIGHT * 0.15), math.floor(VIRTUAL_HEIGHT * 0.55))
         local color = self.celebratoryColors[love.math.random(#self.celebratoryColors)]
-        local delay = love.math.random() * 1.5 -- spread over 1.5 seconds
+        local delay = love.math.random() * 1.5 -- spread over 1.5 seconds (we can increase later )
         
         table.insert(self.scheduledBursts, {
             x = x,
@@ -132,8 +132,7 @@ function ParticleBurst:update(dt)
     BaseEntity.update(self, dt)
     self.ps_standard:update(dt)
     self.ps_fireworks:update(dt)
-    
-    -- Process any scheduled firework bursts
+
     for i = #self.scheduledBursts, 1, -1 do
         local burst = self.scheduledBursts[i]
         burst.delay = burst.delay - dt

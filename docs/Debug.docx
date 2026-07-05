@@ -176,7 +176,7 @@ Actual Result:  There is a chance that the item will disappear.
 Bug ID: #13 - Coffee brewing audio loop persists in DayEndState
 Status: Fixed
 Reporter: Lueaegyigyi
-Debugger: Antigravity
+Debugger: Luaegyigyi
 Description: The looping coffee brewing audio continues to play even after the gameplay day ends and transitions to the summary screen.
 Steps to Reproduce:
     1. Start the game.

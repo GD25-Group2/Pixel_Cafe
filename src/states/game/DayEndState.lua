@@ -39,7 +39,6 @@ function DayEndState:init()
     self.particleBurst = ParticleBurst()
     gStateStack:push(self.particleBurst)
 
-    -- Trigger the grand victory fireworks show!
     Signal:emit('victory_fireworks')
 
     if gSounds then
