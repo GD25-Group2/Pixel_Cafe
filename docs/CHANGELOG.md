@@ -245,7 +245,13 @@ added.
 - `SaveSlotBackground.lua` handles non-interactive parts of the new state.
 - `DataManager.lua` receives a major update. It can now save up to 3 independent game progress with the addition of setting data.
 
-### v1.2.0
+### v1.1.0
+#### 2026-07-04
+- `main.lua` update function get timer.update(dt) to help use timer of hump library.
+- `MoneyManager.lua` emits coin create signal with the frequency dependent on how much is added to its total.
+- `OrderBox.lua` register coin create signal passing its own position. Use customer's slotIndex to create unique coin groups.
+- `Coin.lua` has source, target place (which is fixed) and process to be passed to MoveToStation. It register a coin remove signal using global incrementing index to get unique removal.
+- `MoveToStation.lua` has only one function init and take three parameters from the caller. It can perform four tween functions; initial scatter for x and y, bob up and down, travel to target, delay a bit before removing the coin from gStateStack with unique index signal. All of these tween functions' parameters could be defined by the user.
 #### 2026-07-05
 - 'particleBurst.lua' and relevant parts in 'DayEndState.lua' are added to display green burst pop effect when the day ends.
 - 'particleBurst.lua' uses the 'Particle' libaray instead of its own custom code

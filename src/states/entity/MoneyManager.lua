@@ -11,6 +11,8 @@ function MoneyManager:init(totalMoney, todayMoney)
 
     self.displayMoney = self.totalMoney
 
+    self.coinCount = 0
+
     self.devFunc = function (added)
         self.totalMoney = self.totalMoney + added
     end
@@ -46,6 +48,9 @@ function MoneyManager:calculatePayment(customer)
     local maxTip = basePrice * 0.10
     if tip > maxTip then tip = maxTip end
     if tip < 0 then tip = 0 end
+
+    self.coinCount = math.floor(basePrice + tip)
+    self.customerIndex = customer.slotIndex
 
     return basePrice + tip, basePrice, tip
 end
@@ -96,6 +101,15 @@ function MoneyManager:update(dt)
     gDailySales = self._dailySalesAmount
     gDailyTips = self._dailyTipsAmount
     gStartingBalance = self._startingBalance
+
+    if self.coinCount > 0 then
+        for i = 1, self.coinCount do
+            print('MoneyManager-signal coin create')
+            Signal:emit('coin-create-' .. tostring(self.customerIndex))
+        end
+
+        self.coinCount = 0
+    end
 end
 
 function MoneyManager:render()
