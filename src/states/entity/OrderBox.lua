@@ -26,6 +26,18 @@ function OrderBox:init(params)
     self.maxPatience = CUSTOMER_CONFIG.patienceMax
 
     self.isActive = true
+
+    self.coinsAdd = function ()
+        print('OrderBox-before stack push')
+        gStateStack:push(Coin({
+            x = self.customer.x + self.offsetX,
+            y = self.customer.y + self.offsetY,
+            desired_width = self.width / 4,
+            desired_height = self.height / 4
+        }))
+    end
+
+    Signal:register('coin-create-' .. tostring(self.customer.slotIndex), self.coinsAdd)
 end
 
 function OrderBox:update(dt)

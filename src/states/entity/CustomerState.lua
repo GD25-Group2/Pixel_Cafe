@@ -221,6 +221,10 @@ function CustomerState:receiveItem(itemType)
         --interactRep(5)
         Signal:emit('customer-served', 5)
         self:setState('paying')
+
+        -- Snappy yellow pop for correct order
+        Signal:emit('trigger_burst', self.x + self.desired_width / 2, self.y + self.desired_height / 2, {1, 0.85, 0.25, 1}, 25)
+
         return true
     else
         -- Penalty for wrong order type
@@ -228,6 +232,10 @@ function CustomerState:receiveItem(itemType)
             self.orderBox:decreasePatience(CUSTOMER_CONFIG.wrongOrderPatiencePenalty or 10)
         end
         Signal:emit('customer-served', -5)
+
+        -- Small red pop for wrong order penalty
+        Signal:emit('trigger_burst', self.x + self.desired_width / 2, self.y + self.desired_height / 2, {0.9, 0.25, 0.25, 1}, 15)
+
         return false
     end
 end
@@ -249,6 +257,9 @@ function CustomerState:slashed()
     Signal:emit('customer-served', slashedRepLoss)
     if self.orderBox then self.orderBox:deactivate() end
     self:setState('leaving')
+
+    -- Energetic orange/red burst for slashing customer
+    Signal:emit('trigger_burst', self.x + self.desired_width / 2, self.y + self.desired_height / 2, {0.9, 0.2, 0.1, 1}, 35)
 end
 
 function CustomerState:getPaymentAmount()  return self.totalPayment end

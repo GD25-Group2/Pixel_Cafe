@@ -3,7 +3,7 @@
 ## Tech Stack
 - Language: Lua
 - Engine: LÖVE2D
-- Libraries: SUIT, Class, Push, StateMachine, StateStack, dkjson, Animation, Util
+- Libraries: SUIT, Class, Push, StateMachine, StateStack, dkjson, Animation, Util, hump
 
 ## Project Structure
 - main.lua
@@ -16,6 +16,7 @@
 - DataManager.lua
 - Dependencies.lua
 - InputBox.lua
+- MoveToStation.lua
 - Signal.lua
 - StockManager.lua
 ### src/libs
@@ -74,6 +75,7 @@
 - GameStartShopStateCar.lua
 - PopupWindowCard.lua
 - CityBackground.lua
+- Coin.lua
 - CounterBackground.lua
 - SaveSlotBackground.lua
 - ShopBackground.lua
