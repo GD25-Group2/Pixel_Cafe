@@ -172,3 +172,16 @@ Steps to Reproduce:
      Drag that item to empty space rapidly in a short time.
 Expected Result: Since the item is dropped at empty space, the item will return to plate.
 Actual Result:  There is a chance that the item will disappear.
+
+Bug ID: #13 - Coffee brewing audio loop persists in DayEndState
+Status: Fixed
+Reporter: Lueaegyigyi
+Debugger: Luaegyigyi
+Description: The looping coffee brewing audio continues to play even after the gameplay day ends and transitions to the summary screen.
+Steps to Reproduce:
+    1. Start the game.
+    2. Begin brewing a coffee (ensure audio is looping).
+    3. Trigger or transition to 'DayEndState'.
+    4. Observe the audio state on the day-end screen.
+Expected Result: The coffee brewing sound effect should be stopped or faded out immediately upon entering DayEndState.
+Actual Result: The coffee brewing sound loop keeps playing indefinitely during DayEndState.
