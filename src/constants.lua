@@ -27,6 +27,7 @@ gColors = {
     ['transparent'] = {1, 1, 1, 0},
     ['curtain'] = {0, 0, 0, 0.5},
     ['cyan'] = {0.2, 1, 1, 1},
+    ['gold'] = {255, 215, 0, 1},
 }
 
 ANIMATION_DEFS = {
@@ -152,7 +153,8 @@ ORDER_TYPES = {
     ['FreeSandwich']     = {price = 7, name = 'FreeSandwich'},
     ['MeatSandwich'] = {price = 8, name = 'MeatSandwich'},
     ['LoafOfBread']  = {price = 6, name = 'LoafOfBread'},
-    ['VegeSandwich'] = {price = 6, name = 'VegeSandwich'}
+    ['VegeSandwich'] = {price = 6, name = 'VegeSandwich'},
+    ['DeluxeSandwich'] = {price = 7, name = 'DeluxeSandwich'}
 }
 
 POPUP_WINDOW_CONFIG = {

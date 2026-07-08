@@ -56,6 +56,8 @@ function CustomerState:init(params)
 
     -- Flags
     self.leftImpatient = false
+
+    --self.countDeath = 0
 end
 
 function CustomerState:setSlot(slot)
@@ -87,6 +89,7 @@ function CustomerState:update(dt)
     elseif self.state == 'paying'    then self:updatePaying(dt)
     elseif self.state == 'leaving'   then self:updateLeaving(dt)
     elseif self.state == 'queue'     then self:updateQueue(dt)
+    --elseif self.state == 'killed'      then self:updateDeath(dt)
     end
 end
 
@@ -147,6 +150,10 @@ end
 
 function CustomerState:render()
     BaseEntity.render(self)
+    --[[if self.hasOutline then
+        love.graphics.setColor(gColors['white'])
+        love.graphics.draw(self.frame, self.x, self.y, 0, self.desired_width + 2, self.desired_height + 2)
+    end]]
 
     -- Render order box while waiting (box manages its own isActive flag)
     if self.orderBox and self.orderBox.isActive then
@@ -253,13 +260,56 @@ function CustomerState:leave()
     self:setState('leaving')
 end
 
+local dropItems = {
+    ['CoffeeCup'] = { --PaperCup 75%, CoffeeCup 25%
+        'PaperCup',
+        'PaperCup',
+        'PaperCup',
+        'CoffeeSeed',
+    },
+    ['MeatSandwich'] = {
+        'Bread',
+        'Meat',
+    },
+    ['VegeSandwich'] = {
+        'Bread',
+        'Lettuce'
+    },
+    ['DeluxeSandwich'] = {
+        'Bread',
+        'Lettuce',
+        'Meat',
+    }
+}
+
 function CustomerState:slashed()
     Signal:emit('customer-served', slashedRepLoss)
-    if self.orderBox then self.orderBox:deactivate() end
-    self:setState('leaving')
+    if self.orderBox then
+        self:dropItems()
+        self.orderBox:deactivate()
+    end
+    self:setState('done')
 
     -- Energetic orange/red burst for slashing customer
     Signal:emit('trigger_burst', self.x + self.desired_width / 2, self.y + self.desired_height / 2, {0.9, 0.2, 0.1, 1}, 35)
+end
+
+function CustomerState:dropItems()
+    print('CustomerState-' .. tostring(self.orderBox.orderType))
+    local items = dropItems[self.orderBox.orderType]
+    local order = items[math.random(#items)]
+    local params = {
+        x = self.x,
+        y = self.y,
+        desired_width = self.desired_width / 2,
+        desired_height = self.desired_height / 2,
+        order = order,
+    }
+
+    local target = Signal:request('drop-item-target-params-take', order)
+    if target == nil then print('CustomerState-target is nil') end
+    local item = DropItem(params, target)
+    gStateStack:push(item)
 end
 
 function CustomerState:getPaymentAmount()  return self.totalPayment end

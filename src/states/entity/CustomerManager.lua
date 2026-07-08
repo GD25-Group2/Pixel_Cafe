@@ -44,9 +44,12 @@ function CustomerManager:update(dt)
     -- Remove customers that have fully exited (state == 'done')
     for i = #self.customers, 1, -1 do
         local c = self.customers[i]
-        c:update(dt)
+        --c:update(dt)
+        --print('CustomerManager-' .. tostring(c.state))
         if c.state == 'done' then
+            print('CustomerManager- update- state is done')
             if c.slotIndex then
+                print('CustomerManager- update- slotIndex exists')
                 self.occupiedSlots[c.slotIndex] = false
             end
             table.remove(self.customers, i)

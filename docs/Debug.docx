@@ -114,9 +114,9 @@ Expected Result: There should be From Shop button to exit.
 Actual Result:  You can still click it. But visually, it is missing.
 
 Bug ID: #08 - Coffee Machine Bubble
-Status: Open
+Status: Resolved
 Reporter: Kyaw Sis Thway
-Debugger:
+Debugger: Kyaw Sis Thway
 Description: A bubble is there when it is not supposed to be.
 Steps to Reproduce:
      Start the game.
@@ -125,9 +125,9 @@ Expected Result: There should not be a bubble above Coffee Machine since it is s
 Actual Result:  Visible. Suspect to be from BaseEntity's update function.
 
 Bug ID: #09 - Dev Tool Time Skip
-Status: Open
+Status: Resolved
 Reporter: Kyaw Sis Thway
-Debugger:
+Debugger: Kyaw Sis Thway
 Description: Skip to day 9 but play day 8
 Steps to Reproduce:
      Start the game.
@@ -137,9 +137,9 @@ Expected Result: Playing date should be 8 in day end state and 9 in play state.
 Actual Result:  Day end state date is 9 and play state date is 8.
 
 Bug ID: #10 - Color Bleeding
-Status: Open
+Status: Resolved
 Reporter: Kyaw Sis Thway
-Debugger:
+Debugger: Kyaw Sis Thway
 Description: Colors for buttons and bubbles
 Steps to Reproduce:
      Start the game.
@@ -185,3 +185,14 @@ Steps to Reproduce:
     4. Observe the audio state on the day-end screen.
 Expected Result: The coffee brewing sound effect should be stopped or faded out immediately upon entering DayEndState.
 Actual Result: The coffee brewing sound loop keeps playing indefinitely during DayEndState.
+
+Bug ID: #14 - UI Misplacement
+Status: Open
+Reporter: Kyaw Sis Thway
+Debugger:
+Description: The money shown in load game is being covered by play button. The gap between the buttons in start menu is not uniform.
+Steps to Reproduce:
+    1. Start the game.
+    2. Click Load button.
+Expected Result: The texts and the buttons shouldn't interfere in each other's visibility.
+Actual Result: As stated in description.
