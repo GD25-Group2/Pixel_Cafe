@@ -263,5 +263,30 @@ added.
    -Lower damping (0.8) so particles travel much further.
    -Downward gravity/acceleration (-10 to 10 x-acceleration, 60 to 100 y-acceleration) to simulate physical arcing.
    -Sizing interpolation starting larger (3.5) and shrinking down to nothing (0)
+### v1.1.0
+#### 2026-07-04
+- `main.lua` update function get timer.update(dt) to help use timer of hump library.
+- `MoneyManager.lua` emits coin create signal with the frequency dependent on how much is added to its total.
+- `OrderBox.lua` register coin create signal passing its own position. Use customer's slotIndex to create unique coin groups.
+- `Coin.lua` has source, target place (which is fixed) and process to be passed to MoveToStation. It register a coin remove signal using global incrementing index to get unique removal.
+- `MoveToStation.lua` has only one function init and take three parameters from the caller. It can perform four tween functions; initial scatter for x and y, bob up and down, travel to target, delay a bit before removing the coin from gStateStack with unique index signal. All of these tween functions' parameters could be defined by the user.
+#### 2026-07-05
+- 'particleBurst.lua' and relevant parts in 'DayEndState.lua' are added to display green burst pop effect when the day ends.
+- 'particleBurst.lua' uses the 'Particle' libaray instead of its own custom code
+- 'particleBurst.lua'in 'PlayState.lua' is added to display particle effect for customer ordering and receiving orders
+-ps_standard: A snappy, quick particle system for standard servicing bursts.
+-ps_fireworks: A larger particle system (buffer size 5000) configured with:
+   -Lingering lifetimes (0.8 to 1.5 seconds).
+   -Wider initial launch speeds (80 to 240).
+   -Lower damping (0.8) so particles travel much further.
+   -Downward gravity/acceleration (-10 to 10 x-acceleration, 60 to 100 y-acceleration) to simulate physical arcing.
+   -Sizing interpolation starting larger (3.5) and shrinking down to nothing (0)
 #### 2026-07-05
 - Bug ID #13 is fixed.
+#### 2026-07-08
+- `CustomerManager.lua` has one of its c:update(dt) line commented out. The reason why the customers are walking too fast is due to it being update two time in a frame.
+- `CustomerState.lua` gets a new local table (dropItems) and dropItems function that is called when the slashed function run. The customer now drop items according to what it is about to order.
+- `PlayState.lua` has a new table (stockOwners) to deal with drop-item-target-params-take signal and its function so that it can communicate with the CustomerState, DropItem and other entities owning stock.
+- `DropItem.lua` is a new GUI entity that deal with the rendering of the cicle and its trail heading to the target to show that an item is dropped and move to its corresponding entity.
+- `MoveToStation.lua` now has a new condition to check drop item entity.
+- `Signal.lua` gets a new function called request to transfer data between non-heirarchically related entities.
