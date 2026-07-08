@@ -265,3 +265,10 @@ added.
    -Sizing interpolation starting larger (3.5) and shrinking down to nothing (0)
 #### 2026-07-05
 - Bug ID #13 is fixed.
+#### 2026-07-08
+- `CustomerManager.lua` has one of its c:update(dt) line commented out. The reason why the customers are walking too fast is due to it being update two time in a frame.
+- `CustomerState.lua` gets a new local table (dropItems) and dropItems function that is called when the slashed function run. The customer now drop items according to what it is about to order.
+- `PlayState.lua` has a new table (stockOwners) to deal with drop-item-target-params-take signal and its function so that it can communicate with the CustomerState, DropItem and other entities owning stock.
+- `DropItem.lua` is a new GUI entity that deal with the rendering of the cicle and its trail heading to the target to show that an item is dropped and move to its corresponding entity.
+- `MoveToStation.lua` now has a new condition to check drop item entity.
+- `Signal.lua` gets a new function called request to transfer data between non-heirarchically related entities.

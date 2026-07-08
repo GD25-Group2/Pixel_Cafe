@@ -72,6 +72,7 @@
 - StartMenuBackground.lua
 - PauseMenuCard.lua
 - DayEndStateCard.lua
+- DropItem.lua
 - GameStartShopStateCar.lua
 - PopupWindowCard.lua
 - CityBackground.lua

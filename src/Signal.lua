@@ -16,6 +16,18 @@ function Signal:emit(eventName, ...)
     end
 end
 
+function Signal:request(eventName, ...)
+    if self.listeners[eventName] then
+        for _, callback in ipairs(self.listeners[eventName]) do
+            local result = callback(...)
+            if result ~= nil then
+                return result
+            end
+        end
+    end
+    return nil
+end
+
 function Signal:remove(eventName, callback)
     if self.listeners[eventName] then
         for i, cb in ipairs(self.listeners[eventName]) do

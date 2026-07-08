@@ -12,6 +12,7 @@ end
 function PlayState:init()
     self.type = 'PlayState'
     self.interactables = {}
+    self.stockOwners = {}
 
     self.data = DataManager:getData()
     DataManager:saveOldData(self.data)
@@ -99,13 +100,36 @@ function PlayState:init()
         gStateStack:push(GameOver())
     end
 
+    self.dropItemGetParams = function (order)
+        local owner
+        if order == nil then print('PlayState-order is nil')
+        else print('PlayState-order is ' .. tostring(order)) end
+        for i = #self.stockOwners, 1, -1 do
+            local holder = self.stockOwners[i]
+            if holder and holder.stockType then print('PlayState- holder is ' .. tostring(holder.stockType)) end
+            if holder.stockType == order then
+                owner = {
+                    x = holder.x + holder.desired_width / 2,
+                    y = holder.y + holder.desired_height / 2,
+                    desired_width = holder.desired_width / 4,
+                    desired_height = holder.desired_height / 4,
+                }
+                if owner then print('PlayState - owner exists') end
+                print(owner.x)
+            end
+        end
+        return owner
+    end
+
     Signal:register('plate-manager-plate-added', self.plateManagerPlateAdded)
     Signal:register('game-over', self.gameOver)
+    Signal:register('drop-item-target-params-take', self.dropItemGetParams)
 
     if find(self.data['unlockedMachine'], 'BreadBasket') then
         self.breadBasket = BreadBasket(BREAD_BASKET_CONFIG)
         gStateStack:push(self.breadBasket)
         table.insert(self.interactables, self.breadBasket)
+        table.insert(self.stockOwners, self.breadBasket)
 
         self.plateManager = PlateManager()
         gStateStack:push(self.plateManager)
@@ -119,10 +143,12 @@ function PlayState:init()
         self.coffeeMachine   = CoffeeMachine(COFFEE_MACHINE_ENTITY)
         gStateStack:push(self.coffeeMachine)
         table.insert(self.interactables, self.coffeeMachine)
+        table.insert(self.stockOwners, self.coffeeMachine)
         
         self.coffeeCupStack  = CoffeeCupStack(COFFEE_CUP_STACK_CONFIG)
         gStateStack:push(self.coffeeCupStack)
         table.insert(self.interactables, self.coffeeCupStack)
+        table.insert(self.stockOwners, self.coffeeCupStack)
         
         self.coffeeTray      = CoffeeTray(COFFEE_TRAY_CONFIG)
         gStateStack:push(self.coffeeTray)
@@ -133,30 +159,14 @@ function PlayState:init()
         self.lettuce = Lettuce()
         gStateStack:push(self.lettuce)
         table.insert(self.interactables, self.lettuce)
+        table.insert(self.stockOwners, self.lettuce)
     end
     
     if find(self.data['unlockedMachine'], 'Stove') then
         self.stove = Stove()
         gStateStack:push(self.stove)
         table.insert(self.interactables, self.stove)
-    end
-
-    --[[if find(self.data['unlockedMachine'], 'BreadPlate') then
-        self.breadPlate = BreadPlate(BREAD_PLATE_CONFIG)
-        gStateStack:push(self.breadPlate)
-        table.insert(self.interactables, self.breadPlate)
-    end
-
-    if find(self.data['unlockedMachine'], 'SandwichPlate') then
-        self.sandwichPlate = SandwichPlate(SANDWICH_PLATE_CONFIG)
-        gStateStack:push(self.sandwichPlate)
-        table.insert(self.interactables, self.sandwichPlate)
-    end]]
-
-    if find(self.data['unlockedMachine'], 'Lettuce') then
-        self.lettuce = Lettuce()
-        gStateStack:push(self.lettuce)
-        table.insert(self.interactables, self.lettuce)
+        table.insert(self.stockOwners, self.stove)
     end
 
     self.particleBurst   = ParticleBurst()
@@ -250,4 +260,19 @@ function PlayState:deliverItem(target)
         end
     end
     return success
+end
+
+--to overwrite the function in BaseState
+function PlayState:getInteractables()
+    for i = #self.interactables, 1, -1 do
+        if self.interactables[i].type == 'CustomerState' then
+            table.remove(self.interactables, i)
+        end
+    end
+
+    if self.customerManager then
+        for _, customer in ipairs(self.customerManager:getAllCustomers()) do
+            table.insert(self.interactables, customer)
+        end
+    end
 end

@@ -14,6 +14,9 @@ function MoveToStation.init(source, target, process)
             if src.type == 'Coin' then
                 print('MoveToStation-signal coin remove')
                 Signal:emit('coin-remove-' .. tostring(src.id))
+            elseif src.type == 'DropItem' then
+                print('MoveToStation-signal drop item remove: ' .. tostring(src.order))
+                Signal:emit('DropItem-remove-' .. tostring(src.order))
             end
         end)
     end
