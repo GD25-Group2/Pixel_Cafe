@@ -227,6 +227,7 @@ function CustomerState:receiveItem(itemType)
 
         --interactRep(5)
         Signal:emit('customer-served', 5)
+        Signal:emit('transaction-receipt', self.orderBox.orderType, self.orderBox.order.price)
         self:setState('paying')
 
         -- Snappy yellow pop for correct order

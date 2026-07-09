@@ -127,7 +127,7 @@ UI_CARD = {
     width  = 260,
     height = 140,
     x      = VIRTUAL_WIDTH / 2 - 130,
-    y      = VIRTUAL_HEIGHT / 2 - 70,
+    y      = VIRTUAL_HEIGHT / 2 - 100,
     color  = {0.15, 0.15, 0.2, 0.95},
     border = {0.6, 0.6, 0.7, 0.8},
 }

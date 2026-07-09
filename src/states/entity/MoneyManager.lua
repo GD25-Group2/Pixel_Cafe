@@ -3,7 +3,9 @@ MoneyManager = class{__includes = BaseEntity}
 function MoneyManager:init(totalMoney, todayMoney)
     self.totalMoney = totalMoney
     self.todayMoney = todayMoney
+    self.todayTrans = {}
     self.floatingMoney = {}
+    DataManager:set('receipt', self.todayTrans)
 
     self._startingBalance = gStartingBalance
     self._dailySalesAmount = 0
@@ -17,7 +19,19 @@ function MoneyManager:init(totalMoney, todayMoney)
         self.totalMoney = self.totalMoney + added
     end
 
+    self.transFunc = function (order, amount)
+        local toAdd = {order, tostring(amount)}
+        table.insert(self.todayTrans, toAdd)
+        DataManager:set('receipt', self.todayTrans)
+    end
+
+    --[[self.transDataGive = function ()
+        return self.todayTrans
+    end]]
+
     Signal:register('dev-money-add', self.devFunc)
+    Signal:register('transaction-receipt', self.transFunc)
+    --Signal:register('transaction-data-request', self.transDataGive)
 end
 
 function MoneyManager:calculatePayment(customer)
