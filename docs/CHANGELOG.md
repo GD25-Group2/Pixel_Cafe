@@ -290,3 +290,7 @@ added.
 - `DropItem.lua` is a new GUI entity that deal with the rendering of the cicle and its trail heading to the target to show that an item is dropped and move to its corresponding entity.
 - `MoveToStation.lua` now has a new condition to check drop item entity.
 - `Signal.lua` gets a new function called request to transfer data between non-heirarchically related entities.
+#### 2026-07-09
+- `MoneyManager.lua` has a new table that gets a new element every time the transaction is done. The table is passed to DayEndState through DataManager.
+- `DayEndState.lua` now has its buttons not pushed until after every transaction data is shown.
+- `DayEndStateCard.lua` get a whole bunch of attributes and a new condition check in render function to dyanamically display the transaction data of the day.

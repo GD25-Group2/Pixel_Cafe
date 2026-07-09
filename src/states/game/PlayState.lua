@@ -115,7 +115,6 @@ function PlayState:init()
                     desired_height = holder.desired_height / 4,
                 }
                 if owner then print('PlayState - owner exists') end
-                print(owner.x)
             end
         end
         return owner
