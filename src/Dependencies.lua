@@ -10,12 +10,6 @@ require('src.libs.Util')
 require('src.libs.Animation')
 _G.timer = require('src.libs.hump.timer')
 
-gFonts = {
-    ['large']  = love.graphics.newFont('assets/font.ttf', 32),
-    ['medium'] = love.graphics.newFont('assets/font.ttf', 16),
-    ['small']  = love.graphics.newFont('assets/font.ttf', 8),
-}
-
 gFrames = {
     ['StartMenuBackground'] = love.graphics.newImage('assets/pixelCafeCityBackground.png'),
     ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.png'),
@@ -62,8 +56,8 @@ gFrames = {
     ['CounterBackground'] = love.graphics.newImage('assets/pixelCafeCounterBackground3.png'),
     ['CityBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundLowerPerspective.png'),
     ['ShopIcon'] = love.graphics.newImage('assets/ShopIcon.png'),
-    ['QueueExpandIcon'] = love.graphics.newImage('assets/expandToLeft.png'),
-    ['QueueContractIcon'] = love.graphics.newImage('assets/expandToRight.png'),
+    ['ToLeft'] = love.graphics.newImage('assets/expandToLeft.png'),
+    ['ToRight'] = love.graphics.newImage('assets/expandToRight.png'),
     ['choppedPlatet'] = love.graphics.newImage('assets/choppedPlatet.png'),
     ['ChoppingBoard'] = love.graphics.newImage('assets/choppingBoard&Knife.png'),
     ['Stove'] = love.graphics.newImage('assets/stove.png'),
@@ -194,3 +188,4 @@ require('src.states.GUI.Coin')
 require('src.states.GUI.ParticleBurst')
 require('src.states.GUI.DropItem')
 require('src.states.GUI.Shadow')
+require('src.states.GUI.TextBox')

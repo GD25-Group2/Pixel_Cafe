@@ -21,6 +21,7 @@ kitchen ware shadow -> 60
 kitchen ware        -> 75
 ui showcase entity  -> 85
 button              -> 95
+textbox             -> 97
 visual effect       -> 98
 cursor              -> 100
 ]]

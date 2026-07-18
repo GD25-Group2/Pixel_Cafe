@@ -82,6 +82,7 @@
 - Shadow.lua
 - ShopBackground.lua
 - ShopTopBox.lua
+- TextBox.lua
 
 ## Core Systems
 

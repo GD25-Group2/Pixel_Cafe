@@ -135,8 +135,6 @@ function CoffeeMachine:render()
         love.graphics.arc('line', 'open', self.x + self.desired_width / 2, self.y + self.desired_height / 2, self.desired_width / 2, -math.pi / 2, -math.pi / 2 + (self.counter / self.duration) * (2 * math.pi))
         love.graphics.setColor(gColors['white'])
     end]]
-
-    if self.level then love.graphics.printf(tostring(self.level), self.x, self.y, self.desired_width, 'left') end
 end
 
 function CoffeeMachine:produce()

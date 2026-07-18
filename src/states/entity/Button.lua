@@ -1,10 +1,11 @@
 Button = class {__includes = BaseEntity}
 
-function Button:init(params)
+function Button:init(params, extraInst)
     BaseEntity.init(self, params)
     self.priority = 95
     self.isHovering = false
     self.isGUI = true
+    if extraInst then self.extraInst = extraInst end
 end
 
 function Button:update(dt)

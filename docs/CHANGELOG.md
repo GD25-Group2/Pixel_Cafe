@@ -300,3 +300,6 @@ added.
 - `InputBox.lua` is moved to entity foldered. It doesn't exist independently of the class library now.
 - `main.lua` draw function got three new lines that make the entire game's atmosphere darker.
 - All entity on the counter that need the shadow to become more realistic have a shadow each now.
+- `TextBox.lua` is installed. Players can now right click on machines to know how much stock is left.
+- According to some feeback, the setting has additional font to choose. Including default 'pixel', it has three
+different font styles.
