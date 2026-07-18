@@ -1,21 +1,41 @@
 Cursor = class {__includes = BaseEntity}
 
 function Cursor:init()
+    self.priority = 100
     self.isDragging = false
     self.heldItem = nil
     self.type = 'Cursor'
+    
+    self.x = mouseX
+    self.yBuffer = 25
+    self.y = mouseY
 
     self.desired_width = 16
     self.desired_height = 16
+
+    self.shadow = Shadow({
+        x = self.x,
+        y = self.y + self.desired_height,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        frame = self.frame,
+        xBuffer = 0,
+        yBuffer = self.yBuffer,
+    })
+    gStateStack:push(self.shadow)
 end
 
 function Cursor:update(dt)
+    if self.shadow then
+        self.shadow:setCoor(mouseX, mouseY)
+    end
 end
 
 function Cursor:render()
     if self.isDragging then
         if self.frame then
             BaseEntity.render(self)
+            self.shadow:setFrame(self.frame)
         else
             -- Draw an amber coffee-drop circle; set color explicitly so we're
             -- never dependent on whatever the previous render call left behind.
@@ -26,7 +46,10 @@ function Cursor:render()
             love.graphics.setColor(gColors['white'])         -- reset
 
             love.graphics.print(self.heldItem, mouseX + 10, mouseY - 10)
+            self.shadow:setFrame(nil)
         end
+    else
+        self.shadow:setFrame(nil)
     end
 end
 

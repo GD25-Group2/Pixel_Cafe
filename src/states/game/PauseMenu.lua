@@ -1,6 +1,7 @@
 PauseMenu = class {__includes = BaseState}
 
 function PauseMenu:init()
+    self.priority = 0
     self.resumeButton = Button(BUTTON_PARAMS['Resume'])
 
     self.restartButton = Button(BUTTON_PARAMS['Restart'])

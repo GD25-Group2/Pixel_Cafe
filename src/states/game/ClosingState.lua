@@ -1,6 +1,7 @@
 ClosingState = class{__includes = BaseState}
 
 function ClosingState:init(customerManager)
+    self.priority = 0
     self.customerManager = customerManager
 end
 

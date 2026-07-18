@@ -1,6 +1,7 @@
 SaveSlotState = class{__includes = BaseState}
 
 function SaveSlotState:init()
+    self.priority = 0
     self.slotsData = {}
     self.interactables = {}
 

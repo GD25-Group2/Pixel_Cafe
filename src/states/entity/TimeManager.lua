@@ -1,6 +1,7 @@
 TimeManager = class{__includes = BaseEntity}
 
 function TimeManager:init(currentDate, customerManager)
+    self.priority = 85
     -- Default to start hour 8 (8:00 AM)
     self.dayTime = 8 * 60
     

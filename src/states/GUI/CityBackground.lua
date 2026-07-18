@@ -1,6 +1,7 @@
 CityBackground = class {__includes = BaseState}
 
 function CityBackground:init()
+    self.priority = 5
     self.isGUI = true
     self.backgroundFrame = gFrames['CityBackground']
 end

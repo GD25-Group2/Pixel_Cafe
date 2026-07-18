@@ -32,6 +32,7 @@ local function drawPixelSlider(fraction, opt, x, y, w, h)
 end
 
 function SettingsState:init()
+    self.priority = 0
     self.backButton = Button(BUTTON_PARAMS['SettingsBack'])
     self.musicSliderData = {value = gSettings.musicVolume, min = 0, max = 1}
     self.sfxSliderData = {value = gSettings.sfxVolume, min = 0, max = 1}

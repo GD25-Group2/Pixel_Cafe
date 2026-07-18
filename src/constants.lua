@@ -26,6 +26,7 @@ gColors = {
     ['brown'] = {0.4, 0.25, 0.15, 1},
     ['transparent'] = {1, 1, 1, 0},
     ['curtain'] = {0, 0, 0, 0.5},
+    ['curtain2'] = {0, 0, 0, 0.3},
     ['cyan'] = {0.2, 1, 1, 1},
     ['gold'] = {255, 215, 0, 1},
 }
@@ -116,6 +117,9 @@ CUSTOMER_CONFIG = {
     minSpawnInterval = 1,
     maxSpawnInterval = 6,
 }
+
+COUNTER_Y = 118
+COUNTER_LOWER_Y = 181
 
 MONEY_CONFIG = {
     startingMoney   = 50,
@@ -330,6 +334,7 @@ BUTTON_PARAMS = {
         desired_width = PAUSE_MENU_CONFIG.btnW,
         desired_height = PAUSE_MENU_CONFIG.btnH,
         action = function()
+            gStateStack:clear()
             gStateStack:push(SettingsState())
         end,
         clickable = true,
@@ -344,7 +349,8 @@ BUTTON_PARAMS = {
         desired_height = PAUSE_MENU_CONFIG.btnH,
         action = function()
             DataManager:saveSettings(SETTING_FILE)
-            gStateStack:pop()
+            gStateStack:clear()
+            gStateStack:push(PauseMenu())
         end,
         clickable = true,
         defaultColor = gColors['white'],
@@ -357,6 +363,7 @@ BUTTON_PARAMS = {
         desired_width = 64,
         desired_height = 16,
         action = function()
+            gStateStack:clear()
             gStateStack:push(SettingsState())
         end,
         clickable = true,

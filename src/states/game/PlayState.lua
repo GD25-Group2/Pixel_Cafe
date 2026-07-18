@@ -10,6 +10,7 @@ local function find(list, name)
 end
 
 function PlayState:init()
+    self.priority = 0
     self.type = 'PlayState'
     self.interactables = {}
     self.stockOwners = {}

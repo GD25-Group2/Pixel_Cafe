@@ -15,7 +15,6 @@
 - constants.lua
 - DataManager.lua
 - Dependencies.lua
-- InputBox.lua
 - MoveToStation.lua
 - Signal.lua
 - StockManager.lua
@@ -60,6 +59,7 @@
 - Plate.lua
 - PlateManager.lua
 - FloatingMoney.lua
+- InputBox.lua
 - SandwichPlate.lua
 - Scrollbar.lua
 - ShopItem.lua
@@ -79,6 +79,7 @@
 - Coin.lua
 - CounterBackground.lua
 - SaveSlotBackground.lua
+- Shadow.lua
 - ShopBackground.lua
 - ShopTopBox.lua
 

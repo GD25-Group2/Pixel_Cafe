@@ -2,6 +2,7 @@ ParticleBurst = class {__includes = BaseEntity}
 
 function ParticleBurst:init(params)
     BaseEntity.init(self, params or {})
+    self.priority = 98
     self.type = 'ParticleBurst'
     self.isGui = true
     

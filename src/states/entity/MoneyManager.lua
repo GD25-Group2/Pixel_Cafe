@@ -1,6 +1,7 @@
 MoneyManager = class{__includes = BaseEntity}
 
 function MoneyManager:init(totalMoney, todayMoney)
+    self.priority = 85
     self.totalMoney = totalMoney
     self.todayMoney = todayMoney
     self.todayTrans = {}

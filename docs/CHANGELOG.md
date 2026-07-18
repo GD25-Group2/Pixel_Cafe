@@ -294,3 +294,9 @@ added.
 - `MoneyManager.lua` has a new table that gets a new element every time the transaction is done. The table is passed to DayEndState through DataManager.
 - `DayEndState.lua` now has its buttons not pushed until after every transaction data is shown.
 - `DayEndStateCard.lua` get a whole bunch of attributes and a new condition check in render function to dyanamically display the transaction data of the day.
+
+#### 2026-07-18
+- `Shadow.lua` is now installed. It requires parameters to be constructed manually and allows adjustments in its position and configuration. But the fudamental orientation (leaning and so on can't be changed)
+- `InputBox.lua` is moved to entity foldered. It doesn't exist independently of the class library now.
+- `main.lua` draw function got three new lines that make the entire game's atmosphere darker.
+- All entity on the counter that need the shadow to become more realistic have a shadow each now.

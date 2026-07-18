@@ -1,6 +1,7 @@
 GameOver = class{__includes = BaseState}
 
 function GameOver:init()
+    self.priority = 0
     self.todayMoney, self.totalMoney = DataManager:getData('todayMoney'), DataManager:getData('totalMoney')
     self.currentDate = DataManager:getData('currentDate')
 

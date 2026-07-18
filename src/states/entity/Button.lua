@@ -2,6 +2,7 @@ Button = class {__includes = BaseEntity}
 
 function Button:init(params)
     BaseEntity.init(self, params)
+    self.priority = 95
     self.isHovering = false
     self.isGUI = true
 end

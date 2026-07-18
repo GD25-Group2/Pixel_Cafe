@@ -46,6 +46,9 @@ end
 function love.draw()
     push:start()
     gStateStack:render()
+    love.graphics.setColor(gColors['curtain2'])
+    love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
+    love.graphics.setColor(gColors['white'])
     push:finish()
 end
 

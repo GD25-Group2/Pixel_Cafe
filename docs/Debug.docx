@@ -196,3 +196,14 @@ Steps to Reproduce:
     2. Click Load button.
 Expected Result: The texts and the buttons shouldn't interfere in each other's visibility.
 Actual Result: As stated in description.
+
+Bug ID: #15 - Stove Production
+Status: Resolved
+Reporter: Kyaw Sis Thway
+Debugger: Kyaw Sis Thway
+Description: The meat is draggable without the production stage
+Steps to Reproduce:
+    1. Start the game.
+    2. Play the date in which the Stove is unlocked.
+Expected Result: Stove should only allow drag when the production stage is completed.
+Actual Result: You can drag without clicking and waiting.
