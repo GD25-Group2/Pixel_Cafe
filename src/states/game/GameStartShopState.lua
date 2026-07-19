@@ -14,6 +14,7 @@ local menuItems = {
 }
 
 function GameStartShopState:init()
+    self.priority = 0
     self.type = 'GameStartShopState'
     self.timer = 15
     

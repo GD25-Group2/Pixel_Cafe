@@ -1,6 +1,7 @@
 CounterBackground = class {__includes = BaseState}
 
 function CounterBackground:init()
+    self.priority = 50
     self.isGUI = true
     self.backgroundFrame = gFrames['CounterBackground']
 end

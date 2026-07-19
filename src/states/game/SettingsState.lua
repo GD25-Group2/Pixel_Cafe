@@ -32,12 +32,21 @@ local function drawPixelSlider(fraction, opt, x, y, w, h)
 end
 
 function SettingsState:init()
+    self.priority = 0
     self.backButton = Button(BUTTON_PARAMS['SettingsBack'])
+    gStateStack:push(self.backButton)
     self.musicSliderData = {value = gSettings.musicVolume, min = 0, max = 1}
     self.sfxSliderData = {value = gSettings.sfxVolume, min = 0, max = 1}
-    
+    self.toLeft = Button(BUTTON_PARAMS['SettingLeftFont'])
+    gStateStack:push(self.toLeft)
+    self.toRight = Button(BUTTON_PARAMS['SettingRightFont'])
+    gStateStack:push(self.toRight)
+    self.fontText = FONT_NAMES[FONT_INDEX]
+
     self.interactables = {
-        self.backButton
+        self.backButton,
+        self.toLeft,
+        self.toRight
     }
 end
 
@@ -77,7 +86,7 @@ function SettingsState:update(dt)
 end
 
 function SettingsState:render()
-    local card = UI_CARD
+    local card = SETTING_CARD
 
     love.graphics.setColor(0.12, 0.12, 0.18, 1.0)
     love.graphics.rectangle('fill', card.x, card.y, card.width, card.height, 10, 10)
@@ -91,7 +100,6 @@ function SettingsState:render()
     love.graphics.printf('SETTINGS', card.x, card.y + 10, card.width, 'center')
     
     love.graphics.setFont(gFonts['medium'])
-    
     love.graphics.setColor(0.8, 0.8, 0.9, 1)
     love.graphics.print('Music', card.x + 20, card.y + 50)
     love.graphics.printf(string.format('%d%%', math.floor(self.musicSliderData.value * 100)), card.x + 195, card.y + 50, 45, 'right')
@@ -99,7 +107,8 @@ function SettingsState:render()
     love.graphics.print('SFX', card.x + 20, card.y + 85)
     love.graphics.printf(string.format('%d%%', math.floor(self.sfxSliderData.value * 100)), card.x + 195, card.y + 85, 45, 'right')
 
-    self.backButton:render()
+    self.fontText = FONT_NAMES[FONT_INDEX]
+    love.graphics.printf(self.fontText, VIRTUAL_WIDTH / 2 - 50, SETTING_CARD.y + 130, 100, 'center')
     
     suit.draw()
 end

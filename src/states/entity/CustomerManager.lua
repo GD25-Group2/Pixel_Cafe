@@ -5,6 +5,7 @@
 CustomerManager = class{__includes = BaseState}
 
 function CustomerManager:init()
+    self.priority = 10
     self.customers     = {}   -- list of active CustomerState objects
     self.queue = {}
     self.occupiedSlots = {}   -- [slotIndex] = true/false

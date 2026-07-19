@@ -6,6 +6,26 @@
     cogden@cs50.harvard.edu
 ]]
 
+--[[
+Priority List
+
+game state          -> 0
+background          -> 5
+non-display entity  -> 10
+card                -> 15
+shop item           -> 20
+customer            -> 25
+customer gui        -> 35
+counter             -> 50
+kitchen ware shadow -> 60
+kitchen ware        -> 75
+ui showcase entity  -> 85
+button              -> 95
+textbox             -> 97
+visual effect       -> 98
+cursor              -> 100
+]]
+
 StateStack = class{}
 
 function StateStack:init()
@@ -85,14 +105,32 @@ function StateStack:clear()
     end
 end
 
-function StateStack:push(state)
-    if self.isPopup then
-        table.insert(self.popupTable, state)
-    elseif self.paused then
-        table.insert(self.pausedTable, state)
-    else
-        table.insert(self.states, state)
+local function bubbleSort(arr)
+    print('StateStack-bubbleSort')
+    local n = #arr
+
+    for i = 1, n - 1 do
+        for j = 1, n - i do
+            if arr[j].priority > arr[j + 1].priority then
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+            end
+        end
     end
+end
+
+function StateStack:push(state)
+    local target
+    if self.isPopup then
+        target = self.popupTable
+        table.insert(target, state)
+    elseif self.paused then
+        target = self.pausedTable
+        table.insert(target, state)
+    else
+        target = self.states
+        table.insert(target, state)
+    end
+    bubbleSort(target)
     state:enter()
 end
 
@@ -112,12 +150,14 @@ function StateStack:pop(target)
                    current.type == target then
                    
                     current:exit()
+                    bubbleSort(popTable)
                     table.remove(popTable, i)
                     break
                 end
             end
         else
             popTable[#popTable]:exit()
+            bubbleSort(popTable)
             table.remove(popTable)
         end
     end

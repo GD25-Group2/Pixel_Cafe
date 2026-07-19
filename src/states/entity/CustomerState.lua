@@ -24,6 +24,7 @@ local slashedRepLoss = -8
 
 function CustomerState:init(params)
     BaseEntity.init(self, params)
+    self.priority = 25
     self.type = 'CustomerState'
     self.customerType = randomChoice{
         'LegLady',

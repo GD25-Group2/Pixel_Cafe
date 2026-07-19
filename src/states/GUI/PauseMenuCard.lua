@@ -1,6 +1,7 @@
 PauseMenuCard = class {__includes = BaseState}
 
 function PauseMenuCard:init()
+    self.priority = 15
     self.isGUI = true
 end
 

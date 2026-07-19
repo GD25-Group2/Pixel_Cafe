@@ -2,6 +2,7 @@ Bubble = class {__includes = BaseEntity}
 
 function Bubble:init(params)
     BaseEntity.init(self, params)
+    self.priority = 98
     self.type = 'Bubble'
     self.isGui = true
     self.isActive = false

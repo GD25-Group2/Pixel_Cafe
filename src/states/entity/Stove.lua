@@ -14,8 +14,9 @@ local levelPerformance = {
 
 function Stove:init()
     BaseEntity.init(self, STOVE_CONFIG)
+    self.priority = 75
     self.counter = 0
-    self.productionStage = 'Ready'
+    self.productionStage = 'Void'
     self.isMachine = true
     self.type = 'Stove'
     self.level = StockManager:getLevel(self.type)
@@ -35,6 +36,18 @@ function Stove:init()
 
     self.isAvail = false
     gStateStack:push(self.bubble)
+
+    self.shadow = Shadow({
+        x = self.x,
+        y = self.y + self.desired_height,
+        desired_width = self.desired_width * 0.8,
+        desired_height = self.desired_height,
+        texture = self.texture,
+        frame = self.frame,
+        xBuffer = -5,
+        yBuffer = -23,
+    })
+    gStateStack:push(self.shadow)
 end
 
 function Stove:update(dt)
@@ -93,7 +106,7 @@ function Stove:drag()
 end
 
 function Stove:taken()
-    self.productionStage = 'Ready'
+    self.productionStage = 'Void'
     self:updateFrame()
     self.isAvail = false
 end

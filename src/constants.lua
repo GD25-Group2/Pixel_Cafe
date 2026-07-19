@@ -26,8 +26,33 @@ gColors = {
     ['brown'] = {0.4, 0.25, 0.15, 1},
     ['transparent'] = {1, 1, 1, 0},
     ['curtain'] = {0, 0, 0, 0.5},
+    ['curtain2'] = {0, 0, 0, 0.3},
     ['cyan'] = {0.2, 1, 1, 1},
     ['gold'] = {255, 215, 0, 1},
+}
+
+FONTS = {
+    ['pixel'] = 'assets/pixel.ttf',
+    ['strange'] = 'assets/strange.ttf',
+    ['thaleah'] = 'assets/Thaleah.ttf',
+}
+FONT_NAMES = {
+    'pixel',
+    'strange',
+    'thaleah'
+}
+FONT_INDEX = 1
+
+gSettings = {
+    musicVolume = 0.5,
+    sfxVolume = 0.5,
+    font = FONTS[FONT_NAMES[FONT_INDEX]],
+}
+
+gFonts = {
+    ['large']  = love.graphics.newFont(gSettings.font, 32),
+    ['medium'] = love.graphics.newFont(gSettings.font, 16),
+    ['small']  = love.graphics.newFont(gSettings.font, 8),
 }
 
 ANIMATION_DEFS = {
@@ -117,6 +142,9 @@ CUSTOMER_CONFIG = {
     maxSpawnInterval = 6,
 }
 
+COUNTER_Y = 118
+COUNTER_LOWER_Y = 181
+
 MONEY_CONFIG = {
     startingMoney   = 50,
     minUnit         = 5,
@@ -132,9 +160,13 @@ UI_CARD = {
     border = {0.6, 0.6, 0.7, 0.8},
 }
 
-gSettings = {
-    musicVolume = 0.5,
-    sfxVolume = 0.5,
+SETTING_CARD = {
+    width  = 260,
+    height = 180,
+    x      = VIRTUAL_WIDTH / 2 - 130,
+    y      = VIRTUAL_HEIGHT / 2 - 100,
+    color  = {0.15, 0.15, 0.2, 0.95},
+    border = {0.6, 0.6, 0.7, 0.8},
 }
 
 PAUSE_MENU_CONFIG = {
@@ -330,6 +362,15 @@ BUTTON_PARAMS = {
         desired_width = PAUSE_MENU_CONFIG.btnW,
         desired_height = PAUSE_MENU_CONFIG.btnH,
         action = function()
+            local comeback = function () return 'PauseMenu' end
+            local delete
+            delete = function ()
+                Signal:remove('from-setting-to', comeback)
+                Signal:remove('delete-setting-listener', delete)
+            end
+            Signal:register('from-setting-to', comeback)
+            Signal:register('delete-setting-listener', delete)
+            gStateStack:clear()
             gStateStack:push(SettingsState())
         end,
         clickable = true,
@@ -339,12 +380,15 @@ BUTTON_PARAMS = {
     ['SettingsBack'] = {
         text = 'Back',
         x = PAUSE_MENU_CONFIG.btnX,
-        y = UI_CARD.y + 115,
+        y = SETTING_CARD.y + 150,
         desired_width = PAUSE_MENU_CONFIG.btnW,
         desired_height = PAUSE_MENU_CONFIG.btnH,
         action = function()
             DataManager:saveSettings(SETTING_FILE)
-            gStateStack:pop()
+            local state = Signal:request('from-setting-to')
+            Signal:emit('delete-setting-listener')
+            gStateStack:clear()
+            gStateStack:push(state == 'StartMenu' and StartMenu() or PauseMenu())
         end,
         clickable = true,
         defaultColor = gColors['white'],
@@ -357,7 +401,56 @@ BUTTON_PARAMS = {
         desired_width = 64,
         desired_height = 16,
         action = function()
+            local comeback = function () return 'StartMenu' end
+            local delete
+            delete = function ()
+                Signal:remove('from-setting-to', comeback)
+                Signal:remove('delete-setting-listener', delete)
+            end
+            Signal:register('from-setting-to', comeback)
+            Signal:register('delete-setting-listener', delete)
+            gStateStack:clear()
             gStateStack:push(SettingsState())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['SettingLeftFont'] = {
+        frame = gFrames['ToLeft'],
+        text = nil,
+        x = SETTING_CARD.x + 20,
+        y = SETTING_CARD.y + 130,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            FONT_INDEX = math.max(1, FONT_INDEX - 1)
+            gSettings.font = FONTS[FONT_NAMES[FONT_INDEX]]
+            gFonts = {
+                ['large']  = love.graphics.newFont(gSettings.font, 32),
+                ['medium'] = love.graphics.newFont(gSettings.font, 16),
+                ['small']  = love.graphics.newFont(gSettings.font, 8),
+            }
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
+    ['SettingRightFont'] = {
+        frame = gFrames['ToRight'],
+        text = nil,
+        x = SETTING_CARD.x + SETTING_CARD.width - 20,
+        y = SETTING_CARD.y + 130,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            FONT_INDEX = math.min(3, FONT_INDEX + 1)
+            gSettings.font = FONTS[FONT_NAMES[FONT_INDEX]]
+            gFonts = {
+                ['large']  = love.graphics.newFont(gSettings.font, 32),
+                ['medium'] = love.graphics.newFont(gSettings.font, 16),
+                ['small']  = love.graphics.newFont(gSettings.font, 8),
+            }
         end,
         clickable = true,
         defaultColor = gColors['white'],

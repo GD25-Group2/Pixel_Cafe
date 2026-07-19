@@ -11,6 +11,7 @@ local config = {
 
 function ReputationBar:init()
     BaseEntity.init(self, config)
+    self.priority = 85
 
     self.type = 'ReputationBar'
     self.backgroundColor = gColors['curtain']

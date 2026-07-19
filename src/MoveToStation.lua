@@ -17,6 +17,7 @@ function MoveToStation.init(source, target, process)
             elseif src.type == 'DropItem' then
                 print('MoveToStation-signal drop item remove: ' .. tostring(src.order))
                 Signal:emit('DropItem-remove-' .. tostring(src.order))
+                StockManager:loot(src.order)
             end
         end)
     end

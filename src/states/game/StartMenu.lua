@@ -1,6 +1,7 @@
 StartMenu = class{__includes = BaseState}
 
 function StartMenu:init()
+    self.priority = 0
     self.type = 'StartMenu'
 
     self.playButton = Button(BUTTON_PARAMS['Play'])
@@ -8,7 +9,6 @@ function StartMenu:init()
     self.settingsButton = Button(BUTTON_PARAMS['StartSettings'])
     self.quitButton = Button(BUTTON_PARAMS['MenuQuit'])
     self.background = StartMenuBackground()
-    self.popup = PopupWindow(POPUP_WINDOW_CONFIG)
 
     local hasSaveData = false
     for i = 1, 3 do
@@ -38,7 +38,6 @@ function StartMenu:init()
     gStateStack:push(self.newButton)
     gStateStack:push(self.settingsButton)
     gStateStack:push(self.quitButton)
-    gStateStack:push(self.popup)
 
     -- Start music when the window opens
     if gMusic and not gMusic:isPlaying() then

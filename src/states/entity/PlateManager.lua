@@ -6,6 +6,7 @@ local TOTAL_COLUMNS = 4
 
 function PlateManager:init()
     BaseEntity.init(self, PLATE_MANAGER_CONFIG)
+    self.priority = 10
 
     self.type = 'PlateManager'
     

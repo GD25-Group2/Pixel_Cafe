@@ -12,6 +12,7 @@ local ORDER_COLORS = {
 
 function OrderBox:init(params)
     BaseEntity.init(self, params)
+    self.priority = 35
 
     self.orderType = AVAILABLE_ITEMS[math.random(#AVAILABLE_ITEMS)]
     self.order = ORDER_TYPES[self.orderType]

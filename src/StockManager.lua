@@ -85,4 +85,11 @@ function StockManager:purchase(consumable, price)
     end
 end
 
+function StockManager:loot(consumable)
+    if self.stock[consumable] ~= nil then
+        self.stock[consumable] = self.stock[consumable] + 1
+        DataManager:modify('stock', self.stock)
+    end
+end
+
 return StockManager

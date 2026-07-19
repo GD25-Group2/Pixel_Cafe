@@ -9,6 +9,7 @@ local target = {
 
 function Coin:init(params)
     BaseEntity.init(self, params)
+    self.priority = 98
     self.type = 'Coin'
     self.frame = gFrames[self.type]
     self.id = COIN_INDEX

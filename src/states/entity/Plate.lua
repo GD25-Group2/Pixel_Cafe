@@ -36,14 +36,18 @@ local finished_products = {
 
 function Plate:init(params)
     BaseEntity.init(self, params)
+    self.priority = 75
 
-    -- Safe lazy-loading to prevent 'nil graphics' crash on LÖVE startup
     if not gFrames['choppedPlatet'] then
         gFrames['choppedPlatet'] = love.graphics.newImage('assets/choppedPlatet.png')
         gFrames['choppedPlatetQuads'] = GenerateQuads(gFrames['choppedPlatet'], 32, 32)
     end
 
     self.type = 'Plate'
+    self.texture = gFrames['choppedPlatet']
+    self.frames = gFrames['choppedPlatetQuads']
+    self.frame = self.frames[1]
+
     self.productionStage = 'Void'
     self.mode = 'Empty'
     self.heldItems = {}
@@ -53,24 +57,38 @@ function Plate:init(params)
     self.heldItem = 'None'
     self.color = gColors['green']
     self.bubbleColor = gColors['green']
+    
     self.bubble = Bubble({
         x = self.x,
         y = self.y,
         desired_width = self.desired_width,
         desired_height = self.desired_height,
         bubbleColor = self.bubbleColor,
-    }
-    )
+    })
     gStateStack:push(self.bubble)
 
     self.activated = params.activated or false
+
+    if self.activated then
+        self.shadow = Shadow({
+            x = self.x,
+            y = self.y + self.desired_height,
+            desired_width = self.desired_width,
+            desired_height = self.desired_height,
+            texture = self.texture,
+            frame = self.frame,
+            xBuffer = 0,
+            yBuffer = 0,
+        })
+        gStateStack:push(self.shadow)
+    end
 end
 
 function Plate:evaluateRecipes()
     local hasSliceOfBread = false
     local hasChoppedBread = false
     local hasChoppedMeat = false
-    local hasLettuce = false -- leftover check from old code
+    local hasCheckLettuce = false
     local hasChoppedLettuce = false
 
     for _, v in ipairs(self.heldItems) do
@@ -211,35 +229,7 @@ function Plate:receiveItem(item, source)
     return false
 end
 
-function Plate:update(dt)
-    if not self.activated then return end
-
-    if gFrames then
-        if gFrames['ChoppedLettuce'] and not gFrames['ChoppedLettucePortion'] then
-            gFrames['ChoppedLettucePortion'] = gFrames['ChoppedLettuce']
-        end
-        if gFrames['ChoppedMeat'] and not gFrames['ChoppedMeatPortion'] then
-            gFrames['ChoppedMeatPortion'] = gFrames['ChoppedMeat']
-        end
-    end
-
-    if self.productionStage == 'Void' then
-        self.color = gColors['green']
-    elseif self.productionStage == 'Holding' then
-        self.color = gColors['blue']
-    elseif self.productionStage == 'Ready' then
-        self.color = gColors['green']
-    end
-
-    BaseEntity.update(self, dt)
-    if self.heldItem == nil then self.heldItem = 'None' end
-end
-
-function Plate:render()
-    if not self.activated then return end
-
-    BaseEntity.render(self)
-
+function Plate:updateFrame()
     local frameIndex = 1
 
     if self.mode == 'Supply' and self.count > 0 then
@@ -300,10 +290,48 @@ function Plate:render()
         end
     end
 
-    if gFrames['choppedPlatet'] and gFrames['choppedPlatetQuads'] then
+    if self.frames then
+        local safeFrame = math.min(frameIndex, #self.frames)
+        self.frame = self.frames[safeFrame]
+    end
+
+    if self.shadow then
+        self.shadow.frame = self.frame
+    end
+end
+
+function Plate:update(dt)
+    if not self.activated then return end
+
+    if gFrames then
+        if gFrames['ChoppedLettuce'] and not gFrames['ChoppedLettucePortion'] then
+            gFrames['ChoppedLettucePortion'] = gFrames['ChoppedLettuce']
+        end
+        if gFrames['ChoppedMeat'] and not gFrames['ChoppedMeatPortion'] then
+            gFrames['ChoppedMeatPortion'] = gFrames['ChoppedMeat']
+        end
+    end
+
+    if self.productionStage == 'Void' then
+        self.color = gColors['green']
+    elseif self.productionStage == 'Holding' then
+        self.color = gColors['blue']
+    elseif self.productionStage == 'Ready' then
+        self.color = gColors['green']
+    end
+
+    BaseEntity.update(self, dt)
+    if self.heldItem == nil then self.heldItem = 'None' end
+
+    self:updateFrame()
+end
+
+function Plate:render()
+    if not self.activated then return end
+
+    if self.texture and self.frame then
         love.graphics.setColor(gColors['white'] or {1, 1, 1, 1})
-        local safeFrame = math.min(frameIndex, #gFrames['choppedPlatetQuads'])
-        love.graphics.draw(gFrames['choppedPlatet'], gFrames['choppedPlatetQuads'][safeFrame], self.x, self.y)
+        love.graphics.draw(self.texture, self.frame, self.x, self.y)
     else
         love.graphics.setColor(self.color)
         love.graphics.rectangle('fill', self.x, self.y, self.desired_width, self.desired_height)
@@ -311,28 +339,6 @@ function Plate:render()
 
     love.graphics.setFont(gFonts['small'])
     love.graphics.setColor(gColors['white'])
-    
-    --[[local text = ""
-    if self.mode == 'Supply' and self.count > 0 then
-        if self.count > 1 then
-            if self.heldItem == 'SliceOfBread' then
-                text = string.format("Slices: %d", self.count)
-            elseif self.heldItem == 'ChoppedMeat' or self.heldItem == 'ChoppedMeatPortion' then
-                text = string.format("Patties: %d", self.count)
-            else
-                text = string.format("Portions: %d", self.count)
-            end
-        else
-            text = self.heldItem
-        end
-    elseif self.mode == 'Assembly' and self.productionStage == 'Ready' then
-        text = self.currentOutput or "Assembling..."
-    end
-
-    if text ~= "" then
-        local tw = gFonts['small']:getWidth(text)
-        love.graphics.print(text, self.x + self.desired_width / 2 - tw / 2, self.y + self.desired_height / 2)
-    end]]
 end
 
 function Plate:drag()
@@ -343,6 +349,7 @@ function Plate:drag()
     elseif self.mode == 'Assembly' then
         self.heldItem = self.currentOutput or self.heldItem
     end
+    self:updateFrame()
 end
 
 function Plate:undrag()
@@ -357,6 +364,7 @@ function Plate:undrag()
     else
         self:resetPlate()
     end
+    self:updateFrame()
 end
 
 function Plate:taken()
@@ -372,6 +380,7 @@ function Plate:taken()
     elseif self.mode == 'Assembly' then
         self:resetPlate()
     end
+    self:updateFrame()
 end
 
 function Plate:resetPlate()

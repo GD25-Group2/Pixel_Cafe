@@ -1,6 +1,7 @@
 GameStartShopStateCard = class {__includes = BaseState}
 
 function GameStartShopStateCard:init(shopState)
+    self.priority = 15
     self.isGUI = true
     self.shopState = shopState
 end

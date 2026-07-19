@@ -2,6 +2,7 @@ Lettuce = class {__includes = BaseEntity}
 
 function Lettuce:init()
     BaseEntity.init(self, LETTUCE_CONFIG)
+    self.priority = 75
 
     self.type = 'Lettuce'
     self.isMachine = true
@@ -10,6 +11,17 @@ function Lettuce:init()
     self.bubbleColor = gColors['yellow']
 
     self.productionStage = 'Ready'
+
+    self.shadow = Shadow({
+        x = self.x,
+        y = self.y + self.desired_height,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        frame = self.frame,
+        xBuffer = 3,
+        yBuffer = -8,
+    })
+    gStateStack:push(self.shadow)
 end
 
 function Lettuce:canDragToPlate(plate)

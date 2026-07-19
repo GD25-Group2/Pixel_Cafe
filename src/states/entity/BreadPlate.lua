@@ -2,6 +2,7 @@ BreadPlate = class {__includes = BaseEntity}
 
 function BreadPlate:init(params)
     BaseEntity.init(self, params)
+    self.priority = 75
 
     self.type = 'BreadPlate'
     self.isClicker = true

@@ -1,6 +1,7 @@
 DayEndState = class{__includes = BaseState}
 
 function DayEndState:init()
+    self.priority = 0
     local rawReceipt = DataManager:getData('receipt') or {}
     
     self.transReceipt = {}

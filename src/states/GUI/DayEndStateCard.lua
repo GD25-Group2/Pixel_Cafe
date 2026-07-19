@@ -1,6 +1,7 @@
 DayEndStateCard = class {__includes = BaseState}
 
 function DayEndStateCard:init(params)
+    self.priority = 15
     self.isGUI = true
     self.earnedToday = 0 
     self.finalTotal = params.finalTotal

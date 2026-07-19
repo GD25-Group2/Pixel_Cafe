@@ -2,6 +2,7 @@ BreadBasket = class {__includes = BaseEntity}
 
 function BreadBasket:init(def)
     BaseEntity.init(self, def)
+    self.priority = 75
 
     self.type = 'BreadBasket'
     self.isMachine = true
@@ -25,6 +26,17 @@ function BreadBasket:init(def)
 
     self.productionStage = 'Ready'
     print('BreadBasket - initiated')
+
+    self.shadow = Shadow({
+        x = self.x,
+        y = self.y + self.desired_height,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        frame = self.frame,
+        xBuffer = 0,
+        yBuffer = -3,
+    })
+    gStateStack:push(self.shadow)
 end
 
 function BreadBasket:canDragToPlate(plate)

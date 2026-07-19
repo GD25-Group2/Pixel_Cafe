@@ -2,10 +2,22 @@ CoffeeTray = class {__includes = BaseEntity}
 
 function CoffeeTray:init(params)
     BaseEntity.init(self, params)
+    self.priority = 75
 
     self.type = 'CoffeeTray'
     self.isClicker = false
     self.productionStage = 'Ready'
+    
+    self.shadow = Shadow({
+        x = self.x,
+        y = self.y + self.desired_height,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        frame = self.frame,
+        xBuffer = 3,
+        yBuffer = -17,
+    })
+    gStateStack:push(self.shadow)
 
     self.emptyCups = 0
     self.filledCups = 0

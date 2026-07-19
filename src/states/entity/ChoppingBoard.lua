@@ -2,13 +2,27 @@ ChoppingBoard = class{__includes = BaseEntity}
 
 function ChoppingBoard:init(x, y)
     BaseEntity.init(self, CHOPPING_BOARD_CONFIG)
+    self.priority = 75
 
     self.productionStage = 'Void' -- void, ready, selected
     self.type = 'ChoppingBoard'
     self.isClicker = true
     self.hasIngredient = false
+    self.texture = gFrames['ChoppingBoard']
     self.frames = gFrames['ChoppingBoardQuads']
     self.frame = self.frames[1]
+
+    self.shadow = Shadow({
+        x = self.x,
+        y = self.y + self.desired_height,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        texture = self.texture,
+        frame = self.frame,
+        xBuffer = 0,
+        yBuffer = -2,
+    })
+    gStateStack:push(self.shadow)
 end
 
 local chop_table = {
@@ -70,6 +84,7 @@ function ChoppingBoard:frameUpdate()
             self.frame = self.frames[6]
         end
     end
+    self.shadow:setFrame(self.frame)
 end
 
 function ChoppingBoard:update(dt)

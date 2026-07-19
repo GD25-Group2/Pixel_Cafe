@@ -1,6 +1,7 @@
 StartMenuBackground = class {__includes = BaseState}
 
 function StartMenuBackground:init()
+    self.priority = 5
     self.isGUI = true
     self.backgroundFrame = gFrames['StartMenuBackground']
 end

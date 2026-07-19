@@ -44,6 +44,18 @@ function BaseState:mouseResponse()
         else
             self._mouseDown = nil
         end
+    elseif love.mouse.wasPressed(2) then
+        local target = self:getInteractAt()
+
+        if target and target.stock then
+            local textBox = TextBox({
+                x = target.x,
+                y = target.y,
+                aboutStock = true,
+                stock = target.stock
+            })
+            gStateStack:push(textBox)
+        end
     end
 
     -- the entity at which the mouse point has been confirmed to be interactable and cursor is not dragging and also the mouse is continuously press

@@ -14,6 +14,7 @@ local levelPerformance = {
 
 function CoffeeMachine:init(params)
     BaseEntity.init(self, params)
+    self.priority = 75
 
     self.counter = 0
     self.productionStage = 'Ready'
@@ -33,6 +34,17 @@ function CoffeeMachine:init(params)
         bubbleColor = self.bubbleColor,
     })
     gStateStack:push(self.bubble)
+
+    self.shadow = Shadow({
+        x = self.x,
+        y = self.y + self.desired_height,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        frame = self.frame,
+        xBuffer = 0,
+        yBuffer = -5,
+    })
+    gStateStack:push(self.shadow)
 
     self.animation = Animation(self.animation)
     self:updateFrame()
@@ -123,8 +135,6 @@ function CoffeeMachine:render()
         love.graphics.arc('line', 'open', self.x + self.desired_width / 2, self.y + self.desired_height / 2, self.desired_width / 2, -math.pi / 2, -math.pi / 2 + (self.counter / self.duration) * (2 * math.pi))
         love.graphics.setColor(gColors['white'])
     end]]
-
-    if self.level then love.graphics.printf(tostring(self.level), self.x, self.y, self.desired_width, 'left') end
 end
 
 function CoffeeMachine:produce()

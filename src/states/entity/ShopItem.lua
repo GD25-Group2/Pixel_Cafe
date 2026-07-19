@@ -1,6 +1,7 @@
 ShopItem = class {__includes = BaseEntity}
 
 function ShopItem:init(data)
+    self.priority = 20
     self.type = data.type
     self.id = data.id
     self.name = data.name

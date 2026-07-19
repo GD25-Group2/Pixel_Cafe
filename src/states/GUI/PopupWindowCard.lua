@@ -1,6 +1,7 @@
 PopupWindowCard = class {__includes = BaseState}
 
 function PopupWindowCard:init(text)
+    self.priority = 15
     for index, value in pairs(POPUP_WINDOW_CONFIG) do
         self[index] = value
     end

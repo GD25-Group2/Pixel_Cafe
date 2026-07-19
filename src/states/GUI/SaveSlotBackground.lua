@@ -1,6 +1,7 @@
 SaveSlotStateCard = class{__includes = BaseState}
 
 function SaveSlotStateCard:init(params)
+    self.priority = 5
     self.isGUI = true
     self.slotsData = params.slotsData
     self.panelW = params.panelW

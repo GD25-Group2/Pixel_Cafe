@@ -2,6 +2,7 @@ DropItem = class {__includes = BaseEntity}
 
 function DropItem:init(params, target)
     BaseEntity.init(self, params)
+    self.priority = 98
     self.type = 'DropItem'
     self.frame = gFrames[self.type]
     --[[self.id = DropItem_INDEX

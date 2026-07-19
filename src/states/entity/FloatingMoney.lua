@@ -5,6 +5,7 @@
 FloatingMoney = class{__includes = BaseState}
 
 function FloatingMoney:init(params)
+    self.priority = 35
     params = params or {}
 
     self.x      = params.x or 0
