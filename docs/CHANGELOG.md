@@ -301,5 +301,15 @@ added.
 - `main.lua` draw function got three new lines that make the entire game's atmosphere darker.
 - All entity on the counter that need the shadow to become more realistic have a shadow each now.
 - `TextBox.lua` is installed. Players can now right click on machines to know how much stock is left.
-- According to some feeback, the setting has additional font to choose. Including default 'pixel', it has three
-different font styles.
+- According to some feeback, the setting has additional font to choose. Including default 'pixel', it has three different font styles.
+
+#### 2026-07-24
+- `Guide.lua` is installed. It offers several phases and easy-to-implement ways to communicate with the players. Its phases are recorded and it is summoned or created on several occassion through Signal.
+- `DimBackground.lua` is related to Guide in which it provide a blanket darkening of the screen to emphasize important places.
+- `GuideMascot.lua` is responsible only for the Mascot display.
+- `TextBox.lua` has its background rectangle adjusted to text. It results in bug #16.
+
+#### 2026-08-01
+- `DateEntity.lua` is added. It will not be buried in the StateStack due to its association with priority 0 PlayState.
+- `DataManager.lua` and `StockManager.lua` gets saveOldData and restart functions so that restart button can properly work from now on.
+- `constant.lua` has its button parameters changed a bit to delete day 1 files that are quitted halfway. They will not be recorded.

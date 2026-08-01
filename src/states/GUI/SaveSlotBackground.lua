@@ -20,6 +20,7 @@ function SaveSlotStateCard:render()
     love.graphics.setColor(0.4, 0.5, 0.6, 1)
     love.graphics.rectangle('line', self.panelX, self.panelY, self.panelW, self.panelH, 4)
 
+    local hardAdjust = 10
     for i = 1, 3 do
         local startY = self.panelY + 20 + (i - 1) * 42
         love.graphics.setColor(gColors['white'])
@@ -29,11 +30,11 @@ function SaveSlotStateCard:render()
             local data = self.slotsData[i]
             love.graphics.print(tostring(data.name), self.panelX + 75, startY)
             love.graphics.setColor(gColors['yellow'])
-            love.graphics.print('Day ' .. tostring(data.currentDate), self.panelX + 150, startY)
+            love.graphics.print('Day ' .. tostring(data.currentDate), self.panelX + 150 - hardAdjust, startY)
             love.graphics.setColor(gColors['green'])
-            love.graphics.print('$' .. tostring(data.totalMoney), self.panelX + 205, startY)
+            love.graphics.print('$' .. tostring(data.totalMoney), self.panelX + 205 - hardAdjust, startY)
         else
-            love.graphics.setColor(gColors['gray'])
+            love.graphics.setColor(gColors['black'])
             love.graphics.print('- EMPTY SAVE SLOT -', self.panelX + 75, startY)
         end
     end

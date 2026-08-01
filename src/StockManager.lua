@@ -6,6 +6,29 @@ function StockManager:load()
     self.levelMachine = DataManager:getData('levelMachine')
 end
 
+local function deepCopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in pairs(orig) do
+            copy[orig_key] = deepCopy(orig_value)
+        end
+    else -- primitive types like numbers, strings, booleans
+        copy = orig
+    end
+    return copy
+end
+
+function StockManager:saveOldData()
+    self.oldData = {deepCopy(self.stock), deepCopy(self.levelMachine)}
+end
+
+function StockManager:restart()
+    self.stock = deepCopy(self.oldData[1])
+    self.levelMachine = deepCopy(self.oldData[2])
+end
+
 local countingTable = {
     'CoffeeMachine',
     'BreadPlate',

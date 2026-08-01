@@ -16,7 +16,7 @@ function PlayState:init()
     self.stockOwners = {}
 
     self.data = DataManager:getData()
-    DataManager:saveOldData(self.data)
+    DataManager:saveOldData()
     self.currentDate = self.data['currentDate'] or 1
     print('Current Date: ' .. tostring(self.data['currentDate']))
     print('PlayState - Today Money: ' .. tostring(self.data['todayMoney']) .. ' Total Money: ' .. tostring(self.data['totalMoney']))
@@ -26,12 +26,6 @@ function PlayState:init()
     if find(self.data['unlockedMachine'], 'CoffeeMachine') then
         table.insert(AVAILABLE_ITEMS, 'CoffeeCup')
     end
-    --[[if find(self.data['unlockedMachine'], 'BreadBasket') then
-        table.insert(AVAILABLE_ITEMS, 'LoafOfBread')
-    end
-    if find(self.data['unlockedMachine'], 'BreadPlate') then
-        table.insert(AVAILABLE_ITEMS, 'SliceOfBread')
-    end]]
     if find(self.data['unlockedMachine'], 'BreadBasket') then
         if find(self.data['unlockedMachine'], 'Lettuce') then
             print('PlayState - lettuce unlocked')
@@ -47,12 +41,6 @@ function PlayState:init()
     end
     
     for k, v in pairs(AVAILABLE_ITEMS) do print('PlayState - ', AVAILABLE_ITEMS[k]) end
-    --[[if find(self.data['unlockedMachine'], 'Lettuce') then
-        table.insert(AVAILABLE_ITEMS, 'Lettuce')
-    end
-    if find(self.data['unlockedMachine'], 'Stove') then
-        table.insert(AVAILABLE_ITEMS, 'Meat')
-    end]]
 
     self.cityBackground = CityBackground()
     gStateStack:push(self.cityBackground)
@@ -69,28 +57,15 @@ function PlayState:init()
     self.timeManager     = TimeManager(self.data['currentDate'], self.customerManager)
     gStateStack:push(self.timeManager)
 
+    self.dateManager     = DateEntity()
+    gStateStack:push(self.dateManager)
+
     self.reputationBar = ReputationBar()
     gStateStack:push(self.reputationBar)
 
     self.pauseButton     = Button(BUTTON_PARAMS['Pause'])
     gStateStack:push(self.pauseButton)
     table.insert(self.interactables, self.pauseButton)
-
-    --[[self.queueContract = function()
-        gStateStack:pop(QueueShowcase)
-        if self.queueButton then
-            self.queueButton.frame = gFrames['QueueExpandIcon']
-            self.queueButton.action = BUTTON_PARAMS['QueueExpand'].action
-        end
-    end
-
-    self.queueExpand = function()
-        gStateStack:push(QueueShowcase())
-        if self.queueButton then
-            self.queueButton.frame = gFrames['QueueContractIcon']
-            self.queueButton.action = BUTTON_PARAMS['QueueContract'].action
-        end
-    end]]
 
     self.plateManagerPlateAdded = function(plate)
         table.insert(self.interactables, plate)
@@ -178,6 +153,11 @@ function PlayState:init()
     if gSounds and gSounds['time-ticking'] then
         gSounds['time-ticking']:stop()
     end
+
+    self.guideCallback = function (stepKey)
+        gStateStack:push(Guide({stepKey = stepKey}))
+    end
+    Signal:register('guide-summon', self.guideCallback)
 end
 
 function PlayState:enter()
@@ -185,9 +165,13 @@ function PlayState:enter()
         gMusic:setVolume(gSettings.musicVolume)
         gMusic:play()
     end
-    
-    gStateStack:pause()
-    gStateStack:push(GameStartShopState())
+
+    Signal:emit('guide-summon')
+
+    if not DataManager:getData('shopDone') then
+        gStateStack:pause()
+        gStateStack:push(GameStartShopState())
+    end
 end
 
 function PlayState:exit()
@@ -206,42 +190,9 @@ function PlayState:update(dt)
     if love.keyboard.wasPressed('escape') or love.keyboard.wasPressed('p') then
         gStateStack:pause()
         gStateStack:push(PauseMenu())
-    --[[elseif love.keyboard.wasPressed('d') then
-        print('Developer Mode')
-        self.timeManager:devTimeSkip()]]
     end
 
     self:mouseResponse()
-end
-
-function PlayState:render()
-    --[[love.graphics.setColor(gColors['white'])
-    love.graphics.rectangle('line', 0, 0, VIRTUAL_WIDTH, 20)
-    love.graphics.rectangle('line', 0, 0.40 * VIRTUAL_HEIGHT + 20,
-                            VIRTUAL_WIDTH, 0.75 * VIRTUAL_HEIGHT)]]
-
-    self:renderDateHUD()
-end
-
-function PlayState:renderDateHUD()
-    love.graphics.setFont(gFonts['small'])
-
-    local dateText = 'Day ' .. tostring(self.currentDate)
-
-    local plateX = VIRTUAL_WIDTH - 80 - 4 - 52 - 4 - 42
-    local plateY = 2
-    local plateW = 42
-    local plateH = 12
-    local plateR = 3
-
-    love.graphics.setColor(0.12, 0.12, 0.18, 0.75)
-    love.graphics.rectangle('fill', plateX, plateY, plateW, plateH, plateR, plateR)
-    love.graphics.setColor(0.3, 0.3, 0.4, 0.5)
-    love.graphics.rectangle('line', plateX, plateY, plateW, plateH, plateR, plateR)
-
-    love.graphics.setColor(1, 0.85, 0.45, 1)
-    love.graphics.printf(dateText, plateX, plateY + 2, plateW, 'center')
-    love.graphics.setColor(1, 1, 1, 1)
 end
 
 function PlayState:deliverItem(target)
@@ -249,6 +200,7 @@ function PlayState:deliverItem(target)
     if success then
         -- Only customers generate payments; other entities simply accept the item
         if target.type == 'CustomerState' and target.orderBox then
+            Signal:emit('coffee-placed-on-customer')
             local amount, base, tip = self.moneyManager:calculatePayment(target)
             target.totalPayment = amount
             self.moneyManager:addPayment(amount, base, tip)

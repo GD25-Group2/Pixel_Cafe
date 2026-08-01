@@ -30,11 +30,15 @@ end
 
 function Signal:remove(eventName, callback)
     if self.listeners[eventName] then
-        for i, cb in ipairs(self.listeners[eventName]) do
-            if cb == callback then
-                table.remove(self.listeners[eventName], i)
-                break
+        if callback then
+            for i, cb in ipairs(self.listeners[eventName]) do
+                if cb == callback then
+                    table.remove(self.listeners[eventName], i)
+                    break
+                end
             end
+        else
+            self.listeners[eventName] = nil
         end
     end
 end

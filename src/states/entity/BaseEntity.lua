@@ -1,8 +1,10 @@
 BaseEntity = class {__includes = BaseState}
 
 function BaseEntity:init(params)
-    for k, v in pairs(params) do
-        self[k] = v
+    if params then
+        for k, v in pairs(params) do
+            self[k] = v
+        end
     end
 end
 
@@ -10,6 +12,9 @@ function BaseEntity:isMouseOver()
     return mouseX > self.x and mouseX < self.x + self.desired_width and
            mouseY > self.y and mouseY < self.y + self.desired_height
 end
+
+function BaseEntity:enter(params) end
+function BaseEntity:exit() end
 
 function BaseEntity:update(dt)
     if self.animation then

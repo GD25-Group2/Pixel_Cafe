@@ -10,6 +10,7 @@
 Priority List
 
 game state          -> 0
+guide game          -> 1
 background          -> 5
 non-display entity  -> 10
 card                -> 15
@@ -21,8 +22,10 @@ kitchen ware shadow -> 60
 kitchen ware        -> 75
 ui showcase entity  -> 85
 button              -> 95
+guide curtain       -> 96
 textbox             -> 97
 visual effect       -> 98
+guide               -> 99
 cursor              -> 100
 ]]
 
@@ -134,7 +137,7 @@ function StateStack:push(state)
     state:enter()
 end
 
-function StateStack:pop(target)
+function StateStack:pop(target, signalName, ...)
     local popTable
     if self.isPopup then popTable = self.popupTable
     elseif self.paused then popTable = self.pausedTable
@@ -150,16 +153,20 @@ function StateStack:pop(target)
                    current.type == target then
                    
                     current:exit()
+                    table.remove(popTable, i) -- NEW: Remove element first before sorting
                     bubbleSort(popTable)
-                    table.remove(popTable, i)
                     break
                 end
             end
         else
             popTable[#popTable]:exit()
-            bubbleSort(popTable)
             table.remove(popTable)
+            bubbleSort(popTable)
         end
+    end
+
+    if signalName then
+        Signal:emit(signalName, ...)
     end
 end
 

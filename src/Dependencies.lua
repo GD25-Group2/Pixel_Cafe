@@ -9,9 +9,10 @@ _G.json = require('src.libs.dkjson')
 require('src.libs.Util')
 require('src.libs.Animation')
 _G.timer = require('src.libs.hump.timer')
+_G.profiler = require('src.libs.profile')
 
 gFrames = {
-    ['StartMenuBackground'] = love.graphics.newImage('assets/pixelCafeCityBackground.png'),
+    ['StartMenuBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroud.png'),
     ['CoffeeMachine'] = love.graphics.newImage('assets/coffeeMachine.png'),
     customers = {
         ['Headless'] = {
@@ -76,6 +77,7 @@ gFrames = {
     ['DayEndBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundShopFocus.png'),
     ['SaveSlotBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundSkyFocus.png'),
     ['Coin'] = love.graphics.newImage('assets/coin.png'),
+    ['Guide'] = love.graphics.newImage('assets/tutorialMascotSandwich.png'),
 }
 
 -- Coffee Machine Animation Frames
@@ -146,6 +148,7 @@ require('src.states.game.GameStartShopState')
 require('src.states.game.ClosingState')
 require('src.states.game.GameOver')
 require('src.states.game.SaveSlotState')
+require('src.states.game.Guide')
 
 require('src.states.entity.BaseEntity')
 require('src.states.entity.CoffeeMachine')
@@ -172,6 +175,7 @@ require('src.states.entity.Lettuce')
 require('src.states.entity.Plate')
 require('src.states.entity.PlateManager')
 require('src.states.entity.InputBox')
+require('src.states.entity.DateEntity')
 
 require('src.states.GUI.DayEndStateCard')
 require('src.states.GUI.PauseMenuCard')
@@ -189,3 +193,5 @@ require('src.states.GUI.ParticleBurst')
 require('src.states.GUI.DropItem')
 require('src.states.GUI.Shadow')
 require('src.states.GUI.TextBox')
+require('src.states.GUI.GuideMascot')
+require('src.states.GUI.DimBackground')
