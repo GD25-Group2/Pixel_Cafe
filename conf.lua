@@ -7,7 +7,7 @@ function love.conf(t)
 
     -- Window / Display Settings
     t.window.title = "Pixel Cafe"           -- Title of the window
-    t.window.icon = 'assets/tutorialMascotSandwich.png'      -- Filepath to an image to use as the window icon (e.g. "assets/icon.png")
+    t.window.icon = 'assets/mascot.ico'      -- Filepath to an image to use as the window icon (e.g. "assets/icon.png")
     t.window.width = 1280                   -- Window width in pixels
     t.window.height = 720                   -- Window height in pixels
     t.window.borderless = false             -- Remove window border and title bar

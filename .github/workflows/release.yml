@@ -22,6 +22,7 @@ jobs:
           app_name: "PixelCafe"       # Your final executable name
           love_version: "11.5"        # Your engine version
           source_dir: "./"            # Where your main.lua is located
+          icon_path: "assets/mascot.ico"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
