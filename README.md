@@ -3,6 +3,16 @@
 ## 📖 About the Project
 Pixel Cafe is a cozy, high-pressure, slice-of-life management simulator. Players operate a bustling roadside cafe in a vibrant pixel-art city, balancing the zen of coffee-making with the frantic demands of hungry commuters. The game focuses on the "flow state" of preparation—dragging ingredients, timing machine cycles, and managing limited counter space—while slowly growing a small business through daily upgrades and equipment unlocks.
 
+# ☕ Pixel Cafe
+
+[![Download Latest Release](https://img.shields.io/github/v/release/GD25-Group2/Pixel_Cafe?label=Download%20Game&style=for-the-badge)](https://github.com/GD25-Group2/Pixel_Cafe/releases/latest)
+
+## 🎮 How to Play
+1. Click the **Download Game** badge above (or go to [Releases](https://github.com/GD25-Group2/Pixel_Cafe/releases/latest)).
+2. Download `PixelCafe-win64.zip`.
+3. Extract the `.zip` file anywhere on your PC.
+4. Run `PixelCafe.exe` and enjoy!
+
 ---
 
 ## ✨ Core Mechanics
