@@ -313,3 +313,4 @@ added.
 - `DateEntity.lua` is added. It will not be buried in the StateStack due to its association with priority 0 PlayState.
 - `DataManager.lua` and `StockManager.lua` gets saveOldData and restart functions so that restart button can properly work from now on.
 - `constant.lua` has its button parameters changed a bit to delete day 1 files that are quitted halfway. They will not be recorded.
+- Add `conf.lua`.
