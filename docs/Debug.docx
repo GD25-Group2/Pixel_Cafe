@@ -187,9 +187,9 @@ Expected Result: The coffee brewing sound effect should be stopped or faded out 
 Actual Result: The coffee brewing sound loop keeps playing indefinitely during DayEndState.
 
 Bug ID: #14 - UI Misplacement
-Status: Open
+Status: Resolved
 Reporter: Kyaw Sis Thway
-Debugger:
+Debugger: Kyaw Sis Thway
 Description: The money shown in load game is being covered by play button. The gap between the buttons in start menu is not uniform.
 Steps to Reproduce:
     1. Start the game.
@@ -207,3 +207,15 @@ Steps to Reproduce:
     2. Play the date in which the Stove is unlocked.
 Expected Result: Stove should only allow drag when the production stage is completed.
 Actual Result: You can drag without clicking and waiting.
+
+Bug ID: #16 - Text Background
+Status: Open
+Reporter: Kyaw Sis Thway
+Debugger: 
+Description: A text box is rendered for objects that carry stock property when left clicked.
+Steps to Reproduce:
+    1. Start the game.
+    2. Left click a Stock property owner. e.g., Coffee Machine
+Expected Result: A square is rendered and the count of stocks is corrected displayed in that square.
+Actual Result: The square is vertically shorter than needed due to its data counterpart not being 
+accounted in the text string length.

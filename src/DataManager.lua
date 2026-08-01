@@ -32,6 +32,8 @@ function DataManager:getDefaultData()
             ['Lettuce'] = 1,
         },
         ['reputation'] = 50, --out of 100
+        ['guidePhase'] = 1,
+        ['shopDone'] = false,
     }
 end
 
@@ -106,19 +108,17 @@ function DataManager:setAll(dataDict)
 end
 
 function DataManager:getData(requestedData)
-    if requestedData then
+    if not self.data then self:initDefaults() end
+
+    if requestedData ~= nil then
         if type(requestedData) == "table" then
             local returnData = {}
-            for i, key in ipairs(requestedData) do
-                if self.data[key] ~= nil then
-                    returnData[key] = self.data[key]
-                end
+            for _, key in ipairs(requestedData) do
+                returnData[key] = self.data[key]
             end
             return returnData
         else
-            if self.data[requestedData] ~= nil then
-                return self.data[requestedData]
-            end
+            return self.data[requestedData]
         end
     end
     return self.data
@@ -159,14 +159,50 @@ function DataManager:ensureUnlocks(targetDay)
     end
 end
 
+function DataManager:ensureDefaults()
+    if not self.data then
+        self:initDefaults()
+        return
+    end
+
+    local defaults = self:getDefaultData()
+    for k, v in pairs(defaults) do
+        if self.data[k] == nil then
+            self.data[k] = v
+        end
+    end
+end
+
 function DataManager:modify(variable, value)
     if self.data[variable] ~= nil then
         self.data[variable] = value
     end
 end
 
-function DataManager:saveOldData(data)
-    self.oldData = data
+local function deepCopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in pairs(orig) do
+            copy[orig_key] = deepCopy(orig_value)
+        end
+    else -- primitive types like numbers, strings, booleans
+        copy = orig
+    end
+    return copy
+end
+
+function DataManager:saveOldData()
+    self.oldData = deepCopy(self.data)
+    StockManager:saveOldData()
+end
+
+function DataManager:restart()
+    local phase = self.data['guidePhase'] == -1 and -1 or self.data['guidePhase']
+    self.data = deepCopy(self.oldData)
+    self.data['guidePhase'] = phase
+    StockManager:restart()
 end
 
 function DataManager:destroy()

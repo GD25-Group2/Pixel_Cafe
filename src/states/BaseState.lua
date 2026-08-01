@@ -170,6 +170,7 @@ function BaseState:mouseResponse()
                                 print('BaseState-' .. tostring(target.slotIndex) .. tostring(target.state))
                                 self.choppingBoard:slash()
                                 target:slashed()
+                                Signal:emit('slash-customer-guide')
                             end
                         end
                     end

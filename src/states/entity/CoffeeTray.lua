@@ -81,6 +81,9 @@ function CoffeeTray:receiveItem(item, source)
         if total < 4 then
             self.emptyCups = self.emptyCups + 1
             self:updateFrame()
+            
+            Signal:emit('cup-placed-on-tray')
+            --Signal:emit('guide-summon', 4)
             return true
         end
     elseif item == 'CoffeeMachine' and source then
@@ -96,6 +99,9 @@ function CoffeeTray:receiveItem(item, source)
                 gSounds['cup-fill']:stop()
                 gSounds['cup-fill']:play()
             end
+            
+            Signal:emit('jar-placed-on-cup')
+            --Signal:emit('guide-summon', 5)
             return true
         end
     end

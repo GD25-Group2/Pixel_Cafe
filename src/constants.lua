@@ -332,6 +332,7 @@ BUTTON_PARAMS = {
         action = function()
             gStateStack:clear()
             gStateStack:resume()
+            DataManager:restart()
             gStateStack:clear()
             gTodayMoney = 0
             gStateStack:push(PlayState())
@@ -397,7 +398,7 @@ BUTTON_PARAMS = {
     ['StartSettings'] = {
         text = 'Settings',
         x = VIRTUAL_WIDTH / 2 - 32,
-        y = VIRTUAL_HEIGHT / 2 + 5,
+        y = VIRTUAL_HEIGHT / 2 + 4,
         desired_width = 64,
         desired_height = 16,
         action = function()
@@ -527,6 +528,11 @@ BUTTON_PARAMS = {
             gStateStack:clear() --pause quit button's action
             gStateStack:resume()
             gStateStack:clear()
+            if DataManager:getData('currentDate') > 1 then
+                DataManager:restart()
+            else
+                DataManager:destroy()
+            end
             gMoney = nil
             gTodayMoney = nil
             gStateStack:push(StartMenu())
@@ -595,6 +601,8 @@ BUTTON_PARAMS = {
         action = function()
             gStateStack:clear()
             gStateStack:resume()
+            local key = Signal:request('ask-guide-stepKey')
+            if key == 2 then Signal:emit('guide-summon', 3) end
         end,
         clickable = true,
         defaultColor = gColors['white'],

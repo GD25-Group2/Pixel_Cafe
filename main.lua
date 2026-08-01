@@ -3,6 +3,7 @@ love.graphics.setDefaultFilter('nearest', 'nearest')
 require('src.Dependencies')
 
 function love.load()
+    profiler.start()
     math.randomseed(os.time())
     love.window.setTitle('Pixel Cafe')
     --love.window.setIcon(gLogo)
@@ -14,7 +15,6 @@ function love.load()
         filter = 'nearest',
     })
 
--- start the game with StartMenu 
     gStateStack = StateStack()
     gStateStack:push(StartMenu())
 
