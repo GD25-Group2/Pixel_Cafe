@@ -155,7 +155,18 @@ function PlayState:init()
     end
 
     self.guideCallback = function (stepKey)
-        gStateStack:push(Guide({stepKey = stepKey}))
+        local found = false
+        for i = #gStateStack.states, 1, -1 do
+            local type = gStateStack.states[i].type
+            if type == 'Guide' then
+                if not found then
+                    found = true
+                elseif found then
+                    gStateStack:pop(gStateStack.states[i])
+                end
+            end
+        end
+        if not found then gStateStack:push(Guide({stepKey = stepKey})) end
     end
     Signal:register('guide-summon', self.guideCallback)
 end
@@ -167,11 +178,6 @@ function PlayState:enter()
     end
 
     Signal:emit('guide-summon')
-
-    if not DataManager:getData('shopDone') then
-        gStateStack:pause()
-        gStateStack:push(GameStartShopState())
-    end
 end
 
 function PlayState:exit()

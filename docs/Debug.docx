@@ -219,3 +219,17 @@ Steps to Reproduce:
 Expected Result: A square is rendered and the count of stocks is corrected displayed in that square.
 Actual Result: The square is vertically shorter than needed due to its data counterpart not being 
 accounted in the text string length.
+
+Bug ID: #17 - Guide
+Status: Resolved
+Reporter: Kyaw Sis Thway
+Debugger: Kyaw Sis Thway
+Description: Guide game state has a variety of problems such as some states not being poped sometimes, wrong ui and so on.
+Steps to Reproduce:
+    1. Start the game.
+    2. Play a new game.
+    3. Go through tutorial till day 2 starts.
+    4. Load a played game which is left at day 1.
+    5. Go through tutorial.
+Expected Result: There should be no sudden darkening and the previous guide phase entities must disappear.
+Actual Result: Random bugs keep showing up.
