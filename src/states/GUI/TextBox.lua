@@ -14,6 +14,8 @@ function TextBox:init(params)
         self.text = ''
     end
 
+    if not self.aboutStock then self.enableHint = true end
+
     self.font = self.font or (gFonts and gFonts['small']) or love.graphics.getFont()
 
     self.paddingX = params and params.paddingX or (self.forGuide and 4 or 0)
@@ -35,6 +37,29 @@ function TextBox:init(params)
     end
 
     self.counter = 0
+
+    self.destruct = function ()
+        Signal:remove('destroy-TextBox', self.destruct)
+        gStateStack:pop(self)
+    end
+    Signal:register('destroy-TextBox', self.destruct)
+
+    print('TextBox - left: ' .. self.x .. ' right: ' .. self.x + self.desired_width)
+
+    self.guidePhase = DataManager:getData('guidePhase') or 1
+    if self.guidePhase == 2 then
+        self.proceedText = "Click 'Start Shift' button to proceed!"
+    elseif self.guidePhase == 3 then
+        self.proceedText = "Drag a cup from the stack of cup to proceed!"
+    elseif self.guidePhase == 4 then
+        self.proceedText = "Click the coffee brewer and drag a jar of coffee to cup, to proceed!"
+    elseif self.guidePhase == 5 then
+        self.proceedText = "Give the newly brewed cup of coffee to waiting customer, to proceed!"
+    elseif self.guidePhase == 10 then
+        self.proceedText = "Click the knife and then click the customer to proceed!"
+    else
+        self.proceedText = "Press 'Enter' to proceed!"
+    end
 end
 
 function TextBox:update(dt)
@@ -44,6 +69,14 @@ function TextBox:update(dt)
         if self.counter >= duration then
             self.counter = 0
             gStateStack:pop(self)
+        end
+    elseif self.enableHint then
+        local duration = 3
+        self.counter = self.counter + dt
+        if self.counter >= duration then
+            self.counter = 0
+            self.displayHint = true
+            self.enableHint = false
         end
     end
 end
@@ -60,7 +93,14 @@ function TextBox:render()
             self.desired_height
         )
 
-        -- MODIFIED: Print text offset by padding so it stays inset inside the box
+        love.graphics.setColor(gColors['orange'])
+        love.graphics.rectangle('line', 
+            self.x, 
+            self.y, 
+            self.desired_width + (self.paddingX * 2), 
+            self.desired_height
+        )
+
         love.graphics.setColor(gColors['white'])
         love.graphics.printf(
             self.text, 
@@ -69,6 +109,15 @@ function TextBox:render()
             self.desired_width, 
             'left'
         )
+
+        if self.displayHint then
+            local rightBound = 205
+            local minX = 20
+            local textWidth = self.font:getWidth(self.proceedText)
+            local drawX = math.max(minX, rightBound - textWidth)
+            local limitWidth = rightBound - drawX
+            love.graphics.printf(self.proceedText, drawX, 2, limitWidth, 'center')
+        end
     else
         local buffer = 1
         if self.aboutStock then

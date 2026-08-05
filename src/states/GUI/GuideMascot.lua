@@ -10,6 +10,12 @@ function GuideMascot:init(params)
     self.frame = gFrames['Guide']
 
     print('GuideMascot - initiated')
+    
+    self.destruct = function ()
+        Signal:remove('destroy-GuideMascot', self.destruct)
+        gStateStack:pop(self)
+    end
+    Signal:register('destroy-GuideMascot', self.destruct)
 end
 
 function GuideMascot:update(dt)

@@ -134,15 +134,17 @@ function Guide:init(params)
     local left, right = - self.phase.text_width - 10, self.phase.text_width + 10
 
     self.mascot = GuideMascot({x = self.phase.x, y = self.phase.y})
+    local textBox_x = self.phase.x + (self.phase.preferLeft and left or right)
     self.textBox = TextBox({
-        x = self.phase.x + (self.phase.preferLeft and left or right),
+        x = textBox_x,
         y = self.phase.y, 
         text = self.phase.text, 
         forGuide = true, 
         counterDisable = true, 
         desired_width = self.phase.text_width
     })
-    self.background = DimBackground({mascot = self.mascot, highlight = self.phase.highlight})
+    print('Guide- left: ' .. self.textBox.x .. ' right: ' .. self.textBox.x + self.textBox.desired_width)
+    self.background = DimBackground({mascot = self.mascot, highlight = self.phase.highlight, textBox = self.textBox})
 
     gStateStack:push(self.background)
     gStateStack:push(self.mascot)
@@ -164,7 +166,10 @@ end
 
 function Guide:update(dt)
     if self.isFinished or (not self.phase) then
-        gStateStack:pop(self, self.background, self.mascot, self.textBox)
+        Signal:emit('destroy-GuideMascot')
+        Signal:emit('destroy-DimBackground')
+        Signal:emit('destroy-TextBox')
+        gStateStack:pop(self)
         return
     end
 
@@ -187,25 +192,26 @@ function Guide:dismiss()
         Signal:remove(self.phase.signal, self.signalCallback)
     end
 
+    if self.textBox then gStateStack:pop(self.textBox) end
+    if self.mascot then gStateStack:pop(self.mascot) end
+    if self.background then gStateStack:pop(self.background) end
+
     self.stepKey = self.stepKey + 1
     DataManager:set('guidePhase', self.stepKey)
 
     local key = self.stepKey - 1
     if key == 1 then
         self.action = function ()
-            gStateStack:pause()
-            gStateStack:push(GameStartShopState())
-            DataManager:set('shopDone', true)
+            if not DataManager:getData('shopDone') then
+                DataManager:set('shopDone', true)
+                gStateStack:pause()
+                gStateStack:push(GameStartShopState())
+            end
             Signal:emit('guide-summon')
-        end
-    elseif key == 8 then
-        self.action = function ()
-            gStateStack:pause()
-            gStateStack:push(GameStartShopState())
         end
     elseif key == 3 or key == 4 or key == 5 or key == 6 or key == 7 or key == 9 then
         self.action = function ()
-            Signal:emit('guide-summon', key + 1)
+            Signal:emit('guide-summon', self.stepKey)
         end
     end
 
@@ -213,10 +219,6 @@ function Guide:dismiss()
         Signal:remove('guide-last-move')
         Signal:register('guide-last-move', self.action)
     end
-
-    if self.textBox then gStateStack:pop(self.textBox) end
-    if self.mascot then gStateStack:pop(self.mascot) end
-    if self.background then gStateStack:pop(self.background) end
     
     gStateStack:pop(self, self.action and 'guide-last-move')
 end
