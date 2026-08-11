@@ -314,3 +314,8 @@ added.
 - `DataManager.lua` and `StockManager.lua` gets saveOldData and restart functions so that restart button can properly work from now on.
 - `constant.lua` has its button parameters changed a bit to delete day 1 files that are quitted halfway. They will not be recorded.
 - Add `conf.lua`.
+
+#### 2026-08-12
+- Change the values of sold items and shop items are now dynamically added so that only available things 
+will be sold.
+- The music is changed.
