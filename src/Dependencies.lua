@@ -122,7 +122,7 @@ require('src.constants')
 MoveToStation = require('src.MoveToStation')
 
 -- Audio loading
-gMusic = love.audio.newSource('assets/music&SFX/Cafe Love - WOW Sound  The Boba Teashop Main Theme.mp3', 'stream')
+gMusic = love.audio.newSource('assets/music&SFX/u_tybkgo50jo-lo-fi-357425.mp3', 'stream')
 gMusic:setLooping(true)
 -- SFX 
 gSounds = {
