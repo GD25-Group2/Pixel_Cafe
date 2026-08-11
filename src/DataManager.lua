@@ -14,16 +14,25 @@ By updating, dateDependentUnlock table, new machines can be added easily to crea
 local DataManager = {}
 setmetatable(DataManager, DataManager)
 
+local dateDependentUnlock = {
+    false,
+    'BreadBasket',
+    false,
+    'Lettuce',
+    false,
+    'Stove'
+}
+
 function DataManager:getDefaultData()
-    self.data = {
-        ['totalMoney'] = MONEY_CONFIG.startingMoney,
+    return {
+        ['totalMoney'] = MONEY_CONFIG and MONEY_CONFIG.startingMoney or 50,
         ['todayMoney'] = 0,
         ['currentDate'] = 1,
         ['unlockedMachine'] = {
             'CoffeeMachine',
         },
         ['name'] = 'None',
-        ['levelMachine'] = 1111, --[Coffee Machine, Bread Plate, Stove, PlateManager] from right to left
+        ['levelMachine'] = 1111, -- [Coffee Machine, Bread Plate, Stove, PlateManager] from right to left
         ['stock'] = {
             ['CoffeeSeed'] = 2,
             ['Bread'] = 0,
@@ -31,10 +40,28 @@ function DataManager:getDefaultData()
             ['Meat'] = 2,
             ['Lettuce'] = 1,
         },
-        ['reputation'] = 50, --out of 100
+        ['reputation'] = 50, -- out of 100
         ['guidePhase'] = 1,
         ['shopDone'] = false,
     }
+end
+
+function DataManager:initDefaults()
+    self.data = self:getDefaultData()
+end
+
+function DataManager:ensureDefaults()
+    if not self.data then
+        self:initDefaults()
+        return
+    end
+
+    local defaults = self:getDefaultData()
+    for k, v in pairs(defaults) do
+        if self.data[k] == nil then
+            self.data[k] = v
+        end
+    end
 end
 
 function DataManager:load(file)
@@ -44,13 +71,20 @@ function DataManager:load(file)
         local contents, message = love.filesystem.read(self.currentSlotFile)
         if contents then 
             self.data = json.decode(contents)
+            self:ensureDefaults() -- Automatically patch missing fields from old save files
             self:ensureUnlocks(self.data['currentDate'])
-        else print(message) end
+        else 
+            print(message) 
+        end
+    else
+        self:initDefaults()
     end
 end
 
 function DataManager:create(file)
     self.currentSlotFile = file or self.currentSlotFile or 'slot1.json'
+    if not self.data then self:initDefaults() end
+    
     local contents = json.encode(self.data)
     local success, message = love.filesystem.write(self.currentSlotFile, contents)
     if success then print(message) end
@@ -81,27 +115,13 @@ function DataManager:saveSettings(file)
     print("Settings saved permanently.")
 end
 
---[[function DataManager:moneyDataSave(totalMoney, todayMoney)
-    self.data['totalMoney'] = totalMoney
-    self.data['todayMoney'] = todayMoney
-    print('DataManager - Today Money: ' .. tostring(self.data['todayMoney']) .. ' Total Money: ' .. tostring(self.data['totalMoney']))
-end
-
-function DataManager:dateDataSave(currentDate)
-    self.data['currentDate'] = currentDate
-end
-
-function DataManager:nameDataSave(name)
-    self.data['name'] = name
-end]]
-
 function DataManager:set(key, value)
-    if self.data[key] ~= nil or type(key) == "string" then
-        self.data[key] = value
-    end
+    if not self.data then self:initDefaults() end
+    self.data[key] = value
 end
 
 function DataManager:setAll(dataDict)
+    if not self.data then self:initDefaults() end
     for k, v in pairs(dataDict) do
         self.data[k] = v
     end
@@ -124,21 +144,10 @@ function DataManager:getData(requestedData)
     return self.data
 end
 
-local dateDependentUnlock = {
-    false,
-    'BreadBasket',
-    false,
-    'Lettuce',
-    false,
-    'Stove'
-}
-
 function DataManager:autoUnlockMachine(day)
     local targetDay = day or self.data['currentDate']
     local machine = dateDependentUnlock[targetDay]
-    print('Unlocked Machine:' .. tostring(machine))
     if machine then
-        -- Check if already unlocked to avoid duplicates
         local alreadyUnlocked = false
         for _, m in ipairs(self.data['unlockedMachine']) do
             if m == machine then
@@ -159,21 +168,8 @@ function DataManager:ensureUnlocks(targetDay)
     end
 end
 
-function DataManager:ensureDefaults()
-    if not self.data then
-        self:initDefaults()
-        return
-    end
-
-    local defaults = self:getDefaultData()
-    for k, v in pairs(defaults) do
-        if self.data[k] == nil then
-            self.data[k] = v
-        end
-    end
-end
-
 function DataManager:modify(variable, value)
+    if not self.data then self:initDefaults() end
     if self.data[variable] ~= nil then
         self.data[variable] = value
     end
@@ -187,7 +183,7 @@ local function deepCopy(orig)
         for orig_key, orig_value in pairs(orig) do
             copy[orig_key] = deepCopy(orig_value)
         end
-    else -- primitive types like numbers, strings, booleans
+    else
         copy = orig
     end
     return copy
@@ -195,14 +191,18 @@ end
 
 function DataManager:saveOldData()
     self.oldData = deepCopy(self.data)
-    StockManager:saveOldData()
+    if StockManager and StockManager.saveOldData then
+        StockManager:saveOldData()
+    end
 end
 
 function DataManager:restart()
-    local phase = self.data['guidePhase'] == -1 and -1 or self.data['guidePhase']
-    self.data = deepCopy(self.oldData)
+    local phase = self.data and self.data['guidePhase'] == -1 and -1 or (self.data and self.data['guidePhase'] or 1)
+    self.data = deepCopy(self.oldData or self:getDefaultData())
     self.data['guidePhase'] = phase
-    StockManager:restart()
+    if StockManager and StockManager.restart then
+        StockManager:restart()
+    end
 end
 
 function DataManager:destroy()

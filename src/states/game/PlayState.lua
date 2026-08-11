@@ -169,6 +169,19 @@ function PlayState:init()
         if not found then gStateStack:push(Guide({stepKey = stepKey})) end
     end
     Signal:register('guide-summon', self.guideCallback)
+
+    local summonShop
+    summonShop = function ()
+        Signal:remove('summonShop', summonShop)
+        if not DataManager:getData('shopDone') then
+            DataManager:set('shopDone', true)
+            gStateStack:pause()
+            gStateStack:push(GameStartShopState())
+        else
+            gStateStack:resume()
+        end
+    end
+    Signal:register('summonShop', summonShop)
 end
 
 function PlayState:enter()
@@ -177,7 +190,17 @@ function PlayState:enter()
         gMusic:play()
     end
 
-    Signal:emit('guide-summon')
+    --Signal:emit('guide-summon')
+
+    gStateStack:pause()
+
+    local guidePhase = tonumber(DataManager:getData('guidePhase')) or 1
+
+    if guidePhase == 1 then
+        Signal:emit('guide-summon', 1)
+    else
+        Signal:emit('summonShop')
+    end
 end
 
 function PlayState:exit()
