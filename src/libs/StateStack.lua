@@ -138,27 +138,26 @@ function StateStack:push(state)
 end
 
 function StateStack:pop(target, signalName, ...)
-    local popTable
-    if self.isPopup then popTable = self.popupTable
-    elseif self.paused then popTable = self.pausedTable
-    else popTable = self.states end
-
-    if #popTable > 0 then
-        if target then
+    local tablesToSearch = { self.popupTable, self.pausedTable, self.states }
+    
+    if target then
+        local found = false
+        for _, popTable in ipairs(tablesToSearch) do
             for i = #popTable, 1, -1 do
                 local current = popTable[i]
-                
-                if current == target or 
-                   getmetatable(current) == target or 
-                   current.type == target then
-                   
+                if current == target or getmetatable(current) == target or current.type == target then
                     current:exit()
-                    table.remove(popTable, i) -- NEW: Remove element first before sorting
+                    table.remove(popTable, i)
                     bubbleSort(popTable)
+                    found = true
                     break
                 end
             end
-        else
+            if found then break end
+        end
+    else
+        local popTable = self.isPopup and self.popupTable or (self.paused and self.pausedTable or self.states)
+        if #popTable > 0 then
             popTable[#popTable]:exit()
             table.remove(popTable)
             bubbleSort(popTable)

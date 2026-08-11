@@ -25,16 +25,16 @@ local places = {
 }
 
 local phaseOrder = {
-    'Do you need a GuideMascot?',
+    'Do you need a GuideMascot?', -- 1
     'Shop Explain',
     'Drag and Drop',
     'Brew',
-    'Serve Customer',
+    'Serve Customer', -- 5
     'Money Explain',
     'Time Explain',
     'Reputation Explain',
     'Equipment Unlock',
-    'Knife',
+    'Knife', -- 9
 }
 
 local phases = {
@@ -122,7 +122,11 @@ function Guide:init(params)
     end
 
     self.stepKey = self.stepKey or tonumber(DataManager:getData('guidePhase')) or 1
-
+    if self.stepKey < DataManager:getData('guidePhase') then
+        gStateStack:pop(self)
+        return
+    end
+    
     if self.stepKey <= 0 or self.stepKey > #phaseOrder then
         print('Guide - isFinished', self.stepKey)
         self.isFinished = true
@@ -157,8 +161,9 @@ function Guide:init(params)
         Signal:register(self.phase.signal, self.signalCallback)
     end
 
-    local returnStep = function ()
-        Signal:remove('ask-guide-stepKey')
+    local returnStep
+    returnStep = function ()
+        Signal:remove('ask-guide-stepKey', returnStep)
         return self.stepKey
     end
     Signal:register('ask-guide-stepKey', returnStep)
@@ -200,14 +205,10 @@ function Guide:dismiss()
     DataManager:set('guidePhase', self.stepKey)
 
     local key = self.stepKey - 1
-    if key == 1 then
+    if key == 1 or key <= 0 or key == 10 then
         self.action = function ()
-            if not DataManager:getData('shopDone') then
-                DataManager:set('shopDone', true)
-                gStateStack:pause()
-                gStateStack:push(GameStartShopState())
-            end
             Signal:emit('guide-summon')
+            Signal:emit('summonShop')
         end
     elseif key == 3 or key == 4 or key == 5 or key == 6 or key == 7 or key == 9 then
         self.action = function ()

@@ -3,6 +3,8 @@ DayEndState = class{__includes = BaseState}
 function DayEndState:init()
     self.priority = 0
     local rawReceipt = DataManager:getData('receipt') or {}
+
+    DataManager:set('shopDone', false)
     
     self.transReceipt = {}
     for i, v in ipairs(rawReceipt) do
