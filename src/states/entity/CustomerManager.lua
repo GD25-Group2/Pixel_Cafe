@@ -105,12 +105,12 @@ function CustomerManager:update(dt)
 end
 
 function CustomerManager:spawnCustomer()
-    --[[local slot = self:getAvailableSlot()
+    local slot = self:getAvailableSlot()
     if not slot then return end   -- all slots full]]
 
     local customer = CustomerState({
         --slotIndex = slot.index,
-        --slot      = slot,
+        slot      = slot,
         --orderType = 'Coffee',
     })
 

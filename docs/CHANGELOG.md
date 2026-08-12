@@ -324,3 +324,5 @@ show immediate reduction.
 - Flip the home screen photo horizontally.
 - Upgrade bug is resolved.
 - Popup command about money is solved.
+- Save Slot Background has its money display position adjusted.
+- Add shadows to customers.

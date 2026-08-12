@@ -34,18 +34,16 @@ function CustomerState:init(params)
     
     -- Appearance
     self.animation = animate(self, 'idle')
-    
-    -- FIXED: Changed getFrame() to getCurrentFrame() with an explicit asset fallback
     self.frame = (self.animation and self.animation:getCurrentFrame()) or gFrames.customers[self.customerType]
     
     self.desired_width  = self.desired_width or 64
     self.desired_height = self.desired_height or 64
 
-    --[[Position: spawn at entrance, move linearly to assigned slot
+    --Position: spawn at entrance, move linearly to assigned slot
     self.x     = ENTRANCE_X
     self.y     = self.slot.y
     self.slotX = self.slot.x
-    self.slotY = self.slot.y]]
+    self.slotY = self.slot.y
 
     -- State machine
     self.state      = 'queue'
@@ -59,6 +57,17 @@ function CustomerState:init(params)
     self.leftImpatient = false
 
     --self.countDeath = 0
+
+    self.shadow = Shadow({
+        x = self.x,
+        y = self.y + self.desired_height,
+        desired_width = self.desired_width,
+        desired_height = self.desired_height,
+        frame = self.frame,
+        xBuffer = 0,
+        yBuffer = -5,
+    })
+    gStateStack:push(self.shadow)
 end
 
 function CustomerState:setSlot(slot)
@@ -84,6 +93,9 @@ function CustomerState:update(dt)
         end
     end
     
+    self.shadow:setCoor(self.x, self.y + self.desired_height)
+    self.shadow:setFrame(self.frame)
+
     -- State updates remain exactly the same
     if     self.state == 'moving_in' then self:updateMovingIn(dt)
     elseif self.state == 'waiting'   then self:updateWaiting(dt)

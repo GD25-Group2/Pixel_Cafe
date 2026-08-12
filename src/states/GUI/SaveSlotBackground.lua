@@ -20,7 +20,7 @@ function SaveSlotStateCard:render()
     love.graphics.setColor(0.4, 0.5, 0.6, 1)
     love.graphics.rectangle('line', self.panelX, self.panelY, self.panelW, self.panelH, 4)
 
-    local hardAdjust = 10
+    local hardAdjust = 25
     for i = 1, 3 do
         local startY = self.panelY + 20 + (i - 1) * 42
         love.graphics.setColor(gColors['white'])
