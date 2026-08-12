@@ -50,6 +50,8 @@ gSettings = {
 }
 
 gFonts = {
+    ['ultra'] = love.graphics.newFont(gSettings.font, 64),
+    ['large-surround']  = love.graphics.newFont(gSettings.font, 34),
     ['large']  = love.graphics.newFont(gSettings.font, 32),
     ['medium'] = love.graphics.newFont(gSettings.font, 16),
     ['small']  = love.graphics.newFont(gSettings.font, 8),

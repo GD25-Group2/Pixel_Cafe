@@ -8,14 +8,15 @@ UPGRADE_PRICES = {
 
 MAX_MACHINE_LEVEL = 4
 
-local function GetUpgradePrice(machineType, currentLevel)
+function StockManager:getUpgradePrice(machineType, currentLevel)
+    currentLevel = currentLevel or self:getLevel(machineType) or 1
     if currentLevel >= MAX_MACHINE_LEVEL then
         return nil
     end
     
-    local machinePrices = UPGRADE_PRICES[machineType]
-    if machinePrices then
-        return machinePrices[currentLevel] or 9999
+    local prices = UPGRADE_PRICES[machineType]
+    if prices then
+        return prices[currentLevel] or 9999
     end
     
     return 9999
@@ -76,7 +77,7 @@ function GameStartShopState:init()
     local currentId = 0
 
     if #validConsumables > 0 then
-        table.insert(itemsToDisplay, { type = 'Label', id = currentId, name = 'Consumable Items List', price = 0, purchasable = false })
+        table.insert(itemsToDisplay, { type = 'Label', id = currentId, name = 'Consumable Items List', price = 0, purchasable = false, isConsumable = false })
         currentId = currentId + 1
 
         for _, item in ipairs(validConsumables) do
@@ -85,14 +86,15 @@ function GameStartShopState:init()
                 id = currentId,
                 name = item.name,
                 price = item.price,
-                purchasable = true
+                purchasable = true,
+                isConsumable = true
             })
             currentId = currentId + 1
         end
     end
 
     if #validUpgrades > 0 then
-        table.insert(itemsToDisplay, { type = 'Label', id = currentId, name = 'Upgradable Items List', price = 0, purchasable = false })
+        table.insert(itemsToDisplay, { type = 'Label', id = currentId, name = 'Upgradable Items List', price = 0, purchasable = false, isConsumable = false })
         currentId = currentId + 1
 
         for _, item in ipairs(validUpgrades) do
@@ -101,8 +103,9 @@ function GameStartShopState:init()
                 type = item.type,
                 id = currentId,
                 name = item.name,
-                price = GetUpgradePrice(item.type, currentLvl),
+                price = StockManager:getUpgradePrice(item.type, currentLvl),
                 purchasable = currentLvl < MAX_MACHINE_LEVEL,
+                isConsumable = false,
                 level = currentLvl
             })
             currentId = currentId + 1
@@ -124,8 +127,9 @@ function GameStartShopState:init()
             name = itemData.name,
             price = itemData.price,
             purchasable = itemData.purchasable,
+            isConsumable = itemData.isConsumable,
             stock = stockTotals[itemData.type] or 0,
-            level = itemData.level and (StockManager:getLevel(itemData.type) or 1) or nil,
+            level = itemData.level,
             
             innerX = self.card.x + 10,
             innerY = self.card.y + 60,

@@ -327,3 +327,5 @@ show immediate reduction.
 - Save Slot Background has its money display position adjusted.
 - Add shadows to customers.
 - Add special stage that can be assessed using the name 'special'.
+- Add title to Start Menu.
+- Fix the bug about irresponsive upgrade.

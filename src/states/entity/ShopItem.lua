@@ -1,20 +1,17 @@
 ShopItem = class {__includes = BaseEntity}
 
 function ShopItem:init(data)
+    BaseEntity.init(self, data)
     self.priority = 20
     self.type = data.type
     self.id = data.id
     self.name = data.name
     self.stock = data.stock or 0
     self.purchasable = data.purchasable
-    
-    if data.level then
-        self.level = data.level
-        self.price = data.price * (2 ^ (self.level - 1))
-    else
-        self.price = data.price
-    end
-    
+    self.isConsumable = data.isConsumable
+    self.level = data.level
+    self.price = data.price
+
     self.innerX = data.innerX or 10
     self.innerY = data.innerY or 60
     self.innerW = data.innerW or (VIRTUAL_WIDTH - 20)
@@ -26,7 +23,17 @@ function ShopItem:init(data)
     self.y = self.innerY + 5 + (self.id * self.height)
     
     if self.type ~= 'Label' then
-        local bText = self.purchasable and 'Purchase' or (self.level >= 3 and 'Max' or 'Upgrade')
+        local bText = 'Purchase'
+        local isClickable = self.purchasable
+
+        if not self.isConsumable then
+            if not self.level or self.level >= MAX_MACHINE_LEVEL or not self.price then
+                bText = 'Max'
+                isClickable = false
+            else
+                bText = 'Upgrade'
+            end
+        end
         
         self.button = Button({
             text = bText,
@@ -36,25 +43,33 @@ function ShopItem:init(data)
             desired_height = 18,
             action = function()
                 local totalMoney = DataManager:getData('totalMoney') or 0
-                if self.purchasable and totalMoney >= self.price then
-                    local newStock = StockManager:purchase(self.type, self.price)
-                    if type(newStock) == "number" then
-                        self.stock = newStock
-                    else
-                        local totals = StockManager:getStockTotal()
-                        self.stock = (totals and totals[self.type]) or (self.stock + 1)
+                
+                if self.isConsumable then
+                    -- Consumable Purchase
+                    if self.purchasable and totalMoney >= self.price then
+                        local newStock = StockManager:purchase(self.type, self.price)
+                        if type(newStock) == "number" then
+                            self.stock = newStock
+                        else
+                            local totals = StockManager:getStockTotal()
+                            self.stock = (totals and totals[self.type]) or (self.stock + 1)
+                        end
                     end
-                elseif not self.purchasable and self.level < 3 and totalMoney >= self.price then
-                    StockManager:upgrade(self.type, self.price)
-                    self.level = self.level + 1
-                    self.price = self.price * 2
-                    if self.level >= 3 then
-                        self.button.clickable = false
-                        self.button.text = 'Max'
+                else
+                    -- Machine Upgrade
+                    if self.level and self.level < MAX_MACHINE_LEVEL and self.price and totalMoney >= self.price then
+                        StockManager:upgrade(self.type, self.price)
+                        self.level = self.level + 1
+                        self.price = StockManager:getUpgradePrice(self.type, self.level)
+                        
+                        if self.level >= MAX_MACHINE_LEVEL or not self.price then
+                            self.button.clickable = false
+                            self.button.text = 'Max'
+                        end
                     end
                 end
             end,
-            clickable = self.purchasable or self.level < 3,
+            clickable = isClickable,
             defaultColor = gColors['white'],
             hoverColor = gColors['yellow'],
             coordinateChange = true,
@@ -97,9 +112,9 @@ function ShopItem:render()
     love.graphics.setScissor(self.innerX, self.innerY, self.innerW, self.innerH)
     
     if self.type ~= 'Label' then
-        love.graphics.setColor(self.purchasable and {0.22, 0.14, 0.16, 1} or {0.14, 0.16, 0.22, 1})
+        love.graphics.setColor(self.isConsumable and {0.22, 0.14, 0.16, 1} or {0.14, 0.16, 0.22, 1})
         love.graphics.rectangle('fill', self.innerX + 5, self.y, self.innerW - 10, 40, 4, 4)
-        love.graphics.setColor(self.purchasable and gColors['scarlet'] or gColors['blue'])
+        love.graphics.setColor(self.isConsumable and gColors['scarlet'] or gColors['blue'])
         love.graphics.rectangle('line', self.innerX + 5, self.y, self.innerW - 10, 40, 4, 4)
         
         love.graphics.setColor(gColors['white'])
@@ -107,12 +122,13 @@ function ShopItem:render()
         love.graphics.printf("Name: " .. self.name, self.innerX + 15, self.y + 5, self.innerW, 'left')
         
         love.graphics.setColor(0.7, 0.7, 0.7, 1)
-        if self.purchasable then
+        if self.isConsumable then
             love.graphics.printf("Price: " .. self.price, self.innerX + 15, self.y + 20, self.innerW, 'left')
             love.graphics.printf("Owned: " .. (self.stock or 0), self.innerX + 100, self.y + 20, self.innerW, 'left')
         else
-            love.graphics.printf("Price: " .. self.price, self.innerX + 15, self.y + 20, self.innerW, 'left')
-            love.graphics.printf("Level: " .. self.level, self.innerX + 100, self.y + 20, self.innerW, 'left')
+            local priceStr = self.price and tostring(self.price) or "MAX"
+            love.graphics.printf("Price: " .. priceStr, self.innerX + 15, self.y + 20, self.innerW, 'left')
+            love.graphics.printf("Level: " .. tostring(self.level or 1), self.innerX + 100, self.y + 20, self.innerW, 'left')
         end
     else
         love.graphics.setColor(gColors['white'])
