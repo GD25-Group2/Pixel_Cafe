@@ -319,3 +319,8 @@ added.
 - Change the values of sold items and shop items are now dynamically added so that only available things 
 will be sold.
 - The music is changed.
+- Money Manager is added to the start shop and its update function got two lines so that buying will 
+show immediate reduction.
+- Flip the home screen photo horizontally.
+- Upgrade bug is resolved.
+- Popup command about money is solved.

@@ -82,7 +82,8 @@ function PopupWindow:update(dt)
                 end
             elseif string.lower(tostring(tokens[2])) == 'money' and tokens[3] then
                 local amount = tonumber(tokens[3]) or 0
-                gMoney = (gMoney or 0) + amount
+                local ownMoney = DataManager:getData('totalMoney')
+                DataManager:set('totalMoney', ownMoney + amount)
                 Signal:emit('dev-money-add', amount)
                 gStateStack:clear()
                 gStateStack:popupDelete()

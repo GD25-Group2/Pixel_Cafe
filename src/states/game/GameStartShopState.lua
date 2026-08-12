@@ -1,9 +1,9 @@
 GameStartShopState = class{__includes = BaseState}
 
 UPGRADE_PRICES = {
-    CoffeeMachine = { 140, 380, 850, },
-    Stove = { 160, 450, 1000, },
-    PlateManager = { 100, 280, 650, }
+    CoffeeMachine = { 140, 380, 850 },
+    Stove = { 160, 450, 1000 },
+    PlateManager = { 100, 280, 650 }
 }
 
 MAX_MACHINE_LEVEL = 4
@@ -22,6 +22,7 @@ local function GetUpgradePrice(machineType, currentLevel)
 end
 
 local function find(list, name)
+    if not list or type(list) ~= 'table' then return false end
     for i = 1, #list do
         if list[i] == name then
             return true
@@ -35,17 +36,14 @@ function GameStartShopState:init()
     self.type = 'GameStartShopState'
     self.timer = 15
     
-    local data = DataManager:getData()
-    self.currentDate = data and data['currentDate'] or 1
+    local data = DataManager:getData() or {}
+    self.currentDate = data['currentDate'] or 1
+    local unlockedMachines = data['unlockedMachine'] or {}
     
     self.card = GAME_START_CONFIG
 
     self.cardEntity = GameStartShopStateCard(self)
     gStateStack:push(self.cardEntity)
-
-    local coffeeLvl = StockManager:getLevel('CoffeeMachine') or 1
-    local stoveLvl  = StockManager:getLevel('Stove') or 1
-    local plateLvl  = StockManager:getLevel('PlateManager') or 1
 
     local menuItems = {
         { type = 'PaperCup', name = 'Paper Cup', price = 2, category = 'Consumable', minDate = 1, requiredMachine = 'CoffeeMachine' },
@@ -63,7 +61,7 @@ function GameStartShopState:init()
 
     for _, config in ipairs(menuItems) do
         local dateUnlocked = self.currentDate >= config.minDate
-        local machineUnlocked = find(data['unlockedMachine'], config.requiredMachine)
+        local machineUnlocked = find(unlockedMachines, config.requiredMachine)
 
         if dateUnlocked and machineUnlocked then
             if config.category == 'Consumable' then
@@ -74,15 +72,15 @@ function GameStartShopState:init()
         end
     end
 
-    local menuItems = {}
+    local itemsToDisplay = {}
     local currentId = 0
 
     if #validConsumables > 0 then
-        table.insert(menuItems, { type = 'Label', id = currentId, name = 'Consumable Items List', price = 0, purchasable = false })
+        table.insert(itemsToDisplay, { type = 'Label', id = currentId, name = 'Consumable Items List', price = 0, purchasable = false })
         currentId = currentId + 1
 
         for _, item in ipairs(validConsumables) do
-            table.insert(menuItems, {
+            table.insert(itemsToDisplay, {
                 type = item.type,
                 id = currentId,
                 name = item.name,
@@ -94,12 +92,12 @@ function GameStartShopState:init()
     end
 
     if #validUpgrades > 0 then
-        table.insert(menuItems, { type = 'Label', id = currentId, name = 'Upgradable Items List', price = 0, purchasable = false })
+        table.insert(itemsToDisplay, { type = 'Label', id = currentId, name = 'Upgradable Items List', price = 0, purchasable = false })
         currentId = currentId + 1
 
         for _, item in ipairs(validUpgrades) do
             local currentLvl = StockManager:getLevel(item.type) or 1
-            table.insert(menuItems, {
+            table.insert(itemsToDisplay, {
                 type = item.type,
                 id = currentId,
                 name = item.name,
@@ -115,17 +113,19 @@ function GameStartShopState:init()
     self.interactables = {}
     
     self.scrollY = 0
-    self.maxScrollY = math.max(0, #menuItems * 45 - 90)
+    self.maxScrollY = math.max(0, #itemsToDisplay * 45 - 90)
     
-    for _, data in ipairs(menuItems) do
+    local stockTotals = StockManager:getStockTotal() or {}
+
+    for _, itemData in ipairs(itemsToDisplay) do
         local currentData = {
-            type = data.type,
-            id = data.id,
-            name = data.name,
-            price = data.price,
-            purchasable = data.purchasable,
-            stock = StockManager:getStockTotal()[data.type] or 0,
-            level = data.level and (StockManager:getLevel(data.type) or 1) or nil,
+            type = itemData.type,
+            id = itemData.id,
+            name = itemData.name,
+            price = itemData.price,
+            purchasable = itemData.purchasable,
+            stock = stockTotals[itemData.type] or 0,
+            level = itemData.level and (StockManager:getLevel(itemData.type) or 1) or nil,
             
             innerX = self.card.x + 10,
             innerY = self.card.y + 60,
@@ -147,6 +147,9 @@ function GameStartShopState:init()
     self.startShiftButton = Button(BUTTON_PARAMS['StartShift'])
     gStateStack:push(self.startShiftButton)
     table.insert(self.interactables, self.startShiftButton)
+
+    self.moneyManager = MoneyManager(data['totalMoney'] or 0, data['todayMoney'] or 0)
+    gStateStack:push(self.moneyManager)
 end
 
 function GameStartShopState:update(dt)

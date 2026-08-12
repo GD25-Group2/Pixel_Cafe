@@ -5,7 +5,7 @@ function ShopItem:init(data)
     self.type = data.type
     self.id = data.id
     self.name = data.name
-    self.stock = data.stock
+    self.stock = data.stock or 0
     self.purchasable = data.purchasable
     
     if data.level then
@@ -37,7 +37,13 @@ function ShopItem:init(data)
             action = function()
                 local totalMoney = DataManager:getData('totalMoney') or 0
                 if self.purchasable and totalMoney >= self.price then
-                    self.stock = StockManager:purchase(self.type, self.price)
+                    local newStock = StockManager:purchase(self.type, self.price)
+                    if type(newStock) == "number" then
+                        self.stock = newStock
+                    else
+                        local totals = StockManager:getStockTotal()
+                        self.stock = (totals and totals[self.type]) or (self.stock + 1)
+                    end
                 elseif not self.purchasable and self.level < 3 and totalMoney >= self.price then
                     StockManager:upgrade(self.type, self.price)
                     self.level = self.level + 1
@@ -103,7 +109,7 @@ function ShopItem:render()
         love.graphics.setColor(0.7, 0.7, 0.7, 1)
         if self.purchasable then
             love.graphics.printf("Price: " .. self.price, self.innerX + 15, self.y + 20, self.innerW, 'left')
-            love.graphics.printf("Owned: " .. self.stock, self.innerX + 100, self.y + 20, self.innerW, 'left')
+            love.graphics.printf("Owned: " .. (self.stock or 0), self.innerX + 100, self.y + 20, self.innerW, 'left')
         else
             love.graphics.printf("Price: " .. self.price, self.innerX + 15, self.y + 20, self.innerW, 'left')
             love.graphics.printf("Level: " .. self.level, self.innerX + 100, self.y + 20, self.innerW, 'left')

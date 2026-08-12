@@ -93,6 +93,8 @@ function MoneyManager:spawnFloatingMoney(x, y, amount)
 end
 
 function MoneyManager:update(dt)
+    self.todayMoney = DataManager:getData('todayMoney')
+    self.totalMoney = DataManager:getData('totalMoney')
     if self.displayMoney < self.totalMoney then
         self.displayMoney = self.displayMoney + MONEY_CONFIG.countUpSpeed * dt
         if self.displayMoney >= self.totalMoney then
