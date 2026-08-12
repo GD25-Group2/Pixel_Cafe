@@ -604,7 +604,7 @@ BUTTON_PARAMS = {
             gStateStack:resume()
             local key = DataManager:getData('guidePhase')
             if key == 2 then Signal:emit('guide-summon', 3)
-            elseif key == 9 then Signal:emit('guide-summon', 9) end
+            elseif key == 9 and DataManager:getData('currentDate') == 2 then Signal:emit('guide-summon', 9) end
         end,
         clickable = true,
         defaultColor = gColors['white'],

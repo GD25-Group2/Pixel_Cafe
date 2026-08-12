@@ -46,7 +46,11 @@ function PopupWindow:update(dt)
         self.inputBox.submittedRaw = nil -- Consume the submission
         
         SAVE_FILE = DataManager.currentSlotFile or 'slot1.json'
-        DataManager:getDefaultData()
+        DataManager.data = DataManager:getDefaultData()
+        if name == 'special' then
+            DataManager:set('totalMoney', 999)
+            DataManager:set('reputation', 100)
+        end
         DataManager:set('name', name)
         DataManager:create()
         

@@ -35,7 +35,7 @@ function DataManager:getDefaultData()
         ['levelMachine'] = 1111, -- [Coffee Machine, Bread Plate, Stove, PlateManager] from right to left
         ['stock'] = {
             ['CoffeeSeed'] = 2,
-            ['Bread'] = 0,
+            ['Bread'] = 2,
             ['PaperCup'] = 10,
             ['Meat'] = 2,
             ['Lettuce'] = 1,

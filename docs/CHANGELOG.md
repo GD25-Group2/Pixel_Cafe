@@ -326,3 +326,4 @@ show immediate reduction.
 - Popup command about money is solved.
 - Save Slot Background has its money display position adjusted.
 - Add shadows to customers.
+- Add special stage that can be assessed using the name 'special'.
