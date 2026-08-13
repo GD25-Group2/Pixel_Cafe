@@ -13,10 +13,10 @@ function DayEndState:init()
 
     self._dailySalesAmount = gDailySales or 0
     self._dailyTipsAmount = gDailyTips or 0
-    self._startingBalance = gStartingBalance or (gMoney or 0)
+    self._startingBalance = gMoney or gStartingBalance or 0
 
-    self._earnedToday = self._dailySalesAmount + self._dailyTipsAmount 
-    self._finalTotal = self._startingBalance + self._earnedToday
+    self._earnedToday = DataManager:getData('todayMoney') + self._dailyTipsAmount
+    self._finalTotal = DataManager:getData('totalMoney')
 
     self.nextDayButton = Button(BUTTON_PARAMS['NextDay'])
     self.quitButton = Button(BUTTON_PARAMS['DayEndQuit'])

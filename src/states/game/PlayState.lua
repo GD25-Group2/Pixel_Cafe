@@ -28,15 +28,12 @@ function PlayState:init()
         table.insert(AVAILABLE_ITEMS, 'CoffeeCup')
     end
     if find(self.data['unlockedMachine'], 'BreadBasket') then
-        if find(self.data['unlockedMachine'], 'Lettuce') then
-            print('PlayState - lettuce unlocked')
-            table.insert(AVAILABLE_ITEMS, 'VegeSandwich')
-        end
+        print('PlayState - lettuce unlocked')
+        table.insert(AVAILABLE_ITEMS, 'VegeSandwich')
+
         if find(self.data['unlockedMachine'], 'Stove') then
             print('PlayState - stove unlocked')
             table.insert(AVAILABLE_ITEMS, 'MeatSandwich')
-        end
-        if find(self.data['unlockedMachine'], 'Stove') and find(self.data['unlockedMachine'], 'Lettuce') then
             table.insert(AVAILABLE_ITEMS, 'DeluxeSandwich')
         end
     end
