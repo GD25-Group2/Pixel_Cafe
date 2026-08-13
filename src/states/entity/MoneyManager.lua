@@ -64,7 +64,7 @@ function MoneyManager:calculatePayment(customer)
     if tip > maxTip then tip = maxTip end
     if tip < 0 then tip = 0 end
 
-    self.coinCount = math.floor(basePrice + tip)
+    self.coinCount = math.min(5, math.floor(basePrice + tip))
     self.customerIndex = customer.slotIndex
 
     return basePrice + tip, basePrice, tip

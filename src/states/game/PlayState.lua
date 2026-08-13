@@ -220,7 +220,6 @@ function PlayState:update(dt)
         gStateStack:pause()
         gStateStack:push(PauseMenu())
     end
-
     self:mouseResponse()
 end
 

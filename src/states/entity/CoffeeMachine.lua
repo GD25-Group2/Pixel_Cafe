@@ -138,7 +138,7 @@ function CoffeeMachine:render()
 end
 
 function CoffeeMachine:produce()
-    if self.volume < 4 and self.productionStage ~= 'Producing' and self.stock > 0 then --add another condition for stock
+    if self.volume == 0 and self.productionStage ~= 'Producing' and self.stock > 0 then --add another condition for stock
         -- 1.25 seconds per missing 1/4 unit of coffee
         self.duration = (4 - self.volume) * 1.25
         self.productionStage = 'Producing'

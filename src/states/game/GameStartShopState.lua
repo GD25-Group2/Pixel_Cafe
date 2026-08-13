@@ -155,6 +155,12 @@ function GameStartShopState:init()
 
     self.moneyManager = MoneyManager(data['totalMoney'] or 0, data['todayMoney'] or 0)
     gStateStack:push(self.moneyManager)
+
+    self.action = function ()
+        Signal:remove('remove-moneyManager', self.action)
+        gStateStack:pop(self.moneyManager)
+    end
+    Signal:register('remove-moneyManager', self.action)
 end
 
 function GameStartShopState:update(dt)

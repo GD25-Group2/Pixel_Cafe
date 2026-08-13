@@ -610,6 +610,7 @@ BUTTON_PARAMS = {
         desired_height = 20,
         action = function()
             gStateStack:clear()
+            Signal:emit('remove-moneyManager')
             gStateStack:resume()
             local key = DataManager:getData('guidePhase')
             if key == 2 then Signal:emit('guide-summon', 3)
