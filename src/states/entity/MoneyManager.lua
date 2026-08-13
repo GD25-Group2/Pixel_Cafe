@@ -73,6 +73,9 @@ end
 function MoneyManager:addPayment(amount, base, tip)
     self.totalMoney = self.totalMoney + amount
     self.todayMoney = self.todayMoney + amount
+    
+    DataManager:set('totalMoney', self.totalMoney)
+    DataManager:set('todayMoney', self.todayMoney)
 
     self._dailySalesAmount = self._dailySalesAmount + (base or amount)
     self._dailyTipsAmount = self._dailyTipsAmount + (tip or 0)
