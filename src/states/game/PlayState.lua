@@ -108,7 +108,14 @@ function PlayState:init()
 
         self.plateManager = PlateManager()
         gStateStack:push(self.plateManager)
-        
+
+        self.lettuce = Lettuce()
+        gStateStack:push(self.lettuce)
+        table.insert(self.interactables, self.lettuce)
+        table.insert(self.stockOwners, self.lettuce)
+    end
+
+    if find(self.data['unlockedMachine'], 'ChoppingBoard') then
         self.choppingBoard = ChoppingBoard()
         gStateStack:push(self.choppingBoard)
         table.insert(self.interactables, self.choppingBoard)
@@ -128,13 +135,6 @@ function PlayState:init()
         self.coffeeTray      = CoffeeTray(COFFEE_TRAY_CONFIG)
         gStateStack:push(self.coffeeTray)
         table.insert(self.interactables, self.coffeeTray)
-    end
-
-    if find(self.data['unlockedMachine'], 'Lettuce') then
-        self.lettuce = Lettuce()
-        gStateStack:push(self.lettuce)
-        table.insert(self.interactables, self.lettuce)
-        table.insert(self.stockOwners, self.lettuce)
     end
     
     if find(self.data['unlockedMachine'], 'Stove') then

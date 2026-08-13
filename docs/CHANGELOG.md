@@ -329,3 +329,8 @@ show immediate reduction.
 - Add special stage that can be assessed using the name 'special'.
 - Add title to Start Menu.
 - Fix the bug about irresponsive upgrade.
+
+#### 2026-08-13
+- Change the order in which machines are unlocked.
+- Change the setting related buttons parameter, specifically actions, to accomodate start menu background.
+- Adjust the economy and prices.

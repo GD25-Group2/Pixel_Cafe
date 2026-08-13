@@ -16,9 +16,10 @@ setmetatable(DataManager, DataManager)
 
 local dateDependentUnlock = {
     false,
+    'ChoppingBoard',
+    false,
     'BreadBasket',
     false,
-    'Lettuce',
     false,
     'Stove'
 }
@@ -32,7 +33,7 @@ function DataManager:getDefaultData()
             'CoffeeMachine',
         },
         ['name'] = 'None',
-        ['levelMachine'] = 1111, -- [Coffee Machine, Bread Plate, Stove, PlateManager] from right to left
+        ['levelMachine'] = 11111, -- [Coffee Machine, Bread Plate, Stove, PlateManager, Chopping Board] from right to left
         ['stock'] = {
             ['CoffeeSeed'] = 2,
             ['Bread'] = 2,

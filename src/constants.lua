@@ -182,13 +182,14 @@ PAUSE_MENU_CONFIG = {
 AVAILABLE_ITEMS = {}
 
 ORDER_TYPES = {
-    ['CoffeeCup']       = {price = 5, name = 'Coffee'},
-    ['SliceOfBread'] = {price = 3, name = 'SliceOfBread'},
-    ['FreeSandwich']     = {price = 7, name = 'FreeSandwich'},
-    ['MeatSandwich'] = {price = 8, name = 'MeatSandwich'},
-    ['LoafOfBread']  = {price = 6, name = 'LoafOfBread'},
-    ['VegeSandwich'] = {price = 6, name = 'VegeSandwich'},
-    ['DeluxeSandwich'] = {price = 7, name = 'DeluxeSandwich'}
+    ['CoffeeCup']      = {price = 8,  name = 'Coffee'},
+    ['VegeSandwich']   = {price = 9,  name = 'VegeSandwich'},
+    ['MeatSandwich']   = {price = 13, name = 'MeatSandwich'},
+    ['DeluxeSandwich'] = {price = 18, name = 'DeluxeSandwich'},
+    
+    ['SliceOfBread']   = {price = 3,  name = 'SliceOfBread'},
+    ['FreeSandwich']   = {price = 7,  name = 'FreeSandwich'},
+    ['LoafOfBread']    = {price = 6,  name = 'LoafOfBread'},
 }
 
 POPUP_WINDOW_CONFIG = {
@@ -392,7 +393,13 @@ BUTTON_PARAMS = {
             local state = Signal:request('from-setting-to')
             Signal:emit('delete-setting-listener')
             gStateStack:clear()
-            gStateStack:push(state == 'StartMenu' and StartMenu() or PauseMenu())
+            --[[gStateStack:resume()
+            gStateStack:push(state == 'StartMenu' and StartMenu() or PauseMenu())]]
+            if state == 'StartMenu' then
+                gStateStack:resume()
+            else
+                gStateStack:push(PauseMenu())
+            end
         end,
         clickable = true,
         defaultColor = gColors['white'],
@@ -413,7 +420,7 @@ BUTTON_PARAMS = {
             end
             Signal:register('from-setting-to', comeback)
             Signal:register('delete-setting-listener', delete)
-            gStateStack:clear()
+            gStateStack:pause()
             gStateStack:push(SettingsState())
         end,
         clickable = true,
