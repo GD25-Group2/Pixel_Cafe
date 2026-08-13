@@ -52,6 +52,7 @@ function DayEndState:init()
     end
 
     self.buttonsPushed = false
+    self.interactables = {}
 end
 
 local function push(buttons)
