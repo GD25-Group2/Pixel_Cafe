@@ -45,6 +45,7 @@ function ChoppingBoard:action()
 end
 
 function ChoppingBoard:receiveItem(item, source)
+    if self.hasIngredient then return false end
     if item == 'Meat' or item == 'Lettuce' or item == 'LoafOfBread' then
         if self.productionStage ~= 'Ready' then
             self.hasIngredient = item

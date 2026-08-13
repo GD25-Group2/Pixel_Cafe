@@ -50,6 +50,7 @@ function PopupWindow:update(dt)
         if name == 'special' then
             DataManager:set('totalMoney', 999)
             DataManager:set('reputation', 100)
+            DataManager:set('currentDate', 10)
         end
         DataManager:set('name', name)
         DataManager:create()
