@@ -142,7 +142,7 @@ function Plate:receiveItem(item, source)
             if yield == incoming_base then incoming_bulk = bulk; break end
         end
     end
-
+    
     if self.mode == 'Empty' then
         if supply_yield_table[actual_item] then
             self.mode = 'Supply'
@@ -160,26 +160,18 @@ function Plate:receiveItem(item, source)
         return false
     end
 
+    if supply_yield_table[item] then
+        return false
+    end
+
     if self.mode == 'Supply' then
         local current_base = supply_yield_table[self.supplySourceItem] or self.supplySourceItem
-        local current_bulk = supply_yield_table[self.supplySourceItem] and self.supplySourceItem or nil
-        if not current_bulk then
-            for bulk, yield in pairs(supply_yield_table) do
-                if yield == current_base then current_bulk = bulk; break end
-            end
-        end
 
         if current_base == incoming_base then
-            local max_count = 1
-            if current_bulk or incoming_bulk then max_count = 3 end
+            local max_count = 3
             
             if self.count < max_count then
                 self.count = self.count + 1
-                if current_bulk then
-                    self.supplySourceItem = current_bulk
-                elseif incoming_bulk then
-                    self.supplySourceItem = incoming_bulk
-                end
                 self.heldItem = current_base
                 self.productionStage = 'Ready'
                 return true
@@ -202,11 +194,6 @@ function Plate:receiveItem(item, source)
             
             if current_base == incoming_base then
                 local bulk_item = incoming_bulk
-                if not bulk_item then
-                    for bulk, yield in pairs(supply_yield_table) do
-                        if yield == current_base then bulk_item = bulk; break end
-                    end
-                end
                 if bulk_item then
                     self.mode = 'Supply'
                     self.supplySourceItem = bulk_item
