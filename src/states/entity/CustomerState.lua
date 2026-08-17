@@ -19,8 +19,15 @@ local animate = function(self, animationState)
     return self.animation
 end
 
-local impatientLeaveRepLoss = -7
-local slashedRepLoss = -8
+local function contains(tbl, target)
+    for _, val in ipairs(tbl) do
+        if val == target then return true end
+    end
+    return false
+end
+
+local impatientLeaveRepLoss = -10
+local slashedRepLoss = -12
 
 function CustomerState:init(params)
     BaseEntity.init(self, params)
@@ -31,6 +38,20 @@ function CustomerState:init(params)
         'ArmEater',
         'Headless',
     }
+
+    self.customerPaletteType = self.customerType .. 'Palette'
+    self.paletteOriginal = gFrames[self.customerPaletteType][1]
+    local usedShaders = Signal:request('shader-customer-request', self.customerPaletteType) or {}
+
+    self.chosenPaletteIndex = math.random(1, 3)
+
+    local attempts = 0
+    while contains(usedShaders, self.chosenPaletteIndex) and attempts < 10 do
+        self.chosenPaletteIndex = math.random(1, 3)
+        attempts = attempts + 1
+    end
+
+    self.chosenPalette = gFrames[self.customerPaletteType][self.chosenPaletteIndex]
     
     -- Appearance
     self.animation = animate(self, 'idle')
@@ -68,6 +89,13 @@ function CustomerState:init(params)
         yBuffer = -5,
     })
     gStateStack:push(self.shadow)
+
+    self.hasShader = true
+    self.paletteShader = love.graphics.newShader("src/libs/shader.glsl")
+
+    self.paletteShader:send("originalPalette", self.paletteOriginal)
+    self.paletteShader:send("targetPalette", self.chosenPalette)
+    self.paletteShader:send("paletteHeight", self.paletteOriginal:getHeight())
 end
 
 function CustomerState:setSlot(slot)
@@ -162,7 +190,9 @@ end
 -- ─── Render ───────────────────────────────────────────────────────────────────
 
 function CustomerState:render()
+    if self.hasShader then love.graphics.setShader(self.paletteShader) end
     BaseEntity.render(self)
+    if self.hasShader then love.graphics.setShader() end
     --[[if self.hasOutline then
         love.graphics.setColor(gColors['white'])
         love.graphics.draw(self.frame, self.x, self.y, 0, self.desired_width + 2, self.desired_height + 2)
@@ -239,7 +269,7 @@ function CustomerState:receiveItem(itemType)
         end
 
         --interactRep(5)
-        Signal:emit('customer-served', 5)
+        Signal:emit('customer-served', 8)
         Signal:emit('transaction-receipt', self.orderBox.orderType, self.orderBox.order.price)
         self:setState('paying')
 
@@ -252,7 +282,7 @@ function CustomerState:receiveItem(itemType)
         if self.orderBox then
             self.orderBox:decreasePatience(CUSTOMER_CONFIG.wrongOrderPatiencePenalty or 10)
         end
-        Signal:emit('customer-served', -5)
+        Signal:emit('customer-served', -8)
 
         -- Small red pop for wrong order penalty
         Signal:emit('trigger_burst', self.x + self.desired_width / 2, self.y + self.desired_height / 2, {0.9, 0.25, 0.25, 1}, 15)

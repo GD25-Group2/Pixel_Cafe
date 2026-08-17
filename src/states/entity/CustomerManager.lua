@@ -20,6 +20,17 @@ function CustomerManager:init()
 
     self.spawningEnabled = true
     self.walkSongIndex = 1
+
+    self.shaders = function (customer_type)
+        local same_type_shaders = {}
+        for i = 1, #self.customers do
+            if self.customers[i].customerType == customer_type then
+                table.insert(same_type_shaders, self.customers[i].chosenPaletteIndex)
+            end
+        end
+        if #same_type_shaders > 0 then return same_type_shaders end
+    end
+    Signal:register('shader-customer-request', self.shaders)
 end
 
 function CustomerManager:update(dt)
@@ -53,6 +64,7 @@ function CustomerManager:update(dt)
                 print('CustomerManager- update- slotIndex exists')
                 self.occupiedSlots[c.slotIndex] = false
             end
+            gStateStack:pop(c.shadow)
             table.remove(self.customers, i)
         end
     end

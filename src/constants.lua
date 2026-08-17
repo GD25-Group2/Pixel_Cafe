@@ -628,6 +628,7 @@ BUTTON_PARAMS = {
         desired_height = 18,
         action = function()
             DataManager:destroy()
+            gStateStack:clear()
             gStateStack:push(StartMenu())
         end,
         clickable = true,

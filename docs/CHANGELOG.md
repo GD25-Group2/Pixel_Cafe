@@ -334,3 +334,8 @@ show immediate reduction.
 - Change the order in which machines are unlocked.
 - Change the setting related buttons parameter, specifically actions, to accomodate start menu background.
 - Adjust the economy and prices.
+
+#### 2026-08-17
+- Adjust the modified data for 'special' to be not the date but the unlockedMachine.
+- Change the values of reputation loss for slashed, impatient leave and wrong order from -12, -10, -8.
+- Adding three shading resources and shading mechanics. And debug the game over button action.

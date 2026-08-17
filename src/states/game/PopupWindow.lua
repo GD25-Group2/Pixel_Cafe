@@ -48,9 +48,14 @@ function PopupWindow:update(dt)
         SAVE_FILE = DataManager.currentSlotFile or 'slot1.json'
         DataManager.data = DataManager:getDefaultData()
         if name == 'special' then
-            DataManager:set('totalMoney', 999)
+            DataManager:set('totalMoney', 1000)
             DataManager:set('reputation', 100)
-            DataManager:set('currentDate', 10)
+            DataManager:set('unlockedMachine', {
+                'CoffeeMachine',
+                'ChoppingBoard',
+                'BreadBasket',
+                'Stove',
+            })
         end
         DataManager:set('name', name)
         DataManager:create()

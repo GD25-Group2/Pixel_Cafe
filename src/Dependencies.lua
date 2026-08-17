@@ -78,6 +78,22 @@ gFrames = {
     ['SaveSlotBackground'] = love.graphics.newImage('assets/pixelCafeCityBackgroundSkyFocus.png'),
     ['Coin'] = love.graphics.newImage('assets/coin.png'),
     ['Guide'] = love.graphics.newImage('assets/tutorialMascotSandwich.png'),
+    ['SliceOfBread'] = love.graphics.newImage('assets/breadCarry.png'),
+    ['ArmEaterPalette'] = {
+        love.graphics.newImage('assets/ArmEaterPalette1.png'),
+        love.graphics.newImage('assets/ArmEaterPalette2.png'),
+        love.graphics.newImage('assets/ArmEaterPalette3.png'),
+    },
+    ['HeadlessPalette'] = {
+        love.graphics.newImage('assets/HeadlessPalette1.png'),
+        love.graphics.newImage('assets/HeadlessPalette2.png'),
+        love.graphics.newImage('assets/HeadlessPalette3.png'),
+    },
+    ['LegLadyPalette'] = {
+        love.graphics.newImage('assets/LegLadyPalette1.png'),
+        love.graphics.newImage('assets/LegLadyPalette2.png'),
+        love.graphics.newImage('assets/LegLadyPalette3.png'),
+    },
 }
 
 -- Coffee Machine Animation Frames
