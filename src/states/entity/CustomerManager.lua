@@ -135,16 +135,15 @@ end
 
 function CustomerManager:calculateNextSpawnTime()
     local reputation = DataManager:getData('reputation') or 50
-    local repPercent = reputation / 100
+    local repPercent = math.min(math.max(reputation / 100, 0), 1)
 
-    local slowestSpawn = 8.0
-    local fastestSpawn = 2.0
+    local maxInterval = CUSTOMER_CONFIG.maxSpawnInterval
+    local minInterval = CUSTOMER_CONFIG.minSpawnInterval
 
-    local baseSpawnInterval = slowestSpawn - (slowestSpawn - fastestSpawn) * repPercent
-
+    local baseSpawnInterval = maxInterval - (maxInterval - minInterval) * repPercent
     local jitter = (math.random() - 0.5)
 
-    return math.max(0.75, baseSpawnInterval + jitter)
+    return math.max(CUSTOMER_CONFIG.minSpawnInterval, baseSpawnInterval + jitter)
 end
 
 function CustomerManager:getAvailableSlot()

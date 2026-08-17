@@ -121,6 +121,7 @@ function Guide:init(params)
         end
     end
 
+    if DataManager:getData('guidePhase') == 0 then return end
     self.stepKey = self.stepKey or tonumber(DataManager:getData('guidePhase')) or 1
     if self.stepKey < DataManager:getData('guidePhase') then
         gStateStack:pop(self)

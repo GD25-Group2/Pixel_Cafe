@@ -16,7 +16,7 @@ function PlayState:init()
     self.stockOwners = {}
 
     self.data = DataManager:getData()
-    DataManager:ensureUnlocks(DataManager:getData('currentDate'))
+    if self.data['name'] ~= 'special' then DataManager:ensureUnlocks(DataManager:getData('currentDate')) end
     DataManager:saveOldData()
     self.currentDate = self.data['currentDate'] or 1
     print('Current Date: ' .. tostring(self.data['currentDate']))

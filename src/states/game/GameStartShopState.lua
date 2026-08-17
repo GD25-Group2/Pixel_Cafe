@@ -50,12 +50,12 @@ function GameStartShopState:init()
         { type = 'PaperCup',     name = 'Paper Cup',     price = 2,    category = 'Consumable', minDate = 1, requiredMachine = 'CoffeeMachine' },
         { type = 'CoffeeSeed',   name = 'Rotten Tooth',  price = 10,   category = 'Consumable', minDate = 1, requiredMachine = 'CoffeeMachine' },
         { type = 'Bread',        name = 'Revolting Loaf',price = 7.5,  category = 'Consumable', minDate = 1, requiredMachine = 'BreadBasket' },
-        { type = 'Lettuce',      name = 'Lettuce',       price = 6,    category = 'Consumable', minDate = 2, requiredMachine = 'BreadBasket' },
-        { type = 'Meat',         name = 'Meat',          price = 10.5, category = 'Consumable', minDate = 3, requiredMachine = 'Stove' },
+        { type = 'Lettuce',      name = 'Lettuce',       price = 6,    category = 'Consumable', minDate = DataManager:getData('name') == 'special' and 1 or 2, requiredMachine = 'BreadBasket' },
+        { type = 'Meat',         name = 'Meat',          price = 10.5, category = 'Consumable', minDate = DataManager:getData('name') == 'special' and 1 or 3, requiredMachine = 'Stove' },
         
         { type = 'CoffeeMachine',name = 'Coffee Machine',category = 'Upgradable', minDate = 1, requiredMachine = 'CoffeeMachine' },
         { type = 'PlateManager', name = 'Plate',         category = 'Upgradable', minDate = 1, requiredMachine = 'BreadBasket' },
-        { type = 'Stove',        name = 'Stove',         category = 'Upgradable', minDate = 3, requiredMachine = 'Stove' }
+        { type = 'Stove',        name = 'Stove',         category = 'Upgradable', minDate = DataManager:getData('name') == 'special' and 1 or 3, requiredMachine = 'Stove' }
     }
 
     local validConsumables = {}

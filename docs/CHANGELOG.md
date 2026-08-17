@@ -339,3 +339,7 @@ show immediate reduction.
 - Adjust the modified data for 'special' to be not the date but the unlockedMachine.
 - Change the values of reputation loss for slashed, impatient leave and wrong order from -12, -10, -8.
 - Adding three shading resources and shading mechanics. And debug the game over button action.
+- Give each customer type its own config. ArmEater is slow but has highest patience lowest decay rate. Headless punish wrong order harshly but give highest max bonus. LegLady moves very fast but average in other configs.
+- Make the reputation value has greater impact on customer spawn time.
+- Customer can no longer be attacked while not waiting.
+- Change day unlock related mechanic specifically for 'special' slot.

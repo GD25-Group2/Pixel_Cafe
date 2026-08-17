@@ -165,7 +165,7 @@ function BaseState:mouseResponse()
                             end
                         elseif target.isGUI then
                             target:clicked()
-                        elseif target.type == 'CustomerState' then
+                        elseif target.type == 'CustomerState' and target.state == 'waiting' then
                             if self.choppingBoard and self.choppingBoard.productionStage == 'Selected' then
                                 print('BaseState-' .. tostring(target.slotIndex) .. tostring(target.state))
                                 self.choppingBoard:slash()

@@ -50,6 +50,7 @@ function PopupWindow:update(dt)
         if name == 'special' then
             DataManager:set('totalMoney', 1000)
             DataManager:set('reputation', 100)
+            DataManager:set('guidePhase', 0)
             DataManager:set('unlockedMachine', {
                 'CoffeeMachine',
                 'ChoppingBoard',

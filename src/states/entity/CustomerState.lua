@@ -39,6 +39,12 @@ function CustomerState:init(params)
         'Headless',
     }
 
+    for k, v in pairs(CUSTOMER_CONFIG.types[self.customerType]) do
+        self[k] = v
+    end
+    self.patienceAtPayment = self.patienceMax
+    self.totalPayment      = 0
+
     self.customerPaletteType = self.customerType .. 'Palette'
     self.paletteOriginal = gFrames[self.customerPaletteType][1]
     local usedShaders = Signal:request('shader-customer-request', self.customerPaletteType) or {}
@@ -69,10 +75,6 @@ function CustomerState:init(params)
     -- State machine
     self.state      = 'queue'
     self.stateTimer = 0
-
-    -- Payment
-    self.patienceAtPayment = CUSTOMER_CONFIG.patienceMax
-    self.totalPayment      = 0
 
     -- Flags
     self.leftImpatient = false
@@ -148,7 +150,7 @@ function CustomerState:updateMovingIn(dt)
         self:setState('waiting')
     else
         local dir = distance > 0 and 1 or -1
-        self.x = self.x + dir * CUSTOMER_CONFIG.moveSpeed * dt
+        self.x = self.x + dir * self.moveSpeed * dt
     end
     animate(self, 'walk')
 end
@@ -182,7 +184,7 @@ function CustomerState:updateLeaving(dt)
         self:setState('done')
     else
         local dir = (EXIT_X - self.x) > 0 and 1 or -1
-        self.x = self.x + dir * CUSTOMER_CONFIG.moveSpeed * dt
+        self.x = self.x + dir * self.moveSpeed * dt
     end
     animate(self, 'walk')
 end
@@ -280,7 +282,7 @@ function CustomerState:receiveItem(itemType)
     else
         -- Penalty for wrong order type
         if self.orderBox then
-            self.orderBox:decreasePatience(CUSTOMER_CONFIG.wrongOrderPatiencePenalty or 10)
+            self.orderBox:decreasePatience(self.wrongOrderPatiencePenalty or 10)
         end
         Signal:emit('customer-served', -8)
 

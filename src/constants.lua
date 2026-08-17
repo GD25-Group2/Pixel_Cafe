@@ -131,17 +131,37 @@ WAITING_SLOTS = {
 ENTRANCE_X = 420
 EXIT_X     = -70
 
--- Customer movement and behavior
 CUSTOMER_CONFIG = {
-    moveSpeed         = 100,  -- pixels per second
-    spawnInterval     = 4,    -- seconds between arrivals
-    patienceMax       = 100,  -- full patience value
-    patienceDecayRate = 4,    -- patience lost per second while waiting
-    baseTip           = 0.2,  -- 20% base tip
-    patienceBonus     = 0.3,  -- up to 30% extra tip based on patience
-    wrongOrderPatiencePenalty = 10, -- we can adjust penalty here
+    spawnInterval    = 4,
     minSpawnInterval = 1,
-    maxSpawnInterval = 6,
+    maxSpawnInterval = 10,
+
+    types = {
+        LegLady = {
+            moveSpeed                 = 130,  
+            patienceMax               = 90,   
+            patienceDecayRate         = 4.5,  
+            baseTip                   = 0.25, 
+            patienceBonus             = 0.35, 
+            wrongOrderPatiencePenalty = 18,   
+        },
+        ArmEater = {
+            moveSpeed                 = 70,   
+            patienceMax               = 130,  
+            patienceDecayRate         = 2.5,  
+            baseTip                   = 0.10, 
+            patienceBonus             = 0.20, 
+            wrongOrderPatiencePenalty = 8,    
+        },
+        Headless = {
+            moveSpeed                 = 100,  
+            patienceMax               = 80,   
+            patienceDecayRate         = 6.5,  
+            baseTip                   = 0.20, 
+            patienceBonus             = 0.50, 
+            wrongOrderPatiencePenalty = 25,   
+        },
+    }
 }
 
 COUNTER_Y = 118

@@ -150,6 +150,7 @@ gSounds = {
     ['time-ticking'] = love.audio.newSource('assets/music&SFX/time-ticking.mp3', 'static'),
     ['walking-song1'] = love.audio.newSource('assets/music&SFX/walking-song1.mp3', 'static'),
     ['walking-song2'] = love.audio.newSource('assets/music&SFX/walking-song2.mp3', 'static'),
+    ['stove-sound'] = love.audio.newSource('assets/music&SFX/stoveSound.mp3', 'static'),
 }
 
 require('src.states.BaseState')

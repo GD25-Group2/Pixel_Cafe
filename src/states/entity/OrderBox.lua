@@ -20,8 +20,8 @@ function OrderBox:init(params)
     self.offsetY = -42
     self.tailH   = 5
 
-    self.patience    = CUSTOMER_CONFIG.patienceMax
-    self.maxPatience = CUSTOMER_CONFIG.patienceMax
+    self.patience    = self.customer.patienceMax
+    self.maxPatience = self.customer.patienceMax
 
     self.isActive = true
 
@@ -41,7 +41,7 @@ end
 function OrderBox:update(dt)
     if not self.isActive or not self.customer then return end
 
-    self.patience = self.patience - CUSTOMER_CONFIG.patienceDecayRate * dt
+    self.patience = self.patience - self.customer.patienceDecayRate * dt
     if self.patience < 0 then self.patience = 0 end
 
     if self.patience <= 0 then
