@@ -6,7 +6,7 @@ function TimeManager:init(currentDate, customerManager)
     self.dayTime = 8 * 60
     
     -- 1 real second = 10 game minutes
-    self.timeScale = 30
+    self.timeScale = 10
 
     self.currentDate = currentDate
     self.customerManager = customerManager
@@ -15,7 +15,7 @@ end
 
 function TimeManager:update(dt)
     if not self.isFrozen then
-        self.dayTime = self.dayTime + self.timeScale * dt
+        if DataManager:getData('specialFreeze') then self.dayTime = self.dayTime + self.timeScale * dt end
     end
     local currentHour = math.floor(self.dayTime / 60)
     

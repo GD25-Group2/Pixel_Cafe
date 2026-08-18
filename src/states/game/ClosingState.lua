@@ -14,20 +14,8 @@ end
 function ClosingState:update(dt)
     if self.customerManager then
         if self.customerManager:isEmpty() then
-            if DataManager:getData('name') == 'special' and DataManager:getData('currentDate') == 3 then
-                local todayMoney = DataManager:getData('todayMoney')
-                local challengeBar = WIN_CONDITION_MONEY
-                if todayMoney >= challengeBar then
-                    gStateStack:clear()
-                    gStateStack:push(GameWinConditionDecide())
-                else
-                    gStateStack:clear()
-                    gStateStack:push(GameOver('You Lose'))
-                end
-            else
-                gStateStack:clear()
-                gStateStack:push(DayEndState())
-            end
+            gStateStack:clear()
+            gStateStack:push(DayEndState())
         end
     end
 end

@@ -1,11 +1,9 @@
 GameOver = class{__includes = BaseState}
 
-function GameOver:init(type)
+function GameOver:init()
     self.priority = 0
     self.todayMoney, self.totalMoney = DataManager:getData('todayMoney'), DataManager:getData('totalMoney')
     self.currentDate = DataManager:getData('currentDate')
-    if type then self.type = type end
-
 
     self.gameOverButton = Button(BUTTON_PARAMS['GameOver'])
 
@@ -13,7 +11,7 @@ function GameOver:init(type)
         self.gameOverButton,
     }
 
-    self.card = DayEndStateCard({earnedToday = self.todayMoney, finalTotal = self.totalMoney, currentDate = self.currentDate, gameOver = true, type = self.type})
+    self.card = DayEndStateCard({earnedToday = self.todayMoney, finalTotal = self.totalMoney, currentDate = self.currentDate, gameOver = true})
     gStateStack:push(self.card)
     for _, btn in ipairs(self.interactables) do
         gStateStack:push(btn)

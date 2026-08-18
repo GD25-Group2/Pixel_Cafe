@@ -164,7 +164,7 @@ function GameStartShopState:init()
 end
 
 function GameStartShopState:update(dt)
-    self.timer = self.timer - dt
+    if DataManager:getData('specialFreeze') then self.timer = self.timer - dt end
     if self.timer <= 0 then
         gStateStack:clear()
         gStateStack:resume()

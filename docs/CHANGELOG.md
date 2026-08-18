@@ -343,3 +343,6 @@ show immediate reduction.
 - Make the reputation value has greater impact on customer spawn time.
 - Customer can no longer be attacked while not waiting.
 - Change day unlock related mechanic specifically for 'special' slot.
+
+#### 2026-08-18
+- Debug how the customers are rendered so that late arrival will be drawn first

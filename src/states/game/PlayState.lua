@@ -65,6 +65,12 @@ function PlayState:init()
     gStateStack:push(self.pauseButton)
     table.insert(self.interactables, self.pauseButton)
 
+    if not DataManager:getData('specialFreeze') then
+        self.unFreezeButton = Button(BUTTON_PARAMS['tutorialComplete'])
+        gStateStack:push(self.unFreezeButton)
+        table.insert(self.interactables, self.unFreezeButton)
+    end
+
     self.plateManagerPlateAdded = function(plate)
         table.insert(self.interactables, plate)
     end
@@ -153,6 +159,9 @@ function PlayState:init()
     end
 
     self.guideCallback = function (stepKey)
+        gStateStack:removeType('Guide')
+        gStateStack:removeType('DimBackground')
+        gStateStack:removeType('Mascot')
         local found = false
         for i = #gStateStack.states, 1, -1 do
             local type = gStateStack.states[i].type
@@ -191,9 +200,6 @@ function PlayState:enter()
     --Signal:emit('guide-summon')
 
     gStateStack:pause()
-    if DataManager:getData('name') == 'special' and DataManager:getData('todayMoney') >= WIN_CONDITION_MONEY then
-        gStateStack:push(Challenge())
-    end
 
     local guidePhase = tonumber(DataManager:getData('guidePhase')) or 1
 

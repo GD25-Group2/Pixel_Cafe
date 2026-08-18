@@ -109,12 +109,12 @@ function StateStack:clear()
 end
 
 local function bubbleSort(arr)
-    print('StateStack-bubbleSort')
     local n = #arr
-
     for i = 1, n - 1 do
         for j = 1, n - i do
-            if arr[j].priority > arr[j + 1].priority then
+            local p1 = arr[j].priority or 0
+            local p2 = arr[j + 1].priority or 0
+            if p1 > p2 then
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
             end
         end
@@ -158,7 +158,8 @@ function StateStack:pop(target, signalName, ...)
     else
         local popTable = self.isPopup and self.popupTable or (self.paused and self.pausedTable or self.states)
         if #popTable > 0 then
-            popTable[#popTable]:exit()
+            local state = popTable[#popTable]
+            if state and state.exit then state:exit() end
             table.remove(popTable)
             bubbleSort(popTable)
         end
@@ -186,4 +187,21 @@ end
 
 function StateStack:popupDelete()
     self.isPopup = false
+end
+
+function StateStack:removeType(targetType)
+    local tablesToSearch = { self.popupTable, self.pausedTable, self.states }
+
+    for _, tbl in ipairs(tablesToSearch) do
+        for i = #tbl, 1, -1 do
+            local current = tbl[i]
+            if current and (current == targetType or current.type == targetType) then
+                if current.exit then
+                    current:exit()
+                end
+                table.remove(tbl, i)
+            end
+        end
+        bubbleSort(tbl)
+    end
 end

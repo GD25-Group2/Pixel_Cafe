@@ -51,6 +51,7 @@ function PopupWindow:update(dt)
             DataManager:set('totalMoney', 1000)
             DataManager:set('reputation', 100)
             DataManager:set('guidePhase', 0)
+            DataManager:set('specialFreeze', false)
             DataManager:set('unlockedMachine', {
                 'CoffeeMachine',
                 'ChoppingBoard',
@@ -66,6 +67,10 @@ function PopupWindow:update(dt)
         
         gStateStack:clear()
         gStateStack:popupDelete()
+        gStateStack:clear()
+        gStateStack:pause()
+        gStateStack:clear()
+        gStateStack:resume()
         gStateStack:clear()
         gStateStack:push(PlayState())
 

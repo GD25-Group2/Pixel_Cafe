@@ -111,35 +111,31 @@ local phases = {
 
 function Guide:init(params)
     BaseEntity.init(self, params)
-    self.priority = 1
+    self.priority = 99
     self.type = 'Guide'
-    
-    for i = #gStateStack.states, 1, -1 do
-        local entity = gStateStack.states[i]
-        if entity.type == 'DimBackground' or entity.type == 'Mascot' then
-            table.remove(gStateStack.states, i)
-        end
+
+    if DataManager:getData('guidePhase') == 0 then 
+        self.isFinished = true
+        return 
     end
 
-    if DataManager:getData('guidePhase') == 0 then return end
-    self.stepKey = self.stepKey or tonumber(DataManager:getData('guidePhase')) or 1
-    if self.stepKey < DataManager:getData('guidePhase') then
-        gStateStack:pop(self)
-        return
-    end
-    
-    if self.stepKey <= 0 or self.stepKey > #phaseOrder then
-        print('Guide - isFinished', self.stepKey)
+    self.stepKey = params and params.stepKey or tonumber(DataManager:getData('guidePhase')) or 1
+
+    if self.stepKey < DataManager:getData('guidePhase') or self.stepKey <= 0 or self.stepKey > #phaseOrder then
         self.isFinished = true
         return
     end
 
     self.phase = phases[phaseOrder[self.stepKey]]
+    if not self.phase then
+        self.isFinished = true
+        return
+    end
 
     local left, right = - self.phase.text_width - 10, self.phase.text_width + 10
-
     self.mascot = GuideMascot({x = self.phase.x, y = self.phase.y})
     local textBox_x = self.phase.x + (self.phase.preferLeft and left or right)
+
     self.textBox = TextBox({
         x = textBox_x,
         y = self.phase.y, 
@@ -148,7 +144,7 @@ function Guide:init(params)
         counterDisable = true, 
         desired_width = self.phase.text_width
     })
-    print('Guide- left: ' .. self.textBox.x .. ' right: ' .. self.textBox.x + self.textBox.desired_width)
+
     self.background = DimBackground({mascot = self.mascot, highlight = self.phase.highlight, textBox = self.textBox})
 
     gStateStack:push(self.background)
@@ -156,18 +152,9 @@ function Guide:init(params)
     gStateStack:push(self.textBox)
 
     if self.phase.signal then
-        self.signalCallback = function()
-            self:dismiss()
-        end
+        self.signalCallback = function() self:dismiss() end
         Signal:register(self.phase.signal, self.signalCallback)
     end
-
-    local returnStep
-    returnStep = function ()
-        Signal:remove('ask-guide-stepKey', returnStep)
-        return self.stepKey
-    end
-    Signal:register('ask-guide-stepKey', returnStep)
 end
 
 function Guide:update(dt)

@@ -17,7 +17,6 @@ setmetatable(DataManager, DataManager)
 local dateDependentUnlock = {
     false,
     'ChoppingBoard',
-    false,
     'BreadBasket',
     false,
     false,
@@ -44,6 +43,7 @@ function DataManager:getDefaultData()
         ['reputation'] = 50, -- out of 100
         ['guidePhase'] = 1,
         ['shopDone'] = false,
+        ['specialFreeze'] = true
     }
 end
 

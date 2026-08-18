@@ -173,8 +173,6 @@ MONEY_CONFIG = {
     countUpSpeed    = 5, -- lowering countup speed is not looking good ( 120 is already fine ig)
 }
 
-WIN_CONDITION_MONEY = 200
-
 UI_CARD = {
     width  = 260,
     height = 140,
@@ -302,6 +300,24 @@ BUTTON_PARAMS = {
         defaultColor = gColors['white'],
         hoverColor = gColors['yellow'],
     },
+    ['tutorialComplete'] = {
+        text = '>>',
+        x = 5,
+        y = 2 + 20,
+        desired_width = 16,
+        desired_height = 16,
+        action = function()
+            DataManager:restart()
+            DataManager:set('specialFreeze', true)
+            gStateStack:clear()
+            gStateStack:resume()
+            gTodayMoney = 0
+            gStateStack:push(PlayState())
+        end,
+        clickable = true,
+        defaultColor = gColors['white'],
+        hoverColor = gColors['yellow'],
+    },
     --[[['ToShop'] = {
         text = nil,
         frame = gFrames['ShopIcon'],
@@ -358,8 +374,6 @@ BUTTON_PARAMS = {
             DataManager:restart()
             gStateStack:clear()
             gStateStack:resume()
-            DataManager:restart()
-            gStateStack:clear()
             gTodayMoney = 0
             gStateStack:push(PlayState())
         end,
@@ -557,7 +571,9 @@ BUTTON_PARAMS = {
         action = function()
             gStateStack:clear()
             gStateStack:popupDelete()
-            gStateStack:clear() --pause quit button's action
+            gStateStack:clear()
+            gStateStack:pause()
+            gStateStack:clear()
             gStateStack:resume()
             gStateStack:clear()
             if DataManager:getData('currentDate') > 1 then
