@@ -38,6 +38,11 @@ function ChoppingBoard:action()
         if self.hasIngredient then
             self.productionStage = 'Ready'
             self.hasIngredient = chop_table[self.hasIngredient]
+            if gSounds and gSounds['chop'] then
+                gSounds['chop']:setVolume(gSettings.sfxVolume)
+                gSounds['chop']:stop()
+                gSounds['chop']:play()
+            end
         else
             self.productionStage = 'Void'
         end

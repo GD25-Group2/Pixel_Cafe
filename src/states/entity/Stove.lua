@@ -58,6 +58,9 @@ function Stove:update(dt)
             self.counter = 0
             self.productionStage = 'Ready'
             self.isAvail = true
+            if gSounds and gSounds['stove'] then
+                gSounds['stove']:stop()
+            end
         end
     end
 
@@ -97,18 +100,26 @@ function Stove:produce()
         self.productionStage = 'Producing'
         self.counter = 0
         self.stock = StockManager:consume(self.stockType)
+        if gSounds and gSounds['stove'] then
+            gSounds['stove']:setVolume(gSettings.sfxVolume)
+            gSounds['stove']:setLooping(false)
+            gSounds['stove']:stop()
+            gSounds['stove']:play()
+        end
     end
 end
 
 function Stove:drag()
     self.productionStage = 'Holding'
     self:updateFrame()
+    if gSounds and gSounds['stove'] then gSounds['stove']:stop() end
 end
 
 function Stove:taken()
     self.productionStage = 'Void'
     self:updateFrame()
     self.isAvail = false
+    if gSounds and gSounds['stove'] then gSounds['stove']:stop() end
 end
 
 function Stove:undrag()
