@@ -343,6 +343,10 @@ show immediate reduction.
 - Make the reputation value has greater impact on customer spawn time.
 - Customer can no longer be attacked while not waiting.
 - Change day unlock related mechanic specifically for 'special' slot.
-
-### 2026-08-18
+ 
+#### 2026-08-18
+- Debug how the customers are rendered so that late arrival will be drawn first
+- Add specialFreeze to data so that in special stage, there would be a buffer like stage that has 
+no time limits to race against, giving higher exploration possibility.
+- Guide phase is being summoned multiple time due to signal not being removed.
 - Added sfx on chop board and stove , and also when bread , meat and lettuce

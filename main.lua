@@ -11,7 +11,7 @@ function love.load()
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         vsync = true,
-        resizable = false,
+        resizable = true,
         filter = 'nearest',
     })
 
@@ -34,6 +34,10 @@ function love.update(dt)
     if love.keyboard.wasPressed('k') and not gStateStack.isPopup then
         gStateStack:popupCreate()
         gStateStack:push(PopupWindow('Dev'))
+    end
+    if love.keyboard.wasPressed('f11') then
+        local fullscreen = love.window.getFullscreen()
+        love.window.setFullscreen(not fullscreen)
     end
 
     timer.update(dt)

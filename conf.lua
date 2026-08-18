@@ -11,7 +11,7 @@ function love.conf(t)
     t.window.width = 1280                   -- Window width in pixels
     t.window.height = 720                   -- Window height in pixels
     t.window.borderless = false             -- Remove window border and title bar
-    t.window.resizable = false              -- Allow the user to resize the window
+    t.window.resizable = true               -- Allow the user to resize the window
     t.window.minwidth = 320                 -- Minimum window width if resizable
     t.window.minheight = 180                -- Minimum window height if resizable
     t.window.fullscreen = false             -- Enable fullscreen mode

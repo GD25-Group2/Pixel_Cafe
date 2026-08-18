@@ -15,7 +15,7 @@ end
 
 function TimeManager:update(dt)
     if not self.isFrozen then
-        self.dayTime = self.dayTime + self.timeScale * dt
+        if DataManager:getData('specialFreeze') then self.dayTime = self.dayTime + self.timeScale * dt end
     end
     local currentHour = math.floor(self.dayTime / 60)
     

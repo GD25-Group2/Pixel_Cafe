@@ -181,7 +181,7 @@ function CustomerManager:isEmpty() return #self.customers == 0 end
 function CustomerManager:stopSpawning() self.spawningEnabled = false end
 
 function CustomerManager:render()
-    for _, c in ipairs(self.customers) do
-        c:render()
+    for i = #self.customers, 1, -1 do
+        self.customers[i]:render()
     end
 end
