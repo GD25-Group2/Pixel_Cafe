@@ -94,7 +94,9 @@ function BaseState:mouseResponse()
                     self._mouseDown = nil
 
                     local held = self.cursor.heldItem
-                    if held == 'Coffee' or held == 'DisposableCoffeeCup' or held == 'CoffeeMachine' then
+                    if held == 'Coffee' or held == 'DisposableCoffeeCup' or held == 'CoffeeMachine'
+                    or held == 'Meat' or held == 'LoafOfBread' or held == 'Lettuce'
+                    or held == 'ChoppedMeat' or held == 'ChoppedBread' or held == 'ChoppedLettuce' then
                         if gSounds and gSounds['cup-drag'] then
                             gSounds['cup-drag']:setVolume(gSettings.sfxVolume)
                             gSounds['cup-drag']:stop()
@@ -171,6 +173,11 @@ function BaseState:mouseResponse()
                                 self.choppingBoard:slash()
                                 target:slashed()
                                 Signal:emit('slash-customer-guide')
+                                if gSounds and gSounds['chop'] then
+                                    gSounds['chop']:setVolume(gSettings.sfxVolume)
+                                    gSounds['chop']:stop()
+                                    gSounds['chop']:play()
+                                end
                             end
                         end
                     end
