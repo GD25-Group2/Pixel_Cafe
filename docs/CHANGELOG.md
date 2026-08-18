@@ -346,3 +346,6 @@ show immediate reduction.
 
 #### 2026-08-18
 - Debug how the customers are rendered so that late arrival will be drawn first
+- Add specialFreeze to data so that in special stage, there would be a buffer like stage that has 
+no time limits to race against, giving higher exploration possibility.
+- Guide phase is being summoned multiple time due to signal not being removed.

@@ -211,9 +211,12 @@ function PlayState:enter()
 end
 
 function PlayState:exit()
-    if self.particleBurst then
-        self.particleBurst:exit()
-    end
+    Signal:remove('guide-summon', self.guideCallback)
+    Signal:remove('plate-manager-plate-added', self.plateManagerPlateAdded)
+    Signal:remove('game-over', self.gameOver)
+    Signal:remove('drop-item-target-params-take', self.dropItemGetParams)
+
+    if self.particleBurst then self.particleBurst:exit() end
     if gSounds then
         if gSounds['time-ticking'] then gSounds['time-ticking']:stop() end
         if gSounds['walking-song1'] then gSounds['walking-song1']:stop() end
