@@ -114,7 +114,7 @@ COFFEE_CUP_STACK_CONFIG = {
 COFFEE_TRAY_CONFIG = {
     frame = gFrames['EmptyTray'],
     x = 50,
-    y = 145,
+    y = 145 + 5,
     desired_width = 32,
     desired_height = 32,
 }

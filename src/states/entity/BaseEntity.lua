@@ -9,8 +9,13 @@ function BaseEntity:init(params)
 end
 
 function BaseEntity:isMouseOver()
-    return mouseX > self.x and mouseX < self.x + self.desired_width and
-           mouseY > self.y and mouseY < self.y + self.desired_height
+    local x = self.hurtbox and self.hurtbox.x or self.x
+    local y = self.hurtbox and self.hurtbox.y or self.y
+    local width = self.hurtbox and self.hurtbox.width or self.desired_width
+    local height = self.hurtbox and self.hurtbox.height or self.desired_height
+
+    return mouseX > x and mouseX < x + width and
+           mouseY > y and mouseY < y + height
 end
 
 function BaseEntity:enter(params) end

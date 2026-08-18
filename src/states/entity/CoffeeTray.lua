@@ -22,6 +22,14 @@ function CoffeeTray:init(params)
     self.emptyCups = 0
     self.filledCups = 0
     self:updateFrame()
+
+    local expand = 5
+    self.hurtbox = {
+        x = self.x - expand,
+        y = self.y - expand,
+        width = self.desired_width + expand * 2,
+        height = self.desired_height + expand * 2
+    }
 end
 
 function CoffeeTray:updateFrame()
