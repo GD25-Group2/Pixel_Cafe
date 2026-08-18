@@ -191,6 +191,9 @@ function PlayState:enter()
     --Signal:emit('guide-summon')
 
     gStateStack:pause()
+    if DataManager:getData('name') == 'special' and DataManager:getData('todayMoney') >= WIN_CONDITION_MONEY then
+        gStateStack:push(Challenge())
+    end
 
     local guidePhase = tonumber(DataManager:getData('guidePhase')) or 1
 

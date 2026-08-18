@@ -14,7 +14,7 @@ function love.conf(t)
     t.window.resizable = false              -- Allow the user to resize the window
     t.window.minwidth = 320                 -- Minimum window width if resizable
     t.window.minheight = 180                -- Minimum window height if resizable
-    t.window.fullscreen = false             -- Enable fullscreen mode
+    t.window.fullscreen = true              -- Enable fullscreen mode
     t.window.fullscreentype = "desktop"     -- Fullscreen type ("desktop" or "exclusive")
     t.window.vsync = 1                      -- Vertical sync (1 to enable, 0 to disable)
     t.window.msaa = 0                       -- Multi-sample antialiasing (keep 0 for pixel art)

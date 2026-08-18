@@ -173,6 +173,8 @@ MONEY_CONFIG = {
     countUpSpeed    = 5, -- lowering countup speed is not looking good ( 120 is already fine ig)
 }
 
+WIN_CONDITION_MONEY = 200
+
 UI_CARD = {
     width  = 260,
     height = 140,

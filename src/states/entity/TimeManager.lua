@@ -6,7 +6,7 @@ function TimeManager:init(currentDate, customerManager)
     self.dayTime = 8 * 60
     
     -- 1 real second = 10 game minutes
-    self.timeScale = 10
+    self.timeScale = 30
 
     self.currentDate = currentDate
     self.customerManager = customerManager

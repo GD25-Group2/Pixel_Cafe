@@ -247,3 +247,8 @@ Steps to Reproduce:
     5. Go through tutorial.
 Expected Result: There should be no sudden darkening and the previous guide phase entities must disappear.
 Actual Result: Random bugs keep showing up.
+
+Customer late arrival being render on top of the already arrived one
+Plate don't accept other at its 1 left state
+It would be nice to have a display that show how much total bonus do we get at the end of the day
+Pause menu background card is changing but consistent at day 1
