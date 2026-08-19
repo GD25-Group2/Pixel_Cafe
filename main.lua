@@ -26,10 +26,11 @@ function love.load()
 end
 
 function love.update(dt)
-    _G.mouseX, _G.mouseY = push:toGame(love.mouse.getX(), love.mouse.getY())
-    if mouseX and mouseY then
-        suit.updateMouse(mouseX, mouseY, love.mouse.isDown(1))
-    end
+    local mx, my = push:toGame(love.mouse.getX(), love.mouse.getY())
+    _G.mouseX = mx or -1000
+    _G.mouseY = my or -1000
+
+    suit.updateMouse(mouseX, mouseY, love.mouse.isDown(1))
 
     if love.keyboard.wasPressed('k') and not gStateStack.isPopup then
         gStateStack:popupCreate()
@@ -58,6 +59,11 @@ end
 
 function love.keypressed(key)
     love.keyboard.keysPressed[key] = true
+
+    if key:match("^f%d+$") or key == "lalt" or key == "ralt" then
+        return
+    end
+
     if key == 'k' and not gStateStack.isPopup then
         InputBox.ignoreNextK = true
     end
