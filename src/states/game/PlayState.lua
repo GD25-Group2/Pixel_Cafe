@@ -200,14 +200,15 @@ function PlayState:enter()
     --Signal:emit('guide-summon')
 
     gStateStack:pause()
+    Signal:emit('summonShop')
 
-    local guidePhase = tonumber(DataManager:getData('guidePhase')) or 1
+    --[[local guidePhase = tonumber(DataManager:getData('guidePhase')) or 1
 
     if guidePhase == 1 then
         Signal:emit('guide-summon', 1)
     else
         Signal:emit('summonShop')
-    end
+    end]]
 end
 
 function PlayState:exit()
